@@ -77,6 +77,12 @@ body {
 }
 .theme-btn:hover { border-color: var(--blue); color: var(--blue); }
 .hero { margin-bottom: 40px; }
+.hero-byline {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  letter-spacing: -0.005em;
+}
 .hero h1 {
   font-size: 32px;
   font-weight: 600;
@@ -242,6 +248,7 @@ body {
   </div>
 
   <div class="hero">
+    <div class="hero-byline">Workshop dashboards × Tam Danier</div>
     <h1>Launch workshops.</h1>
     <p>Interactive artifacts for every workshop — decision dashboards, agendas, pre-reads. Built for Launch Solutions Architects, hosted here, embeddable in Miro.</p>
   </div>
@@ -261,11 +268,11 @@ body {
   <div class="workshop-grid" id="workshop-grid">
 
     <a class="workshop-card" href="2026-06-15-solution-brief-oq/"
-       data-category="pre-sales"
+       data-category="internal"
        data-tags="gateway,schema,decision">
       <div class="card-meta">
         <span class="card-date">2026-06-15</span>
-        <span class="card-category">Pre-sales</span>
+        <span class="card-category">Internal</span>
       </div>
       <div class="card-title">Solution Brief BRD — OQ Workshop.</div>
       <div class="card-desc">14 open questions on the Solution Brief BRD — data model, workflow, versioning, and scope. Outputs BRD v3 and locks the DISCO integration schema.</div>
