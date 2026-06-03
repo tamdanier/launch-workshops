@@ -131,7 +131,30 @@ The standard heading stack: uppercase blue eyebrow (Launch by NTT DATA), then a 
 ### Recommendation callout
 Left blue border (3px), beige fill, uppercase blue label. Used to surface a default or recommended option inside a decision flow.
 
-> **Adding treatments from the HPI deck:** new patterns extracted from a deck are documented here with a name, a description, and the tokens they use — then added to `tokens.css` if they introduce a reusable value. See the change process below.
+### Geometric path motif
+The cover and section-break background device. Interlocking rounded-rectangle "circuit" path shapes in N1 (`#111113`) on a near-black field, with two accent squares — one Launch Yellow, one Launch Blue — placed at path terminals. Title sits in N7 over the motif, sentence case, with the L-mark bottom-right. Dark mode only. Use on covers, section breaks, and the closing slide — never behind body content.
+
+### Big-stat observation
+An observation slide built around one oversized number. Structure: uppercase section eyebrow → hero stat at the `stat` scale (64px / Demi) → a single framing sentence. The number carries the weight; the sentence gives it meaning. Example: "$1B Target" over "A $1B target and you own a piece of it." Highlight the stat in Yellow (light mode) or Blue (dark mode).
+
+### Outcome metric row
+A horizontal 4-up row of proof metrics, used for case-study results. Each cell: large tabular-nums number (Demi) + a short lowercase label beneath. Example: "240+ releases per year · 80% faster collection cycles · 28 internal teams coached · 6wk launch intervals." Equal-width cells, hairline dividers optional. Distinct from the stat tile (a single boxed metric) — this is an unboxed row reading as one proof bar.
+
+### Phased timeline
+A horizontal progression for time-boxed engagements. Phases as equal segments left to right, each with a phase label, a week range, and a short scope line — e.g. "Phase 1 (Week 1–4) … Phase 2 (Week 5–10) … Phase 3 (Week 11–12)." Accent the entry or active phase in Blue. Used for pilots and staged plans (the 90-day pilot is the reference).
+
+### Question → next steps sequence
+A paired, per-stakeholder pre-sales pattern. A **"what we'd like to know"** slide poses the open questions for one named stakeholder, followed immediately by a **"next steps"** slide addressed to that same person with concrete, time-bound actions ("Within the next week…"). Repeat the pair per stakeholder. Both carry the uppercase section eyebrow; the next-steps slide names the individual. This is the signature Launch close — it turns a pitch into a working agenda.
+
+> **Adding more treatments:** document each here with a name, a description, and the tokens it uses — then add to `tokens.css` if it introduces a reusable value. See the change process below.
+
+---
+
+## Palette provenance note.
+
+The Launch PowerPoint theme (Starter Template, HPI deck) carries slightly different hex than the values in this book — Blue `#1D5AF1`, Yellow `#FFC900`, Red `#FF004B`. **The documented values here are canonical** (`#1E5AF2`, `#FFCC2D`, `#FF1C52`); the PPTX theme is the drifted copy and is corrected at next template touch. If a future audit of the original designer source proves the PPTX values authoritative, that change goes through the version process — it is not applied piecemeal.
+
+Two QA notes from the HPI deck, logged so they are not mistaken for brand: pure magenta `#FF40FF` and green `#00FA00` placeholder fills remain on some slides (off-brand, meant to be replaced), and the slide-21 appendix diagram uses a foreign palette. Neither is a Launch treatment.
 
 ---
 
