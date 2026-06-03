@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Launch workshops.</title>
+<style>
+:root {
+  --bg-page:    #F5F1EC;
+  --bg-shell:   #FCF8F5;
+  --bg-card:    #FFFFFF;
+  --bg-tag:     #FFEFE3;
+  --text:       #111113;
+  --text-muted: #77706F;
+  --text-dim:   #908A89;
+  --border:     rgba(17,17,19,0.08);
+  --border-mid: rgba(17,17,19,0.12);
+  --blue:       #1E5AF2;
+  --yellow:     #FFCC2D;
+  --red:        #FF1C52;
+  --tag-text:   #77706F;
+}
+[data-theme="dark"] {
+  --bg-page:    #0E0E10;
+  --bg-shell:   #17171A;
+  --bg-card:    #1F1F23;
+  --bg-tag:     rgba(255,204,45,0.1);
+  --text:       #F0EDE8;
+  --text-muted: #908A89;
+  --text-dim:   #5C5755;
+  --border:     rgba(240,237,232,0.08);
+  --border-mid: rgba(240,237,232,0.14);
+  --blue:       #5A85F5;
+  --yellow:     #FFCC2D;
+  --red:        #FF4D72;
+  --tag-text:   #908A89;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 32px 24px 64px;
+  background: var(--bg-page);
+  min-height: 100vh;
+  font-family: 'Avenir Next LT Pro', 'Avenir Next', 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  transition: background 0.2s, color 0.2s;
+}
+.shell {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--blue);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.theme-btn {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border-mid);
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  letter-spacing: -0.005em;
+}
+.theme-btn:hover { border-color: var(--blue); color: var(--blue); }
+.hero { margin-bottom: 40px; }
+.hero h1 {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+.hero p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 560px;
+}
+.rule {
+  border: none;
+  border-top: 0.5px solid var(--border-mid);
+  margin: 0 0 28px;
+}
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  align-items: center;
+}
+.filter-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-right: 4px;
+}
+.filter-btn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border-mid);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  letter-spacing: -0.005em;
+}
+.filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+.filter-btn.active { background: var(--blue); color: #FFFFFF; border-color: var(--blue); }
+.workshop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 12px;
+}
+.workshop-card {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.workshop-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--yellow);
+}
+.workshop-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(30,90,242,0.08);
+  transform: translateY(-1px);
+}
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.card-date {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+.card-category {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 5px;
+  background: var(--bg-tag);
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.card-tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 5px;
+  background: var(--bg-tag);
+  color: var(--tag-text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.card-arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--text-dim);
+  transition: color 0.15s, right 0.15s;
+}
+.workshop-card:hover .card-arrow { color: var(--blue); right: 16px; }
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 0;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 16px;
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top-bar">
+    <div class="eyebrow">Launch by NTT DATA</div>
+    <button class="theme-btn" id="theme-toggle">Dark mode</button>
+  </div>
+
+  <div class="hero">
+    <h1>Launch workshops.</h1>
+    <p>Interactive artifacts for every workshop — decision dashboards, agendas, pre-reads. Built for Launch Solutions Architects, hosted here, embeddable in Miro.</p>
+  </div>
+
+  <hr class="rule">
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" data-cat="all">All</button>
+    <button class="filter-btn" data-cat="pre-sales">Pre-sales</button>
+    <button class="filter-btn" data-cat="internal">Internal</button>
+    <button class="filter-btn" data-cat="client">Client</button>
+  </div>
+
+  <div class="section-label" id="count-label">1 workshop</div>
+
+  <div class="workshop-grid" id="workshop-grid">
+
+    <a class="workshop-card" href="2026-06-15-solution-brief-oq/"
+       data-category="pre-sales"
+       data-tags="gateway,schema,decision">
+      <div class="card-meta">
+        <span class="card-date">2026-06-15</span>
+        <span class="card-category">Pre-sales</span>
+      </div>
+      <div class="card-title">Solution Brief BRD — OQ Workshop.</div>
+      <div class="card-desc">14 open questions on the Solution Brief BRD — data model, workflow, versioning, and scope. Outputs BRD v3 and locks the DISCO integration schema.</div>
+      <div class="card-tags">
+        <span class="card-tag">Gateway</span>
+        <span class="card-tag">Schema</span>
+        <span class="card-tag">Decision</span>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  const themeBtn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  const saved = localStorage.getItem('lw-theme');
+  if (saved) { html.dataset.theme = saved; themeBtn.textContent = saved === 'dark' ? 'Light mode' : 'Dark mode'; }
+
+  themeBtn.addEventListener('click', () => {
+    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    themeBtn.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+    localStorage.setItem('lw-theme', next);
+  });
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.workshop-card');
+  const countLabel = document.getElementById('count-label');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      let visible = 0;
+      cards.forEach(card => {
+        const show = cat === 'all' || card.dataset.category === cat;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      countLabel.textContent = visible === 1 ? '1 workshop' : visible + ' workshops';
+    });
+  });
+})();
+</script>
+</body>
+</html>
