@@ -5,7 +5,343 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Solution Brief BRD — OQ Workshop</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
-<link rel="stylesheet" href="../design-system/v1/launch.css">
+<style>
+/* Launch by NTT DATA — Workshop Design System v1
+   Brand: Launch Blue #1E5AF2 · Yellow #FFCC2D · Red #FF1C52 · N6 #FCF8F5
+   Typography: Avenir Next LT Pro → Avenir Next → Inter → system-ui */
+
+body {
+  margin: 0;
+  padding: 24px;
+  background: #F5F1EC;
+  min-height: 100vh;
+}
+.launch-shell {
+  background: #FCF8F5;
+  border-radius: 16px;
+  padding: 32px 28px;
+  border: 0.5px solid rgba(17, 17, 19, 0.08);
+  font-family: 'Avenir Next LT Pro', 'Avenir Next', 'Inter', system-ui, -apple-system, sans-serif;
+  color: #111113;
+  letter-spacing: -0.005em;
+  max-width: 920px;
+  margin: 0 auto;
+}
+.launch-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  color: #1E5AF2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.launch-h {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #111113;
+  line-height: 1.2;
+}
+.launch-sub {
+  margin: 0 0 28px;
+  font-size: 14px;
+  color: #77706F;
+  line-height: 1.5;
+}
+.launch-rule {
+  border: none;
+  border-top: 0.5px solid rgba(17, 17, 19, 0.1);
+  margin: 0 0 24px;
+}
+.ls-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.ls-stat {
+  background: #FFFFFF;
+  border: 0.5px solid rgba(17, 17, 19, 0.08);
+  border-radius: 12px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.ls-stat::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.ls-stat.s-a::before { background: #FFCC2D; }
+.ls-stat.s-d::before { background: #FF1C52; }
+.ls-stat.s-p::before { background: #77706F; }
+.ls-stat-l {
+  font-size: 10px;
+  color: #77706F;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+.ls-stat-v {
+  font-size: 32px;
+  font-weight: 500;
+  margin-top: 8px;
+  color: #111113;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+.warn-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: #FFEFE3;
+  border: 0.5px solid rgba(255, 28, 82, 0.25);
+  border-left: 3px solid #FF1C52;
+  padding: 10px 14px;
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #111113;
+}
+.warn-banner.visible { display: flex; }
+.warn-banner i { color: #FF1C52; font-size: 16px; flex-shrink: 0; }
+.warn-banner b { font-weight: 500; }
+.track-h {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 32px 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid rgba(17, 17, 19, 0.1);
+}
+.track-h:first-of-type { margin-top: 4px; }
+.track-num {
+  font-size: 10px;
+  font-weight: 500;
+  color: #1E5AF2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.track-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111113;
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+.track-time {
+  font-size: 11px;
+  color: #908A89;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+.oq {
+  background: #FFFFFF;
+  border: 0.5px solid rgba(17, 17, 19, 0.08);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.oq:hover { border-color: rgba(17, 17, 19, 0.2); }
+.oq.expanded {
+  border-color: #1E5AF2;
+  box-shadow: 0 0 0 3px rgba(30, 90, 242, 0.08);
+}
+.oq::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.15s;
+}
+.oq.s-approved::before { background: #FFCC2D; }
+.oq.s-different::before { background: #FF1C52; }
+.oq.s-parked::before { background: #77706F; }
+.oq.needs-note::after {
+  content: '';
+  position: absolute;
+  right: 12px; top: 12px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #FF1C52;
+  box-shadow: 0 0 0 3px rgba(255, 28, 82, 0.15);
+}
+.oq-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.oq-id {
+  font-size: 10px;
+  font-weight: 500;
+  color: #77706F;
+  background: #FFEFE3;
+  padding: 4px 9px;
+  border-radius: 5px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  min-width: 46px;
+  text-align: center;
+}
+.oq.s-approved .oq-id { background: #FFCC2D; color: #111113; }
+.oq.s-different .oq-id { background: #FECED9; color: #111113; }
+.oq.s-parked .oq-id { background: rgba(119, 112, 111, 0.18); color: #111113; }
+.oq-title {
+  flex: 1;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #111113;
+  letter-spacing: -0.005em;
+}
+.oq-owner {
+  font-size: 11px;
+  color: #908A89;
+  font-style: italic;
+}
+.oq-chev {
+  font-size: 16px;
+  color: #908A89;
+  transition: transform 0.2s, color 0.15s;
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+.oq.expanded .oq-chev { transform: rotate(90deg); color: #1E5AF2; }
+.oq-status-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: none;
+}
+.oq.s-approved .oq-status-badge { display: inline-block; background: #FFCC2D; color: #111113; }
+.oq.s-different .oq-status-badge { display: inline-block; background: #FECED9; color: #111113; }
+.oq.s-parked .oq-status-badge { display: inline-block; background: rgba(119, 112, 111, 0.18); color: #111113; }
+.oq-body {
+  display: none;
+  padding: 4px 20px 20px 20px;
+  border-top: 0.5px solid rgba(17, 17, 19, 0.06);
+}
+.oq.expanded .oq-body { display: block; }
+.oq-q { font-size: 13.5px; color: #252424; margin: 16px 0 14px; line-height: 1.6; }
+.oq-rec {
+  font-size: 13.5px;
+  background: #FFEFE3;
+  border-left: 3px solid #1E5AF2;
+  padding: 13px 15px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 14px;
+  line-height: 1.55;
+  color: #111113;
+}
+.oq-rec-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #1E5AF2;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+}
+.oq-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.oq-btn {
+  font-size: 12.5px;
+  padding: 8px 15px;
+  border-radius: 7px;
+  border: 0.5px solid rgba(17, 17, 19, 0.18);
+  background: #FFFFFF;
+  cursor: pointer;
+  font-weight: 500;
+  color: #252424;
+  transition: all 0.15s;
+  font-family: inherit;
+  letter-spacing: -0.005em;
+}
+.oq-btn:hover { border-color: rgba(17, 17, 19, 0.4); background: #FCF8F5; }
+.oq-btn.active-approved { background: #FFCC2D; color: #111113; border-color: #FFCC2D; }
+.oq-btn.active-different { background: #FF1C52; color: #FFFFFF; border-color: #FF1C52; }
+.oq-btn.active-parked { background: #252424; color: #FFFFFF; border-color: #252424; }
+.oq-note {
+  width: 100%;
+  font-size: 13px;
+  padding: 11px 13px;
+  border: 0.5px solid rgba(17, 17, 19, 0.15);
+  border-radius: 7px;
+  background: #FFFFFF;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 48px;
+  color: #111113;
+  line-height: 1.55;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+  letter-spacing: -0.005em;
+}
+.oq-note:focus {
+  outline: none;
+  border-color: #1E5AF2;
+  box-shadow: 0 0 0 3px rgba(30, 90, 242, 0.12);
+}
+.oq-note::placeholder { color: #908A89; }
+.note-hint {
+  font-size: 11px;
+  color: #FF1C52;
+  margin-top: 6px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+.oq.needs-note .note-hint { display: flex; }
+.actions-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 0.5px solid rgba(17, 17, 19, 0.1);
+  flex-wrap: wrap;
+}
+.actions-bar button {
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 7px;
+  border: 0.5px solid rgba(17, 17, 19, 0.18);
+  background: #FFFFFF;
+  cursor: pointer;
+  font-weight: 500;
+  color: #252424;
+  transition: all 0.15s;
+  font-family: inherit;
+  letter-spacing: -0.005em;
+}
+.actions-bar button:hover { border-color: rgba(17, 17, 19, 0.4); background: #FCF8F5; }
+.actions-bar button.primary { background: #1E5AF2; color: #FFFFFF; border-color: #1E5AF2; }
+.actions-bar button.primary:hover { background: #1647D0; border-color: #1647D0; }
+.export-out {
+  margin-top: 16px;
+  font-family: 'SF Mono', Menlo, Monaco, Consolas, monospace;
+  font-size: 11.5px;
+  background: #111113;
+  color: #FCF8F5;
+  padding: 18px 20px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  max-height: 340px;
+  overflow: auto;
+  line-height: 1.6;
+  display: none;
+}
+.export-out.visible { display: block; }
+</style>
 </head>
 <body>
 <div class="launch-shell">
@@ -210,22 +546,100 @@
   <div class="export-out" id="export-output"></div>
 </div>
 
-<script src="../design-system/v1/launch-workshop.js"></script>
 <script>
 (function () {
+  const STATES = [
+    { key: 'approved',  label: 'Approve recommendation', short: 'Approved' },
+    { key: 'different', label: 'Decide differently',      short: 'Decided differently' },
+    { key: 'parked',    label: 'Park / async',            short: 'Parked' }
+  ];
+
+  function needsNote(s) {
+    return (s.decision === 'different' || s.decision === 'parked') && !s.note.trim();
+  }
+
+  function renderCard(card, id, state) {
+    const s = state[id];
+    card.classList.remove('s-approved', 's-different', 's-parked', 'needs-note');
+    if (s.decision) card.classList.add('s-' + s.decision);
+    if (needsNote(s)) card.classList.add('needs-note');
+    card.querySelectorAll('.oq-btn').forEach(b => {
+      b.classList.remove('active-approved', 'active-different', 'active-parked');
+      if (b.dataset.state === s.decision) b.classList.add('active-' + s.decision);
+    });
+    const badge = card.querySelector('.oq-status-badge');
+    const st = STATES.find(x => x.key === s.decision);
+    badge.textContent = st ? st.short : '';
+  }
+
+  function renderSummary(state) {
+    const counts = { approved: 0, different: 0, parked: 0 };
+    Object.values(state).forEach(s => { if (s.decision) counts[s.decision]++; });
+    document.getElementById('ct-approved').textContent  = counts.approved;
+    document.getElementById('ct-different').textContent = counts.different;
+    document.getElementById('ct-parked').textContent    = counts.parked;
+  }
+
+  function renderWarnBanner(state) {
+    const missing = Object.values(state).filter(needsNote).length;
+    const banner  = document.getElementById('warn-banner');
+    const countEl = document.getElementById('warn-count');
+    const textEl  = document.getElementById('warn-text');
+    if (missing > 0) {
+      banner.classList.add('visible');
+      countEl.textContent = missing;
+      textEl.textContent  = missing === 1 ? 'decision needs a note captured.' : 'decisions need notes captured.';
+    } else {
+      banner.classList.remove('visible');
+    }
+  }
+
+  const cards = document.querySelectorAll('.oq');
+  const state = {};
+  const ORDER = Array.from(cards).map(c => c.dataset.id);
   const TITLES = {}, OWNERS = {};
-  document.querySelectorAll('.oq').forEach(c => {
-    TITLES[c.dataset.id] = c.querySelector('.oq-title').textContent.trim().replace(/\.$/, '');
-    OWNERS[c.dataset.id] = c.querySelector('.oq-owner').textContent.trim();
+
+  cards.forEach(card => {
+    const id = card.dataset.id;
+    state[id] = { decision: null, note: '' };
+    TITLES[id] = card.querySelector('.oq-title').textContent.trim().replace(/\.$/, '');
+    OWNERS[id] = card.querySelector('.oq-owner').textContent.trim();
+
+    card.querySelector('.oq-row').addEventListener('click', e => {
+      if (e.target.closest('.oq-btn, .oq-note')) return;
+      card.classList.toggle('expanded');
+    });
+
+    const actions = card.querySelector('.oq-actions');
+    STATES.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'oq-btn';
+      btn.textContent = s.label;
+      btn.dataset.state = s.key;
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        state[id].decision = state[id].decision === s.key ? null : s.key;
+        renderCard(card, id, state);
+        renderSummary(state);
+        renderWarnBanner(state);
+      });
+      actions.appendChild(btn);
+    });
+
+    card.querySelector('.oq-note').addEventListener('input', e => {
+      state[id].note = e.target.value;
+      renderCard(card, id, state);
+      renderWarnBanner(state);
+    });
   });
 
-  function buildMarkdown(state, ORDER) {
+  const exportOut = document.getElementById('export-output');
+  let currentExport = '';
+
+  function buildMarkdown() {
     const date = new Date().toISOString().slice(0, 10);
     const counts = { approved: 0, different: 0, parked: 0, undecided: 0 };
-    ORDER.forEach(id => {
-      const d = state[id].decision;
-      if (d) counts[d]++; else counts.undecided++;
-    });
+    ORDER.forEach(id => { const d = state[id].decision; if (d) counts[d]++; else counts.undecided++; });
     let md = '# Solution Brief BRD — OQ Workshop decisions\n\n';
     md += '*Captured ' + date + '*\n\n## Summary\n\n';
     md += '- Approved as recommended: ' + counts.approved + '\n';
@@ -234,17 +648,16 @@
     md += '- Undecided: ' + counts.undecided + '\n\n';
     md += '*Note: OQ-6 (ERIM adoption) closed pre-workshop by Woody — defer schema-level fields, ERIM content stays in free-text fields for now.*\n\n';
     [
-      { label: 'Approved as recommended',          key: 'approved' },
-      { label: 'Decided differently',              key: 'different' },
+      { label: 'Approved as recommended',             key: 'approved' },
+      { label: 'Decided differently',                 key: 'different' },
       { label: 'Parked / async (owner to follow up)', key: 'parked' },
-      { label: 'Undecided',                        key: null }
+      { label: 'Undecided',                           key: null }
     ].forEach(sec => {
       const items = ORDER.filter(id => state[id].decision === sec.key);
       if (!items.length) return;
       md += '## ' + sec.label + '\n\n';
       items.forEach(id => {
-        md += '### ' + id + ' — ' + TITLES[id] + '\n';
-        md += '*Owner: ' + OWNERS[id] + '*\n\n';
+        md += '### ' + id + ' — ' + TITLES[id] + '\n*Owner: ' + OWNERS[id] + '*\n\n';
         md += (state[id].note || '(no notes captured)') + '\n\n';
       });
     });
@@ -252,33 +665,53 @@
     return md;
   }
 
-  function buildJSON(state, ORDER) {
+  function buildJSON() {
     const out = {
       captured_at: new Date().toISOString(),
-      pre_workshop_decisions: [{
-        id: 'OQ-6',
-        title: 'ERIM adoption',
-        decision: 'closed_by_woody',
-        detail: 'Defer schema-level ERIM fields. ERIM content stays in free-text fields.'
-      }],
+      pre_workshop_decisions: [{ id: 'OQ-6', title: 'ERIM adoption', decision: 'closed_by_woody', detail: 'Defer schema-level ERIM fields. ERIM content stays in free-text fields.' }],
       summary: { approved: 0, different: 0, parked: 0, undecided: 0 },
       decisions: []
     };
     ORDER.forEach(id => {
       const d = state[id].decision;
       if (d) out.summary[d]++; else out.summary.undecided++;
-      out.decisions.push({
-        id,
-        title: TITLES[id],
-        owner: OWNERS[id],
-        decision: d || 'undecided',
-        notes: state[id].note || null
-      });
+      out.decisions.push({ id, title: TITLES[id], owner: OWNERS[id], decision: d || 'undecided', notes: state[id].note || null });
     });
     return JSON.stringify(out, null, 2);
   }
 
-  LaunchWorkshop.init({ buildMarkdown, buildJSON });
+  document.getElementById('btn-export-md').addEventListener('click', () => {
+    currentExport = buildMarkdown();
+    exportOut.textContent = currentExport;
+    exportOut.classList.add('visible');
+  });
+  document.getElementById('btn-export-json').addEventListener('click', () => {
+    currentExport = buildJSON();
+    exportOut.textContent = currentExport;
+    exportOut.classList.add('visible');
+  });
+  document.getElementById('btn-copy').addEventListener('click', () => {
+    if (!currentExport) { currentExport = buildMarkdown(); exportOut.textContent = currentExport; exportOut.classList.add('visible'); }
+    navigator.clipboard.writeText(currentExport).then(() => {
+      const btn = document.getElementById('btn-copy');
+      const orig = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = orig; }, 1200);
+    });
+  });
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if (!confirm('Reset all decisions and notes?')) return;
+    cards.forEach(card => {
+      const id = card.dataset.id;
+      state[id] = { decision: null, note: '' };
+      card.querySelector('.oq-note').value = '';
+      renderCard(card, id, state);
+    });
+    renderSummary(state);
+    renderWarnBanner(state);
+    exportOut.classList.remove('visible');
+    currentExport = '';
+  });
 })();
 </script>
 </body>
