@@ -1,0 +1,148 @@
+/* Launch by NTT DATA — diagram primitives v1
+   Static HTML/CSS diagram shapes, brand-tokened. Author at build time.
+   Depends on tokens.css. See diagram-style-guide.md for the grammar.
+
+   Color grammar: blue = primary path · neutral = secondary ·
+   yellow = highlight · red = corrective. One highlight per diagram. */
+
+/* ── Shared node + connector vocabulary ─────────────────── */
+.dg-node {
+  background: var(--n7);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 13px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+.dg-node .dg-sub { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-top: 4px; }
+.dg-node.is-primary   { border: 1.5px solid var(--launch-blue); }
+.dg-node.is-highlight { background: var(--launch-beige); border-color: var(--launch-yellow); }
+.dg-node.is-corrective{ border-color: var(--launch-red); color: var(--launch-red); }
+.dg-node.is-terminal  { border-radius: 999px; text-align: center; }
+[data-theme="dark"] .dg-node { background: var(--n2); border-color: var(--border-dark); }
+
+.dg-arrow { color: var(--n3); display: inline-flex; align-items: center; flex-shrink: 0; }
+.dg-arrow::after { content: '→'; font-size: 18px; line-height: 1; }
+.dg-arrow.is-primary { color: var(--launch-blue); }
+.dg-arrow.down::after { content: '↓'; }
+
+.dg-edge-label {
+  font-size: 11px; color: var(--text-muted);
+  background: var(--n6); padding: 2px 7px; border-radius: var(--radius-sm);
+}
+
+/* ── 1. Flow — linear process ───────────────────────────── */
+.dg-flow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.dg-flow .dg-node { flex: 1 1 0; min-width: 120px; }
+
+/* ── 2. Swim-lane — actor rows × stage columns ──────────── */
+.dg-lanes {
+  display: grid;
+  gap: 10px;
+}
+.dg-lanes-row {
+  display: grid;
+  grid-template-columns: var(--dg-lane-label, 140px) repeat(var(--dg-stages, 3), 1fr);
+  gap: 10px;
+  align-items: stretch;
+}
+.dg-lane-label {
+  display: flex; align-items: center;
+  font-size: 12px; font-weight: 600; color: var(--text);
+  padding: 10px 12px;
+  background: var(--n6);
+  border-radius: var(--radius-md);
+}
+.dg-lanes-head .dg-lane-label { background: transparent; }
+.dg-lanes-head .dg-stage-head {
+  font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--launch-blue);
+  padding: 6px 12px; text-align: center;
+}
+.dg-cell {
+  background: var(--n7);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 11px 13px;
+  font-size: 12px; color: var(--text); line-height: 1.45;
+}
+.dg-cell.is-pain { border-left: 3px solid var(--launch-red); }
+.dg-cell.is-win  { border-left: 3px solid var(--launch-yellow); }
+[data-theme="dark"] .dg-lane-label { background: var(--n2); }
+[data-theme="dark"] .dg-cell { background: var(--n2); border-color: var(--border-dark); }
+
+/* ── 3. Layered stack — tiers top to bottom ─────────────── */
+.dg-stack { display: flex; flex-direction: column; gap: 8px; }
+.dg-tier {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--n7);
+  border: 0.5px solid var(--border);
+  border-left: 3px solid var(--launch-blue);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+.dg-tier:nth-child(1) { border-left-color: var(--launch-yellow); }
+.dg-tier-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--text-muted);
+  min-width: 90px; flex-shrink: 0;
+}
+.dg-tier-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.dg-tier-body  { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+[data-theme="dark"] .dg-tier { background: var(--n2); border-color: var(--border-dark); }
+[data-theme="dark"] .dg-tier { border-left-color: var(--launch-blue); }
+
+/* ── 4. 2×2 matrix — positioning across two axes ────────── */
+.dg-matrix {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  position: relative;
+}
+.dg-quad {
+  background: var(--n7);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  min-height: 120px;
+}
+.dg-quad.is-highlight { background: var(--launch-beige); border-color: var(--launch-yellow); }
+.dg-quad-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.dg-quad-body  { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.dg-axis-x, .dg-axis-y {
+  font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--launch-blue);
+}
+[data-theme="dark"] .dg-quad { background: var(--n2); border-color: var(--border-dark); }
+
+/* ── 5. Hub-and-spoke — one center, many nodes ──────────── */
+.dg-hub {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.dg-hub-center {
+  grid-column: 2; grid-row: 2;
+  background: var(--launch-blue); color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 20px; text-align: center;
+  font-size: 15px; font-weight: 600;
+}
+.dg-spoke {
+  background: var(--n7);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 13px 15px;
+  font-size: 12.5px; color: var(--text); line-height: 1.4;
+}
+[data-theme="dark"] .dg-spoke { background: var(--n2); border-color: var(--border-dark); }

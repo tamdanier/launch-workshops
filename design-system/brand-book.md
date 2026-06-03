@@ -158,6 +158,31 @@ Two QA notes from the HPI deck, logged so they are not mistaken for brand: pure 
 
 ---
 
+## Diagrams.
+
+Flowcharts, journey maps, and framework graphics are authored at build time — Claude generates them as static HTML/CSS or inline SVG when building a deck. There is no runtime generator. Full rules, color grammar, and the five primitives (flow, swim-lane, layered stack, 2×2 matrix, hub-and-spoke) are in [`diagram-style-guide.md`](diagram-style-guide.md) and [`v1/diagrams.css`](v1/diagrams.css).
+
+The one rule worth repeating here: color carries meaning — blue = primary path, neutral = secondary, yellow = the one highlight, red = corrective. One highlight per diagram.
+
+---
+
+## Images.
+
+Image support exists (the `full-bleed` layout, inline photos). Because the platform repo is **public**, image handling follows a discipline, not just a mechanic.
+
+**Where images live.**
+- **Local** — commit to `decks/[name]/assets/` (or `workshops/[name]/assets/`) and reference relatively. Use for anything that must render reliably in the meeting and is not sensitive. Compress before committing — a deck should not carry multi-MB originals.
+- **Web link** — reference an external `https://` URL. Use only for stable, public sources. Do not depend on a link-protected or access-controlled image rendering live.
+
+**The sensitivity rule.** Sensitive client imagery — screenshots with client data, internal systems, anything not cleared for public view — **never goes in the public repo**. Genericize it, or keep that deck internal (same rule as workshops). When in doubt, leave it out.
+
+**Treatment.**
+- Aspect ratios: 16:9 for full-bleed, 4:3 or 1:1 for inline. Don't distort — crop.
+- Rounded corners (`--radius-lg`) on inline images; full-bleed goes edge to edge.
+- Always provide `alt` text — it is the accessible description and the fallback if the image fails.
+
+---
+
 ## Voice.
 
 Visual identity and verbal identity travel together. Full rules live in the `launch-voice` skill. The essentials:
