@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solution Brief BRD — OQ Workshop</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<link rel="stylesheet" href="../../design-system/v1/launch.css">
+</head>
+<body>
+<div class="launch-shell">
+  <div class="launch-eyebrow">Launch by NTT DATA</div>
+  <h1 class="launch-h">Solution Brief BRD — open question workshop.</h1>
+  <p class="launch-sub">14 decisions · 45 minutes · ~3 min per OQ.</p>
+  <hr class="launch-rule">
+
+  <div class="ls-summary">
+    <div class="ls-stat s-a"><div class="ls-stat-l">Approved as recommended</div><div class="ls-stat-v" id="ct-approved">0</div></div>
+    <div class="ls-stat s-d"><div class="ls-stat-l">Decided differently</div><div class="ls-stat-v" id="ct-different">0</div></div>
+    <div class="ls-stat s-p"><div class="ls-stat-l">Parked / async</div><div class="ls-stat-v" id="ct-parked">0</div></div>
+  </div>
+
+  <div class="warn-banner" id="warn-banner">
+    <i class="ti ti-alert-circle"></i>
+    <span><b id="warn-count">0</b> <span id="warn-text">decisions need notes captured.</span></span>
+  </div>
+
+  <!-- Track 01 -->
+  <div class="track-h">
+    <span class="track-num">Track 01</span>
+    <span class="track-title">Architecture and schema mechanics.</span>
+    <span class="track-time">~15 min</span>
+  </div>
+
+  <div class="oq" data-id="OQ-15">
+    <div class="oq-row"><span class="oq-id">OQ-15</span><span class="oq-title">Option A vs Option B — data model.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + John + Kavya</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Solution Brief as flat fields on Deal Record (Option A) or separate versioned object (Option B)?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Option A for P0/P1. Promote to B when version history and audit become first-class needs. MCP API surface stable across both.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-1">
+    <div class="oq-row"><span class="oq-id">OQ-1</span><span class="oq-title">DISCO field types supported.</span><span class="oq-status-badge"></span><span class="oq-owner">John Geiger</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Long text, enum, person lookup, URL, structured list / array, structured object — what's expressible?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Fact-finding from John. Answer gates OQ-3 (Win Themes structure).</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-2">
+    <div class="oq-row"><span class="oq-id">OQ-2</span><span class="oq-title">Assumptions field strategy.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Add confirmed + unconfirmed alongside existing assumptions, or restructure?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Additive. Keep existing assumptions; add the two new fields. Backward compatible, lowest risk.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-3">
+    <div class="oq-row"><span class="oq-id">OQ-3</span><span class="oq-title">Win Themes structure.</span><span class="oq-status-badge"></span><span class="oq-owner">John + Woody</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Three discrete fields each with sub-fields, or structured win_themes[] array?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Array if DISCO supports structured arrays (depends on OQ-1). Three fields if not.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-4">
+    <div class="oq-row"><span class="oq-id">OQ-4</span><span class="oq-title">project_summary overlap.</span><span class="oq-status-badge"></span><span class="oq-owner">Kavya + Woody</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">New Problem and Future State fields are additive to existing project_summary — confirm?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Additive. Different depth, different audience, different tab. Both stay.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <!-- Track 02 -->
+  <div class="track-h">
+    <span class="track-num">Track 02</span>
+    <span class="track-title">Workflow, approval, and versioning.</span>
+    <span class="track-time">~15 min</span>
+  </div>
+
+  <div class="oq" data-id="OQ-8">
+    <div class="oq-row"><span class="oq-id">OQ-8</span><span class="oq-title">Where does approval happen?</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">DISCO UI or SoluB skill?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>DISCO UI. The skill signals readiness (In Review); approval is a governance event belonging in the product surface.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-9">
+    <div class="oq-row"><span class="oq-id">OQ-9</span><span class="oq-title">Who can approve a brief?</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + Pursuit Ops</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Pursuit lead, account exec, Solutions VP, designated approver per deal?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Pursuit lead by default. Designated alternate per pursuit. Tier I / Super 8 may require Solutions VP — per-deal config.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-10">
+    <div class="oq-row"><span class="oq-id">OQ-10</span><span class="oq-title">Versioning strategy on update.</span><span class="oq-status-badge"></span><span class="oq-owner">DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Overwrite, increment with snapshot, or branch?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Increment with snapshot. Snapshot SB fields to version table on each update_brief("increment"). Branching deferred to P2+.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-11">
+    <div class="oq-row"><span class="oq-id">OQ-11</span><span class="oq-title">[XX] placeholder handling at transitions.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Block, warn, or allow at state transitions?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Allow with warning at In Draft → In Review. Block at In Review → Approved (or require audit-logged override).</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-12">
+    <div class="oq-row"><span class="oq-id">OQ-12</span><span class="oq-title">.docx rendering location.</span><span class="oq-status-badge"></span><span class="oq-owner">DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Skill generates, DISCO generates, or separate render service?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Skill generates for P0/P1 (matches current SoluB behavior). DISCO regeneration is P2+ enhancement.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <!-- Track 03 -->
+  <div class="track-h">
+    <span class="track-num">Track 03</span>
+    <span class="track-title">Scope boundaries, deferrals, infra.</span>
+    <span class="track-time">~12 min</span>
+  </div>
+
+  <div class="oq" data-id="OQ-5">
+    <div class="oq-row"><span class="oq-id">OQ-5</span><span class="oq-title">MCP write access timeline.</span><span class="oq-status-badge"></span><span class="oq-owner">John Geiger</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Most P1/P2 fields depend on MCP write access. Timeline?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Fact-finding from John. Answer gates everything in P0(write)/P1.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-7">
+    <div class="oq-row"><span class="oq-id">OQ-7</span><span class="oq-title">Delivery Brief workstream sponsor.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Who initiates and owns the Delivery Brief tab work when it begins? Delivery Lead? D&amp;O?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Sponsorship decision for Woody. Out of scope for this BRD but flag for visibility.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-13">
+    <div class="oq-row"><span class="oq-id">OQ-13</span><span class="oq-title">Search semantics.</span><span class="oq-status-badge"></span><span class="oq-owner">DISCO Product + CIP</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Filtered, full-text, semantic, or combinations?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Filtered for P0/P1. Full-text across SB content for P1. Semantic as P2+ aligned with CIP's broader capabilities.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-14">
+    <div class="oq-row"><span class="oq-id">OQ-14</span><span class="oq-title">MCP authentication mechanism.</span><span class="oq-status-badge"></span><span class="oq-owner">Architecture / Security</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Service account, per-user OAuth, or token issuance?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Routes to Architecture / Security. Likely parked from this session; assign owner to drive answer.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="primary" id="btn-export-md">Export markdown</button>
+    <button id="btn-export-json">Export JSON</button>
+    <button id="btn-copy">Copy to clipboard</button>
+    <button id="btn-reset">Reset all</button>
+  </div>
+
+  <div class="export-out" id="export-output"></div>
+</div>
+
+<script src="../../design-system/v1/launch-workshop.js"></script>
+<script>
+(function () {
+  const TITLES = {}, OWNERS = {};
+  document.querySelectorAll('.oq').forEach(c => {
+    TITLES[c.dataset.id] = c.querySelector('.oq-title').textContent.trim().replace(/\.$/, '');
+    OWNERS[c.dataset.id] = c.querySelector('.oq-owner').textContent.trim();
+  });
+
+  function buildMarkdown(state, ORDER) {
+    const date = new Date().toISOString().slice(0, 10);
+    const counts = { approved: 0, different: 0, parked: 0, undecided: 0 };
+    ORDER.forEach(id => {
+      const d = state[id].decision;
+      if (d) counts[d]++; else counts.undecided++;
+    });
+    let md = '# Solution Brief BRD — OQ Workshop decisions\n\n';
+    md += '*Captured ' + date + '*\n\n## Summary\n\n';
+    md += '- Approved as recommended: ' + counts.approved + '\n';
+    md += '- Decided differently: ' + counts.different + '\n';
+    md += '- Parked / async: ' + counts.parked + '\n';
+    md += '- Undecided: ' + counts.undecided + '\n\n';
+    md += '*Note: OQ-6 (ERIM adoption) closed pre-workshop by Woody — defer schema-level fields, ERIM content stays in free-text fields for now.*\n\n';
+    [
+      { label: 'Approved as recommended',          key: 'approved' },
+      { label: 'Decided differently',              key: 'different' },
+      { label: 'Parked / async (owner to follow up)', key: 'parked' },
+      { label: 'Undecided',                        key: null }
+    ].forEach(sec => {
+      const items = ORDER.filter(id => state[id].decision === sec.key);
+      if (!items.length) return;
+      md += '## ' + sec.label + '\n\n';
+      items.forEach(id => {
+        md += '### ' + id + ' — ' + TITLES[id] + '\n';
+        md += '*Owner: ' + OWNERS[id] + '*\n\n';
+        md += (state[id].note || '(no notes captured)') + '\n\n';
+      });
+    });
+    md += '## Next steps\n\n- Update BRD with decisions captured above (v3)\n- Owners follow up on parked / undecided items async\n- Schedule schema lock once gating OQs resolved\n';
+    return md;
+  }
+
+  function buildJSON(state, ORDER) {
+    const out = {
+      captured_at: new Date().toISOString(),
+      pre_workshop_decisions: [{
+        id: 'OQ-6',
+        title: 'ERIM adoption',
+        decision: 'closed_by_woody',
+        detail: 'Defer schema-level ERIM fields. ERIM content stays in free-text fields.'
+      }],
+      summary: { approved: 0, different: 0, parked: 0, undecided: 0 },
+      decisions: []
+    };
+    ORDER.forEach(id => {
+      const d = state[id].decision;
+      if (d) out.summary[d]++; else out.summary.undecided++;
+      out.decisions.push({
+        id,
+        title: TITLES[id],
+        owner: OWNERS[id],
+        decision: d || 'undecided',
+        notes: state[id].note || null
+      });
+    });
+    return JSON.stringify(out, null, 2);
+  }
+
+  LaunchWorkshop.init({ buildMarkdown, buildJSON });
+})();
+</script>
+</body>
+</html>
