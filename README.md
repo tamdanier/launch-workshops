@@ -10,7 +10,7 @@ Artifacts are public-committed static HTML, hosted via GitHub Pages. Embed any w
 
 | Date | Workshop | Dashboard |
 |---|---|---|
-| 2026-06-15 | Solution Brief BRD — OQ Workshop | [2026-06-15-solution-brief-oq/](2026-06-15-solution-brief-oq/) |
+| 2026-06-03 | Solution Brief BRD — OQ Workshop | [workshops/2026-06-03-solution-brief-oq/](workshops/2026-06-03-solution-brief-oq/) |
 
 ---
 

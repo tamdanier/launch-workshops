@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solution Brief BRD — OQ Workshop</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+:root {
+  --bg-page:    #F5F1EC;
+  --bg-shell:   #FCF8F5;
+  --bg-card:    #FFFFFF;
+  --bg-rec:     #FFEFE3;
+  --text:       #111113;
+  --text-body:  #252424;
+  --text-muted: #77706F;
+  --text-dim:   #908A89;
+  --border:     rgba(17,17,19,0.08);
+  --border-mid: rgba(17,17,19,0.1);
+  --border-inp: rgba(17,17,19,0.15);
+  --border-rec: rgba(17,17,19,0.06);
+  --blue:       #1E5AF2;
+  --blue-hover: #1647D0;
+  --blue-ring:  rgba(30,90,242,0.08);
+  --blue-focus: rgba(30,90,242,0.12);
+  --yellow:     #FFCC2D;
+  --red:        #FF1C52;
+  --red-bg:     #FFEFE3;
+  --red-border: rgba(255,28,82,0.25);
+  --red-ring:   rgba(255,28,82,0.15);
+  --red-light:  #FECED9;
+  --parked-bg:  rgba(119,112,111,0.18);
+  --btn-hover:  #FCF8F5;
+}
+[data-theme="dark"] {
+  --bg-page:    #0E0E10;
+  --bg-shell:   #17171A;
+  --bg-card:    #1F1F23;
+  --bg-rec:     rgba(90,133,245,0.08);
+  --text:       #F0EDE8;
+  --text-body:  #D8D4CE;
+  --text-muted: #908A89;
+  --text-dim:   #5C5755;
+  --border:     rgba(240,237,232,0.07);
+  --border-mid: rgba(240,237,232,0.1);
+  --border-inp: rgba(240,237,232,0.15);
+  --border-rec: rgba(240,237,232,0.06);
+  --blue:       #5A85F5;
+  --blue-hover: #4A70E0;
+  --blue-ring:  rgba(90,133,245,0.12);
+  --blue-focus: rgba(90,133,245,0.15);
+  --yellow:     #FFCC2D;
+  --red:        #FF4D72;
+  --red-bg:     rgba(255,77,114,0.1);
+  --red-border: rgba(255,77,114,0.25);
+  --red-ring:   rgba(255,77,114,0.15);
+  --red-light:  rgba(255,77,114,0.15);
+  --parked-bg:  rgba(240,237,232,0.1);
+  --btn-hover:  rgba(240,237,232,0.05);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 16px 24px 48px;
+  background: var(--bg-page);
+  min-height: 100vh;
+  transition: background 0.2s;
+}
+
+/* Nav bar */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 920px;
+  margin: 0 auto 20px;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: 'Avenir Next LT Pro','Avenir Next','Inter',system-ui,-apple-system,sans-serif;
+  background: var(--bg-shell);
+  border: 0.5px solid var(--border-mid);
+  border-radius: 8px;
+  padding: 7px 13px;
+  transition: all 0.15s;
+  letter-spacing: -0.005em;
+}
+.back-btn:hover { border-color: var(--blue); color: var(--blue); }
+.back-btn i { font-size: 14px; }
+.theme-btn {
+  background: var(--bg-shell);
+  border: 0.5px solid var(--border-mid);
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  letter-spacing: -0.005em;
+}
+.theme-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+/* Shell */
+.launch-shell {
+  background: var(--bg-shell);
+  border-radius: 16px;
+  padding: 32px 28px;
+  border: 0.5px solid var(--border);
+  font-family: 'Avenir Next LT Pro','Avenir Next','Inter',system-ui,-apple-system,sans-serif;
+  color: var(--text);
+  letter-spacing: -0.005em;
+  max-width: 920px;
+  margin: 0 auto;
+  transition: background 0.2s, border-color 0.2s;
+}
+.launch-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--blue);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.launch-h {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+.launch-sub {
+  margin: 0 0 28px;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.launch-rule {
+  border: none;
+  border-top: 0.5px solid var(--border-mid);
+  margin: 0 0 24px;
+}
+
+/* Summary tiles */
+.ls-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.ls-stat {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.ls-stat::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.ls-stat.s-a::before { background: var(--yellow); }
+.ls-stat.s-d::before { background: var(--red); }
+.ls-stat.s-p::before { background: var(--text-muted); }
+.ls-stat-l {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+.ls-stat-v {
+  font-size: 32px;
+  font-weight: 500;
+  margin-top: 8px;
+  color: var(--text);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* Warning banner */
+.warn-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: var(--red-bg);
+  border: 0.5px solid var(--red-border);
+  border-left: 3px solid var(--red);
+  padding: 10px 14px;
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--text);
+}
+.warn-banner.visible { display: flex; }
+.warn-banner i { color: var(--red); font-size: 16px; flex-shrink: 0; }
+.warn-banner b { font-weight: 500; }
+
+/* Track headers */
+.track-h {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 32px 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--border-mid);
+}
+.track-h:first-of-type { margin-top: 4px; }
+.track-num {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--blue);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.track-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+.track-time {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+/* OQ cards */
+.oq {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.oq:hover { border-color: var(--border-mid); }
+.oq.expanded {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-ring);
+}
+.oq::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.15s;
+}
+.oq.s-approved::before { background: var(--yellow); }
+.oq.s-different::before { background: var(--red); }
+.oq.s-parked::before { background: var(--text-muted); }
+.oq.needs-note::after {
+  content: '';
+  position: absolute;
+  right: 12px; top: 12px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 3px var(--red-ring);
+}
+.oq-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.oq-id {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--red-bg);
+  padding: 4px 9px;
+  border-radius: 5px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  min-width: 46px;
+  text-align: center;
+}
+.oq.s-approved .oq-id { background: var(--yellow); color: var(--text); }
+.oq.s-different .oq-id { background: var(--red-light); color: var(--text); }
+.oq.s-parked .oq-id { background: var(--parked-bg); color: var(--text); }
+.oq-title {
+  flex: 1;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.oq-owner {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+.oq-chev {
+  font-size: 16px;
+  color: var(--text-dim);
+  transition: transform 0.2s, color 0.15s;
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+.oq.expanded .oq-chev { transform: rotate(90deg); color: var(--blue); }
+.oq-status-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: none;
+}
+.oq.s-approved .oq-status-badge { display: inline-block; background: var(--yellow); color: var(--text); }
+.oq.s-different .oq-status-badge { display: inline-block; background: var(--red-light); color: var(--text); }
+.oq.s-parked .oq-status-badge { display: inline-block; background: var(--parked-bg); color: var(--text); }
+.oq-body {
+  display: none;
+  padding: 4px 20px 20px 20px;
+  border-top: 0.5px solid var(--border-rec);
+}
+.oq.expanded .oq-body { display: block; }
+.oq-q { font-size: 13.5px; color: var(--text-body); margin: 16px 0 14px; line-height: 1.6; }
+.oq-rec {
+  font-size: 13.5px;
+  background: var(--bg-rec);
+  border-left: 3px solid var(--blue);
+  padding: 13px 15px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 14px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.oq-rec-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+}
+.oq-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.oq-btn {
+  font-size: 12.5px;
+  padding: 8px 15px;
+  border-radius: 7px;
+  border: 0.5px solid var(--border-inp);
+  background: var(--bg-card);
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-body);
+  transition: all 0.15s;
+  font-family: inherit;
+  letter-spacing: -0.005em;
+}
+.oq-btn:hover { border-color: var(--border-mid); background: var(--btn-hover); }
+.oq-btn.active-approved { background: var(--yellow); color: var(--text); border-color: var(--yellow); }
+.oq-btn.active-different { background: var(--red); color: #FFFFFF; border-color: var(--red); }
+.oq-btn.active-parked { background: var(--text-body); color: #FFFFFF; border-color: var(--text-body); }
+.oq-note {
+  width: 100%;
+  font-size: 13px;
+  padding: 11px 13px;
+  border: 0.5px solid var(--border-inp);
+  border-radius: 7px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: inherit;
+  resize: vertical;
+  min-height: 48px;
+  line-height: 1.55;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+  letter-spacing: -0.005em;
+}
+.oq-note:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-focus);
+}
+.oq-note::placeholder { color: var(--text-dim); }
+.note-hint {
+  font-size: 11px;
+  color: var(--red);
+  margin-top: 6px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+.oq.needs-note .note-hint { display: flex; }
+
+/* Actions bar */
+.actions-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 0.5px solid var(--border-mid);
+  flex-wrap: wrap;
+}
+.actions-bar button {
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 7px;
+  border: 0.5px solid var(--border-inp);
+  background: var(--bg-card);
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-body);
+  transition: all 0.15s;
+  font-family: inherit;
+  letter-spacing: -0.005em;
+}
+.actions-bar button:hover { border-color: var(--border-mid); background: var(--btn-hover); }
+.actions-bar button.primary { background: var(--blue); color: #FFFFFF; border-color: var(--blue); }
+.actions-bar button.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); }
+.export-out {
+  margin-top: 16px;
+  font-family: 'SF Mono', Menlo, Monaco, Consolas, monospace;
+  font-size: 11.5px;
+  background: #111113;
+  color: #FCF8F5;
+  padding: 18px 20px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  max-height: 340px;
+  overflow: auto;
+  line-height: 1.6;
+  display: none;
+}
+.export-out.visible { display: block; }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a class="back-btn" href="../../">
+    <i class="ti ti-arrow-left"></i> All workshops
+  </a>
+  <button class="theme-btn" id="theme-toggle">Dark mode</button>
+</div>
+
+<div class="launch-shell">
+  <div class="launch-eyebrow">Launch by NTT DATA</div>
+  <h1 class="launch-h">Solution Brief BRD — open question workshop.</h1>
+  <p class="launch-sub">14 decisions · 45 minutes · ~3 min per OQ.</p>
+  <hr class="launch-rule">
+
+  <div class="ls-summary">
+    <div class="ls-stat s-a"><div class="ls-stat-l">Approved as recommended</div><div class="ls-stat-v" id="ct-approved">0</div></div>
+    <div class="ls-stat s-d"><div class="ls-stat-l">Decided differently</div><div class="ls-stat-v" id="ct-different">0</div></div>
+    <div class="ls-stat s-p"><div class="ls-stat-l">Parked / async</div><div class="ls-stat-v" id="ct-parked">0</div></div>
+  </div>
+
+  <div class="warn-banner" id="warn-banner">
+    <i class="ti ti-alert-circle"></i>
+    <span><b id="warn-count">0</b> <span id="warn-text">decisions need notes captured.</span></span>
+  </div>
+
+  <!-- Track 01 -->
+  <div class="track-h">
+    <span class="track-num">Track 01</span>
+    <span class="track-title">Architecture and schema mechanics.</span>
+    <span class="track-time">~15 min</span>
+  </div>
+
+  <div class="oq" data-id="OQ-15">
+    <div class="oq-row"><span class="oq-id">OQ-15</span><span class="oq-title">Option A vs Option B — data model.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + John + Kavya</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Solution Brief as flat fields on Deal Record (Option A) or separate versioned object (Option B)?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Option A for P0/P1. Promote to B when version history and audit become first-class needs. MCP API surface stable across both.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-1">
+    <div class="oq-row"><span class="oq-id">OQ-1</span><span class="oq-title">DISCO field types supported.</span><span class="oq-status-badge"></span><span class="oq-owner">John Geiger</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Long text, enum, person lookup, URL, structured list / array, structured object — what's expressible?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Fact-finding from John. Answer gates OQ-3 (Win Themes structure).</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-2">
+    <div class="oq-row"><span class="oq-id">OQ-2</span><span class="oq-title">Assumptions field strategy.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Add confirmed + unconfirmed alongside existing assumptions, or restructure?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Additive. Keep existing assumptions; add the two new fields. Backward compatible, lowest risk.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-3">
+    <div class="oq-row"><span class="oq-id">OQ-3</span><span class="oq-title">Win Themes structure.</span><span class="oq-status-badge"></span><span class="oq-owner">John + Woody</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Three discrete fields each with sub-fields, or structured win_themes[] array?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Array if DISCO supports structured arrays (depends on OQ-1). Three fields if not.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-4">
+    <div class="oq-row"><span class="oq-id">OQ-4</span><span class="oq-title">project_summary overlap.</span><span class="oq-status-badge"></span><span class="oq-owner">Kavya + Woody</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">New Problem and Future State fields are additive to existing project_summary — confirm?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Additive. Different depth, different audience, different tab. Both stay.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <!-- Track 02 -->
+  <div class="track-h">
+    <span class="track-num">Track 02</span>
+    <span class="track-title">Workflow, approval, and versioning.</span>
+    <span class="track-time">~15 min</span>
+  </div>
+
+  <div class="oq" data-id="OQ-8">
+    <div class="oq-row"><span class="oq-id">OQ-8</span><span class="oq-title">Where does approval happen?</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">DISCO UI or SoluB skill?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>DISCO UI. The skill signals readiness (In Review); approval is a governance event belonging in the product surface.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-9">
+    <div class="oq-row"><span class="oq-id">OQ-9</span><span class="oq-title">Who can approve a brief?</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + Pursuit Ops</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Pursuit lead, account exec, Solutions VP, designated approver per deal?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Pursuit lead by default. Designated alternate per pursuit. Tier I / Super 8 may require Solutions VP — per-deal config.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-10">
+    <div class="oq-row"><span class="oq-id">OQ-10</span><span class="oq-title">Versioning strategy on update.</span><span class="oq-status-badge"></span><span class="oq-owner">DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Overwrite, increment with snapshot, or branch?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Increment with snapshot. Snapshot SB fields to version table on each update_brief("increment"). Branching deferred to P2+.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-11">
+    <div class="oq-row"><span class="oq-id">OQ-11</span><span class="oq-title">[XX] placeholder handling at transitions.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody + DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Block, warn, or allow at state transitions?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Allow with warning at In Draft → In Review. Block at In Review → Approved (or require audit-logged override).</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-12">
+    <div class="oq-row"><span class="oq-id">OQ-12</span><span class="oq-title">.docx rendering location.</span><span class="oq-status-badge"></span><span class="oq-owner">DISCO Product</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Skill generates, DISCO generates, or separate render service?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Skill generates for P0/P1 (matches current SoluB behavior). DISCO regeneration is P2+ enhancement.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <!-- Track 03 -->
+  <div class="track-h">
+    <span class="track-num">Track 03</span>
+    <span class="track-title">Scope boundaries, deferrals, infra.</span>
+    <span class="track-time">~12 min</span>
+  </div>
+
+  <div class="oq" data-id="OQ-5">
+    <div class="oq-row"><span class="oq-id">OQ-5</span><span class="oq-title">MCP write access timeline.</span><span class="oq-status-badge"></span><span class="oq-owner">John Geiger</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Most P1/P2 fields depend on MCP write access. Timeline?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Fact-finding from John. Answer gates everything in P0(write)/P1.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-7">
+    <div class="oq-row"><span class="oq-id">OQ-7</span><span class="oq-title">Delivery Brief workstream sponsor.</span><span class="oq-status-badge"></span><span class="oq-owner">Woody</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Who initiates and owns the Delivery Brief tab work when it begins? Delivery Lead? D&amp;O?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Sponsorship decision for Woody. Out of scope for this BRD but flag for visibility.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-13">
+    <div class="oq-row"><span class="oq-id">OQ-13</span><span class="oq-title">Search semantics.</span><span class="oq-status-badge"></span><span class="oq-owner">DISCO Product + CIP</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Filtered, full-text, semantic, or combinations?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Filtered for P0/P1. Full-text across SB content for P1. Semantic as P2+ aligned with CIP's broader capabilities.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="oq" data-id="OQ-14">
+    <div class="oq-row"><span class="oq-id">OQ-14</span><span class="oq-title">MCP authentication mechanism.</span><span class="oq-status-badge"></span><span class="oq-owner">Architecture / Security</span><i class="ti ti-chevron-right oq-chev"></i></div>
+    <div class="oq-body">
+      <div class="oq-q">Service account, per-user OAuth, or token issuance?</div>
+      <div class="oq-rec"><span class="oq-rec-label">Recommendation</span>Routes to Architecture / Security. Likely parked from this session; assign owner to drive answer.</div>
+      <div class="oq-actions"></div>
+      <textarea class="oq-note" placeholder="Notes / decision detail"></textarea>
+      <div class="note-hint"><i class="ti ti-info-circle"></i><span>Capture a note for non-Approve decisions.</span></div>
+    </div>
+  </div>
+
+  <div class="actions-bar">
+    <button class="primary" id="btn-export-md">Export markdown</button>
+    <button id="btn-export-json">Export JSON</button>
+    <button id="btn-copy">Copy to clipboard</button>
+    <button id="btn-reset">Reset all</button>
+  </div>
+
+  <div class="export-out" id="export-output"></div>
+</div>
+
+<script>
+(function () {
+  /* Dark mode — synced with homepage via localStorage */
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('theme-toggle');
+  const saved = localStorage.getItem('lw-theme');
+  if (saved) { html.dataset.theme = saved; themeBtn.textContent = saved === 'dark' ? 'Light mode' : 'Dark mode'; }
+  themeBtn.addEventListener('click', () => {
+    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    themeBtn.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+    localStorage.setItem('lw-theme', next);
+  });
+
+  /* Workshop interaction engine */
+  const STATES = [
+    { key: 'approved',  label: 'Approve recommendation', short: 'Approved' },
+    { key: 'different', label: 'Decide differently',      short: 'Decided differently' },
+    { key: 'parked',    label: 'Park / async',            short: 'Parked' }
+  ];
+
+  function needsNote(s) {
+    return (s.decision === 'different' || s.decision === 'parked') && !s.note.trim();
+  }
+  function renderCard(card, id, state) {
+    const s = state[id];
+    card.classList.remove('s-approved', 's-different', 's-parked', 'needs-note');
+    if (s.decision) card.classList.add('s-' + s.decision);
+    if (needsNote(s)) card.classList.add('needs-note');
+    card.querySelectorAll('.oq-btn').forEach(b => {
+      b.classList.remove('active-approved', 'active-different', 'active-parked');
+      if (b.dataset.state === s.decision) b.classList.add('active-' + s.decision);
+    });
+    const badge = card.querySelector('.oq-status-badge');
+    const st = STATES.find(x => x.key === s.decision);
+    badge.textContent = st ? st.short : '';
+  }
+  function renderSummary(state) {
+    const c = { approved: 0, different: 0, parked: 0 };
+    Object.values(state).forEach(s => { if (s.decision) c[s.decision]++; });
+    document.getElementById('ct-approved').textContent  = c.approved;
+    document.getElementById('ct-different').textContent = c.different;
+    document.getElementById('ct-parked').textContent    = c.parked;
+  }
+  function renderWarnBanner(state) {
+    const missing = Object.values(state).filter(needsNote).length;
+    const banner = document.getElementById('warn-banner');
+    document.getElementById('warn-count').textContent = missing;
+    document.getElementById('warn-text').textContent  = missing === 1 ? 'decision needs a note captured.' : 'decisions need notes captured.';
+    banner.classList.toggle('visible', missing > 0);
+  }
+
+  const cards = document.querySelectorAll('.oq');
+  const state = {}, TITLES = {}, OWNERS = {};
+  const ORDER = Array.from(cards).map(c => c.dataset.id);
+
+  cards.forEach(card => {
+    const id = card.dataset.id;
+    state[id] = { decision: null, note: '' };
+    TITLES[id] = card.querySelector('.oq-title').textContent.trim().replace(/\.$/, '');
+    OWNERS[id] = card.querySelector('.oq-owner').textContent.trim();
+
+    card.querySelector('.oq-row').addEventListener('click', e => {
+      if (e.target.closest('.oq-btn, .oq-note')) return;
+      card.classList.toggle('expanded');
+    });
+    const actions = card.querySelector('.oq-actions');
+    STATES.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'oq-btn'; btn.textContent = s.label; btn.dataset.state = s.key;
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        state[id].decision = state[id].decision === s.key ? null : s.key;
+        renderCard(card, id, state); renderSummary(state); renderWarnBanner(state);
+      });
+      actions.appendChild(btn);
+    });
+    card.querySelector('.oq-note').addEventListener('input', e => {
+      state[id].note = e.target.value;
+      renderCard(card, id, state); renderWarnBanner(state);
+    });
+  });
+
+  const exportOut = document.getElementById('export-output');
+  let currentExport = '';
+
+  function buildMarkdown() {
+    const date = new Date().toISOString().slice(0, 10);
+    const c = { approved: 0, different: 0, parked: 0, undecided: 0 };
+    ORDER.forEach(id => { const d = state[id].decision; if (d) c[d]++; else c.undecided++; });
+    let md = '# Solution Brief BRD — OQ Workshop decisions\n\n*Captured ' + date + '*\n\n## Summary\n\n';
+    md += '- Approved as recommended: ' + c.approved + '\n- Decided differently: ' + c.different + '\n- Parked / async: ' + c.parked + '\n- Undecided: ' + c.undecided + '\n\n';
+    md += '*Note: OQ-6 (ERIM adoption) closed pre-workshop by Woody — defer schema-level fields, ERIM content stays in free-text fields for now.*\n\n';
+    [
+      { label: 'Approved as recommended',             key: 'approved' },
+      { label: 'Decided differently',                 key: 'different' },
+      { label: 'Parked / async (owner to follow up)', key: 'parked' },
+      { label: 'Undecided',                           key: null }
+    ].forEach(sec => {
+      const items = ORDER.filter(id => state[id].decision === sec.key);
+      if (!items.length) return;
+      md += '## ' + sec.label + '\n\n';
+      items.forEach(id => {
+        md += '### ' + id + ' — ' + TITLES[id] + '\n*Owner: ' + OWNERS[id] + '*\n\n';
+        md += (state[id].note || '(no notes captured)') + '\n\n';
+      });
+    });
+    md += '## Next steps\n\n- Update BRD with decisions captured above (v3)\n- Owners follow up on parked / undecided items async\n- Schedule schema lock once gating OQs resolved\n';
+    return md;
+  }
+  function buildJSON() {
+    const out = {
+      captured_at: new Date().toISOString(),
+      pre_workshop_decisions: [{ id: 'OQ-6', title: 'ERIM adoption', decision: 'closed_by_woody', detail: 'Defer schema-level ERIM fields. ERIM content stays in free-text fields.' }],
+      summary: { approved: 0, different: 0, parked: 0, undecided: 0 },
+      decisions: []
+    };
+    ORDER.forEach(id => {
+      const d = state[id].decision;
+      if (d) out.summary[d]++; else out.summary.undecided++;
+      out.decisions.push({ id, title: TITLES[id], owner: OWNERS[id], decision: d || 'undecided', notes: state[id].note || null });
+    });
+    return JSON.stringify(out, null, 2);
+  }
+
+  document.getElementById('btn-export-md').addEventListener('click', () => { currentExport = buildMarkdown(); exportOut.textContent = currentExport; exportOut.classList.add('visible'); });
+  document.getElementById('btn-export-json').addEventListener('click', () => { currentExport = buildJSON(); exportOut.textContent = currentExport; exportOut.classList.add('visible'); });
+  document.getElementById('btn-copy').addEventListener('click', () => {
+    if (!currentExport) { currentExport = buildMarkdown(); exportOut.textContent = currentExport; exportOut.classList.add('visible'); }
+    navigator.clipboard.writeText(currentExport).then(() => {
+      const btn = document.getElementById('btn-copy');
+      const orig = btn.textContent; btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = orig; }, 1200);
+    });
+  });
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if (!confirm('Reset all decisions and notes?')) return;
+    cards.forEach(card => {
+      const id = card.dataset.id; state[id] = { decision: null, note: '' };
+      card.querySelector('.oq-note').value = ''; renderCard(card, id, state);
+    });
+    renderSummary(state); renderWarnBanner(state);
+    exportOut.classList.remove('visible'); currentExport = '';
+  });
+})();
+</script>
+</body>
+</html>
