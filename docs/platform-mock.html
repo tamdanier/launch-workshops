@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Launch platform — homepage mock</title>
+<style>
+/* ── MOCK NOTICE ───────────────────────────────────────────── */
+.mock-banner {
+  background: #111113;
+  color: #FCF8F5;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: 'Avenir Next LT Pro','Avenir Next','Inter',system-ui,sans-serif;
+}
+.mock-banner span { color: #FFCC2D; }
+
+/* ── TOKENS ────────────────────────────────────────────────── */
+:root {
+  --bg-page:    #F5F1EC;
+  --bg-shell:   #FCF8F5;
+  --bg-card:    #FFFFFF;
+  --bg-tag:     rgba(17,17,19,0.05);
+  --text:       #111113;
+  --text-muted: #77706F;
+  --text-dim:   #908A89;
+  --border:     rgba(17,17,19,0.08);
+  --border-mid: rgba(17,17,19,0.12);
+  --blue:       #1E5AF2;
+  --yellow:     #FFCC2D;
+  --red:        #FF1C52;
+}
+[data-theme="dark"] {
+  --bg-page:    #0E0E10;
+  --bg-shell:   #17171A;
+  --bg-card:    #1F1F23;
+  --bg-tag:     rgba(240,237,232,0.06);
+  --text:       #F0EDE8;
+  --text-muted: #908A89;
+  --text-dim:   #5C5755;
+  --border:     rgba(240,237,232,0.07);
+  --border-mid: rgba(240,237,232,0.12);
+  --blue:       #5A85F5;
+  --yellow:     #FFCC2D;
+  --red:        #FF4D72;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg-page);
+  font-family: 'Avenir Next LT Pro','Avenir Next','Inter',system-ui,-apple-system,sans-serif;
+  color: var(--text);
+  transition: background 0.2s;
+}
+
+/* ── LAYOUT ────────────────────────────────────────────────── */
+.shell { max-width: 1020px; margin: 0 auto; padding: 36px 24px 80px; }
+
+/* ── TOP BAR ───────────────────────────────────────────────── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 44px;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--blue);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.top-right { display: flex; align-items: center; gap: 10px; }
+.theme-btn, .nav-link {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border-mid);
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  transition: all 0.15s;
+  letter-spacing: -0.005em;
+  display: inline-block;
+}
+.theme-btn:hover, .nav-link:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ── HERO ──────────────────────────────────────────────────── */
+.hero { margin-bottom: 44px; }
+.hero-byline {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  letter-spacing: -0.005em;
+}
+.hero h1 {
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+.hero p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 520px;
+}
+.rule { border: none; border-top: 0.5px solid var(--border-mid); margin: 0 0 28px; }
+
+/* ── STATS ROW ─────────────────────────────────────────────── */
+.stats-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.stat-item { display: flex; flex-direction: column; gap: 3px; }
+.stat-n {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-l {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+.stat-div {
+  width: 0.5px;
+  background: var(--border-mid);
+  align-self: stretch;
+  margin: 0 4px;
+}
+
+/* ── FILTERS ───────────────────────────────────────────────── */
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.filter-row + .filter-row { margin-bottom: 28px; }
+.filter-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  min-width: 52px;
+}
+.f-btn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border-mid);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  letter-spacing: -0.005em;
+}
+.f-btn:hover { border-color: var(--blue); color: var(--blue); }
+.f-btn.active-type { background: var(--text); color: var(--bg-card); border-color: var(--text); }
+.f-btn.active-cat { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* ── SECTION HEADERS ───────────────────────────────────────── */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 36px 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 0.5px solid var(--border-mid);
+}
+.section-header:first-of-type { margin-top: 0; }
+.section-type-badge {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 3px 9px;
+  border-radius: 5px;
+}
+.badge-deck    { background: rgba(30,90,242,0.1); color: var(--blue); }
+.badge-workshop { background: rgba(255,204,45,0.25); color: #7A6200; }
+[data-theme="dark"] .badge-workshop { color: #FFCC2D; }
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+.section-count {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+
+/* ── CARD GRID ─────────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+  gap: 12px;
+}
+
+/* ── BASE CARD ─────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.card-workshop::before { background: var(--yellow); }
+.card-deck::before     { background: var(--blue); }
+.card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(30,90,242,0.08);
+  transform: translateY(-1px);
+}
+
+/* card meta row */
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+.card-date {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+.card-cat-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.cat-internal  { background: rgba(17,17,19,0.07); color: var(--text-muted); }
+.cat-presales  { background: rgba(30,90,242,0.08); color: var(--blue); }
+.cat-client    { background: rgba(255,204,45,0.2); color: #7A6200; }
+[data-theme="dark"] .cat-internal { background: rgba(240,237,232,0.08); }
+[data-theme="dark"] .cat-client   { color: #FFCC2D; }
+
+/* card content */
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.015em;
+  margin: 0 0 7px;
+  line-height: 1.3;
+  padding-right: 20px;
+}
+.card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 16px;
+  flex: 1;
+}
+
+/* card footer */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 5px;
+  background: var(--bg-tag);
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.card-action {
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 7px;
+  border: 0.5px solid var(--border-mid);
+  background: transparent;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+.card-action:hover { border-color: var(--blue); color: var(--blue); }
+.card-action.primary {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+.card-action.primary:hover { opacity: 0.88; }
+
+/* deck-specific: slide count chip */
+.slide-count {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  margin-left: auto;
+  padding-right: 4px;
+}
+
+/* ── EMPTY STATE ───────────────────────────────────────────── */
+.empty { color: var(--text-dim); font-size: 14px; padding: 32px 0; }
+</style>
+</head>
+<body>
+
+<div class="mock-banner">Design mock — post-June-3 platform. <span>Not live.</span></div>
+
+<div class="shell">
+
+  <div class="top-bar">
+    <div class="eyebrow">Launch by NTT DATA</div>
+    <div class="top-right">
+      <a class="nav-link" href="#">Docs</a>
+      <button class="theme-btn" id="theme-toggle">Dark mode</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-byline">Artifacts platform × Tam Danier</div>
+    <h1>Launch.</h1>
+    <p>Decks, dashboards, and workshop tools — built for Launch Solutions Architects, hosted here, embeddable anywhere.</p>
+  </div>
+
+  <hr class="rule">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-item"><span class="stat-n">2</span><span class="stat-l">Decks</span></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><span class="stat-n">1</span><span class="stat-l">Workshop</span></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><span class="stat-n">3</span><span class="stat-l">Total artifacts</span></div>
+  </div>
+
+  <!-- Type filter -->
+  <div class="filter-row">
+    <span class="filter-label">Type</span>
+    <button class="f-btn active-type" data-type="all">All</button>
+    <button class="f-btn" data-type="deck">Decks</button>
+    <button class="f-btn" data-type="workshop">Workshops</button>
+  </div>
+
+  <!-- Category filter -->
+  <div class="filter-row">
+    <span class="filter-label">Category</span>
+    <button class="f-btn active-cat" data-cat="all">All</button>
+    <button class="f-btn" data-cat="pre-sales">Pre-sales</button>
+    <button class="f-btn" data-cat="internal">Internal</button>
+    <button class="f-btn" data-cat="client">Client</button>
+  </div>
+
+  <!-- Decks section -->
+  <div class="section-header" id="decks-section">
+    <span class="section-type-badge badge-deck">Deck</span>
+    <span class="section-title">Presentations.</span>
+    <span class="section-count">2 decks</span>
+  </div>
+
+  <div class="card-grid" id="deck-grid">
+
+    <div class="card card-deck" data-type="deck" data-category="pre-sales">
+      <div class="card-meta">
+        <span class="card-date">2026-05-14</span>
+        <span class="card-cat-badge cat-presales">Pre-sales</span>
+      </div>
+      <div class="card-title">HP Inc — Launch Solutions pitch.</div>
+      <div class="card-desc">Positioning NTT DATA Launch methodology for HP Inc's enterprise transformation. 7 slides + appendix.</div>
+      <div class="card-footer">
+        <div class="card-tags">
+          <span class="card-tag">Account</span>
+          <span class="card-tag">Pitch</span>
+          <span class="card-tag">Technology</span>
+        </div>
+        <div class="card-actions">
+          <a class="card-action" href="#">↓ PDF</a>
+          <a class="card-action primary" href="#">Preview</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-deck" data-type="deck" data-category="internal">
+      <div class="card-meta">
+        <span class="card-date">2026-06-10</span>
+        <span class="card-cat-badge cat-internal">Internal</span>
+      </div>
+      <div class="card-title">FY26 Solutions framework overview.</div>
+      <div class="card-desc">SA team overview of the FY26 solutions motion — positioning, pursuit tiers, and DISCO integration roadmap. 10 slides.</div>
+      <div class="card-footer">
+        <div class="card-tags">
+          <span class="card-tag">Planning</span>
+          <span class="card-tag">Alignment</span>
+        </div>
+        <div class="card-actions">
+          <a class="card-action" href="#">↓ PDF</a>
+          <a class="card-action primary" href="#">Preview</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Workshops section -->
+  <div class="section-header" id="workshops-section">
+    <span class="section-type-badge badge-workshop">Workshop</span>
+    <span class="section-title">Interactive dashboards.</span>
+    <span class="section-count">1 workshop</span>
+  </div>
+
+  <div class="card-grid" id="workshop-grid">
+
+    <a class="card card-workshop" href="../2026-06-03-solution-brief-oq/"
+       data-type="workshop" data-category="internal">
+      <div class="card-meta">
+        <span class="card-date">2026-06-03</span>
+        <span class="card-cat-badge cat-internal">Internal</span>
+      </div>
+      <div class="card-title">Solution Brief BRD — OQ Workshop.</div>
+      <div class="card-desc">14 open questions on the Solution Brief BRD — data model, workflow, versioning, and scope. Outputs BRD v3 and locks the DISCO integration schema.</div>
+      <div class="card-footer">
+        <div class="card-tags">
+          <span class="card-tag">Gateway</span>
+          <span class="card-tag">Schema</span>
+          <span class="card-tag">Decision</span>
+        </div>
+        <div class="card-actions">
+          <a class="card-action primary" href="../2026-06-03-solution-brief-oq/">Open dashboard</a>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+(function () {
+  /* Dark mode */
+  const html = document.documentElement;
+  const btn  = document.getElementById('theme-toggle');
+  const saved = localStorage.getItem('lw-theme');
+  if (saved) { html.dataset.theme = saved; btn.textContent = saved === 'dark' ? 'Light mode' : 'Dark mode'; }
+  btn.addEventListener('click', () => {
+    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    btn.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+    localStorage.setItem('lw-theme', next);
+  });
+
+  /* Filters */
+  const typeBtns = document.querySelectorAll('[data-type]');
+  const catBtns  = document.querySelectorAll('[data-cat]');
+  const cards    = document.querySelectorAll('.card');
+  let activeType = 'all', activeCat = 'all';
+
+  function applyFilters() {
+    cards.forEach(card => {
+      const typeMatch = activeType === 'all' || card.dataset.type === activeType;
+      const catMatch  = activeCat  === 'all' || card.dataset.category === activeCat;
+      card.style.display = typeMatch && catMatch ? '' : 'none';
+    });
+    /* hide section headers if all cards in that section hidden */
+    ['deck', 'workshop'].forEach(type => {
+      const visible = Array.from(cards).filter(c => c.dataset.type === type && c.style.display !== 'none').length;
+      const section = document.getElementById(type + 's-section');
+      const grid    = document.getElementById(type + '-grid');
+      if (section) section.style.display = visible ? '' : 'none';
+      if (grid)    grid.style.display    = visible ? '' : 'none';
+    });
+  }
+
+  typeBtns.forEach(b => {
+    if (!b.dataset.type) return;
+    b.addEventListener('click', () => {
+      typeBtns.forEach(x => x.classList.remove('active-type'));
+      b.classList.add('active-type');
+      activeType = b.dataset.type;
+      applyFilters();
+    });
+  });
+
+  catBtns.forEach(b => {
+    if (!b.dataset.cat) return;
+    b.addEventListener('click', () => {
+      catBtns.forEach(x => x.classList.remove('active-cat'));
+      b.classList.add('active-cat');
+      activeCat = b.dataset.cat;
+      applyFilters();
+    });
+  });
+})();
+</script>
+</body>
+</html>
