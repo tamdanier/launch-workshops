@@ -1,0 +1,56 @@
+/* Launch by NTT DATA — canonical design tokens v1
+   Source of truth: design-system/brand-book.md
+   Generated companion: tokens.json
+
+   This file defines the brand. Other consumers (Slidev theme, signal,
+   workshop dashboards) should import or mirror these values — never
+   redefine hex codes inline. */
+
+:root {
+  /* ── Accents ───────────────────────────────────────────── */
+  --launch-blue:       #1E5AF2;  /* primary CTA, highlights on dark mode */
+  --launch-blue-dim:   #1749CC;  /* hover / pressed */
+  --launch-blue-light: #E8EFFE;  /* tint — backgrounds, fills */
+  --launch-lavender:   #CED4FE;  /* supporting accent */
+  --launch-yellow:     #FFCC2D;  /* highlights on light mode */
+  --launch-yellow-dim: #E6B800;  /* hover / pressed */
+  --launch-beige:      #FFEFE3;  /* soft highlight (= N5) */
+  --launch-red:        #FF1C52;  /* corrective / warning only */
+  --launch-coral:      #FECED9;  /* soft red, supporting */
+
+  /* ── Neutrals ──────────────────────────────────────────── */
+  --n1: #111113;  /* dark bg primary */
+  --n2: #252424;  /* dark bg secondary */
+  --n3: #77706F;  /* muted text  (NOTE: canonical — not #76706F) */
+  --n4: #908A89;  /* lighter muted text */
+  --n5: #FFEFE3;  /* light bg / card (= beige) */
+  --n6: #FCF8F5;  /* light bg primary */
+  --n7: #FFFFFF;  /* white */
+  --border:      #E8E3DF;  /* light hairline */
+  --border-dark: #333130;  /* dark hairline */
+
+  /* ── Typography ────────────────────────────────────────── */
+  /* Print/PPTX uses Avenir Next LT Pro (licensed). Web canonical = Outfit. */
+  --font-web:  'Outfit', 'Avenir Next LT Pro', 'Avenir Next', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'DM Mono', 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+  /* Type scale (web) */
+  --fs-stat:    64px;
+  --fs-hero:    44px;
+  --fs-title:   32px;
+  --fs-section: 24px;
+  --fs-body:    16px;
+  --fs-eyebrow: 13px;
+  --fs-small:   12px;
+  --fs-caption: 10px;
+
+  /* ── Radius ────────────────────────────────────────────── */
+  --radius-sm: 5px;   /* tags, badges */
+  --radius-md: 7px;   /* buttons, inputs */
+  --radius-lg: 12px;  /* cards, tiles */
+  --radius-xl: 16px;  /* shells, panels */
+
+  /* ── Structure ─────────────────────────────────────────── */
+  --border-hairline: 0.5px;
+  --stripe: 3px;  /* left accent stripe: yellow=workshop, blue=deck, red=corrective */
+}
