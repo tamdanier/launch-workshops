@@ -107,16 +107,50 @@ Start narrow, prove it with evidence, then scale.
 
 ---
 
-## What each skill should change.
+## Who owns the format — and who just feeds it.
 
-The skills already do their jobs. The alignment is that they all **read and write this one document in this format**, rather than each emitting a private artifact:
+**Not every skill writes in this format.** The intelligence skills produce intelligence; only the content writer produces external-facing prose. The schema lives in **one** place — the first skill that writes external content, `huge-digital-agency`. Everything upstream feeds the document; everything downstream edits it in place.
 
-- **SIGNAL** — in addition to its JSON/Notion brief, seed `content-[name].md` with the document header + Strategic frame condition.
-- **Solution Design** — write the offering/spine into the Strategic frame and shape the slide arc (which opportunities, in what order).
-- **HUGE Digital Agency** — author the slide blocks (headline + body) in the source-document format. Don't invent layouts — use the eyebrow + `{layout: auto}` and let `launch-pitch` map, or name a layout from the catalog.
-- **HUGE Feedback Team** — critique against the Strategic frame; restructure slide order and argument, not formatting.
-- **The Fact-Checker** — fill every `> source:`; flag unverified claims as `[XX — owner — what's needed]`.
-- **Launch Voice** — polish all rendered text (headlines, body, footers); leave directives alone.
-- **launch-pitch** — consume the finished document; transform per [`deck-authoring-schema.md`](deck-authoring-schema.md); verify the build; push.
+| Skill | Role on the document |
+|---|---|
+| **SIGNAL** | Intelligence. Keeps its own JSON/Notion output. *May* seed the Strategic frame condition — does not write slides. |
+| **Solution Design** | Intelligence. Keeps its spine/scaffold output. *May* seed the Strategic frame offering + suggested slide arc — does not write slides. |
+| **SoluB / Rocky** | Intelligence. Feed the frame and the proof points. No prose. |
+| **HUGE Digital Agency** | **Owns the schema.** First to write external content — births `content-[name].md` in this format: header, Strategic frame, slide blocks, directives. |
+| **HUGE Feedback Team** | Edits in place. Critiques the argument and slide order against the frame. |
+| **The Fact-Checker** | Edits in place. Fills every `> source:`; flags unverified as `[XX — owner — what's needed]`. |
+| **Launch Voice** | Edits in place. Polishes prose only — **guardrail: preserve the slide structure and `>` directives, never restructure.** |
+| **launch-pitch** | Consumes the finished document; transforms per [`deck-authoring-schema.md`](deck-authoring-schema.md); verifies the build; pushes. |
+
+The rule: **structure is born correct at first-write** (huge-digital-agency), so no later pass has to restructure — they only refine. The intelligence skills stay exactly as they are; the most they do is drop facts into the frame.
 
 Naming: the handoff file is `content-[name].md` (the working content document). `launch-pitch` produces `content/[name].md` in the pitch repo (the RAW-block deck source). Two different files — the first feeds the second.
+
+---
+
+## Skill snapshots (paste-in).
+
+Skills are session-scoped, so this doc is canonical and the two writing skills carry derived pointers.
+
+**Into `huge-digital-agency` (Launch pitch mode):**
+```markdown
+<!-- DERIVED FROM: launch-workshops/docs/pitch-workflow-and-content-template.md -->
+## Launch pitch mode
+When the deliverable is a Launch pitch deck, author the content as
+content-[name].md in the pitch content-document format: document header
+(deck/client/audience/goal/status/sensitivity), a Strategic frame
+(condition from SIGNAL, offering from Solution Design, core message,
+proof points), then slide blocks — `### Slide N — [eyebrow] {layout: auto}`,
+`#` headline, body, and `> footer/diagram/image/source/question/note`
+directives. Pick layouts by content shape (or {layout: auto}); never invent
+layouts. Voice: sentence case, periods after headlines, em dashes, no
+exclamations, no filler. Full schema + 18-layout catalog: the canonical doc.
+```
+
+**Into `launch-voice` (guardrail):**
+```markdown
+<!-- Pitch content documents (content-[name].md): polish prose only.
+     Preserve the slide-block structure, frontmatter, and all `>` directives
+     (footer/diagram/image/source/question/note). Do not restructure or
+     reformat — that structure is owned upstream by huge-digital-agency. -->
+```
