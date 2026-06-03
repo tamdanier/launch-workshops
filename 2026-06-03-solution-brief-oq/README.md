@@ -1,6 +1,6 @@
 # Solution Brief BRD — OQ Workshop
 
-**Date:** 2026-06-15
+**Date:** 2026-06-03
 **Facilitator:** Tam Danier
 **Attendees:** Woody Floyd, John Geiger, Kavya Shanmuganathan, Scott Campagna
 **Outcome:** Decisions captured on 14 open questions. BRD v3 produced within 24 hours. Schema locked. DISCO product team can begin scoping.
@@ -14,7 +14,7 @@
 | Interactive decision dashboard | [index.html](index.html) |
 | Facilitator agenda | [facilitator-agenda.md](facilitator-agenda.md) |
 
-**Hosted URL:** `https://tamdanier.github.io/launch-workshops/2026-06-15-solution-brief-oq/`
+**Hosted URL:** `https://tamdanier.github.io/launch-workshops/2026-06-03-solution-brief-oq/`
 
 ---
 
