@@ -48,6 +48,15 @@ http.createServer((req, res) => {
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
+      // SPA fallback: a deck route like /decks/<name>/5 → serve that deck's index.html
+      const m = url.match(/^(\/decks\/[^/]+)\//);
+      if (m && path.extname(url) === '') {
+        const spa = path.join(ROOT, m[1], 'index.html');
+        if (fs.existsSync(spa)) {
+          res.writeHead(200, { ...CORS, 'Content-Type': 'text/html' });
+          return res.end(fs.readFileSync(spa));
+        }
+      }
       res.writeHead(404, CORS);
       return res.end('Not found');
     }
