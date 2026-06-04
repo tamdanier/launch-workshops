@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Launch · Pre-Sales Intelligence Journey, by Phase</title>
+<style>
+  :root{
+    --blue:#1E5AF2; --yellow:#FFCC2D; --lav:#CED4FE; --red:#FF1C52; --coral:#FECED9;
+    --n1:#111113; --n2:#252424; --n3:#76706F; --n4:#908A89; --n5:#FFEFE3; --n6:#FCF8F5; --n7:#FFFFFF;
+    --font:"Avenir Next","Avenir",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--n6);color:var(--n1);-webkit-font-smoothing:antialiased;line-height:1.5}
+  .hero{background:var(--n1);color:var(--n7);padding:76px 40px 64px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle at center,rgba(30,90,242,.35),transparent 65%)}
+  .hero-inner{max-width:1240px;margin:0 auto;position:relative;z-index:1}
+  .eyebrow{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--lav);font-weight:600;margin-bottom:20px}
+  .hero h1{font-size:50px;line-height:1.05;font-weight:700;letter-spacing:-.02em;max-width:900px}
+  .hero h1 .hl{color:var(--yellow)}
+  .hero p{margin-top:20px;max-width:720px;font-size:17px;color:#d8d6d4}
+  .phaserail{display:flex;gap:0;margin-top:34px;border-radius:12px;overflow:hidden;max-width:880px;border:1px solid rgba(255,255,255,.16)}
+  .phaserail .pr{flex:1;padding:13px 16px;font-size:12.5px;font-weight:600;letter-spacing:.02em;text-align:center;
+    color:#cfcdcb;border-right:1px solid rgba(255,255,255,.12)}
+  .phaserail .pr:last-child{border-right:0}
+  .phaserail .pr small{display:block;font-weight:500;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--lav);margin-bottom:3px}
+  .phaserail .pr.a{background:rgba(206,212,254,.10)}
+  .phaserail .pr.b{background:rgba(30,90,242,.22);color:#fff}
+  .phaserail .pr.c{background:rgba(255,204,45,.12)}
+  .wrap{max-width:1240px;margin:0 auto;padding:54px 40px 30px}
+  .phase{margin-bottom:30px;border-radius:22px;padding:30px 30px 26px;position:relative;border:1px solid #ece7e3;background:var(--n7)}
+  .phase.planning{background:linear-gradient(180deg,#fbfaff,#fff);border-color:#e6e3f6}
+  .phase.presales{background:linear-gradient(180deg,#f5f8ff,#fff);border-color:#d9e4ff}
+  .phase.proposal{background:linear-gradient(180deg,#fffdf4,#fff);border-color:#f0e7c4}
+  .phase-head{display:flex;align-items:baseline;gap:14px;margin-bottom:4px;flex-wrap:wrap}
+  .phase-tag{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+  .planning .phase-tag{background:var(--lav);color:#2a2f6b}
+  .presales .phase-tag{background:var(--blue);color:#fff}
+  .proposal .phase-tag{background:var(--yellow);color:#5a4a00}
+  .phase-head h2{font-size:24px;font-weight:700;letter-spacing:-.01em}
+  .phase-sub{font-size:14.5px;color:var(--n3);margin-bottom:22px;max-width:780px;font-weight:500}
+  .cards{display:flex;gap:16px;flex-wrap:wrap;align-items:stretch}
+  .card{flex:1 1 230px;min-width:220px;background:var(--n7);border:1px solid #e9e3de;border-radius:15px;padding:20px 20px 18px;
+    box-shadow:0 6px 20px -16px rgba(0,0,0,.4);display:flex;flex-direction:column;position:relative}
+  .card .order{position:absolute;top:-10px;left:18px;width:24px;height:24px;border-radius:7px;background:var(--n1);color:#fff;
+    font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .card .skill{font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--blue);text-transform:uppercase;margin-top:6px}
+  .card .role{font-size:11.5px;color:var(--n4);font-weight:500;margin-bottom:9px}
+  .card h3{font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px;line-height:1.2}
+  .card p{font-size:13px;color:var(--n3);font-weight:500;margin-bottom:11px}
+  .card .io{margin-top:auto;font-size:11.5px;line-height:1.5}
+  .card .io b{color:var(--n2);font-weight:600;letter-spacing:.02em}
+  .card .io .o{color:#3046b8}
+  .card.hinge{border:2px solid var(--blue);box-shadow:0 10px 26px -14px rgba(30,90,242,.5);flex-basis:100%}
+  .card.hinge .order{background:var(--blue)}
+  .card.hinge .badge{position:absolute;top:-11px;right:18px;background:var(--blue);color:#fff;font-size:10.5px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .hinge-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;margin-top:6px}
+  @media(max-width:720px){.hinge-grid{grid-template-columns:1fr}}
+  .hinge-grid .law{background:#f5f8ff;border:1px solid #d9e4ff;border-radius:11px;padding:13px 15px}
+  .hinge-grid .law h4{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:8px}
+  .modes{display:flex;gap:7px;flex-wrap:wrap}
+  .mode{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:7px;border:1px solid #cdd9f5;background:#fff;color:var(--n2)}
+  .mode.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .mode small{opacity:.8;font-weight:500}
+  .connector{display:flex;flex-direction:column;align-items:center;margin:-12px 0 18px}
+  .connector .arrow{color:var(--blue);font-size:22px;line-height:1}
+  .connector .label{font-size:12px;font-weight:600;color:var(--n3);background:var(--n6);padding:3px 12px;border-radius:999px;
+    border:1px solid #e4ded8;margin-top:-2px}
+  .bridge{display:flex;align-items:center;gap:14px;margin:6px auto 20px;max-width:780px;
+    background:#fff;border:2px dashed var(--blue);border-radius:14px;padding:14px 20px}
+  .bridge .b-ico{width:34px;height:34px;border-radius:9px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:18px;font-weight:700;flex-shrink:0}
+  .bridge .b-txt{font-size:13px;color:var(--n2);font-weight:500}
+  .bridge .b-txt b{color:var(--n1);font-weight:700}
+  .bridge .b-txt .carry{color:var(--blue);font-weight:600}
+  .note{margin-top:18px;background:#fffdf4;border:1px solid #f0e7c4;border-radius:12px;padding:14px 18px;font-size:13px;color:var(--n2);font-weight:500}
+  .note b{font-weight:700}
+  .outcome{background:var(--blue);color:#fff;border-radius:22px;padding:38px 40px;margin:8px 0 10px;
+    display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .outcome .big{font-size:42px;font-weight:700;line-height:1}
+  .outcome h2{font-size:24px;font-weight:700;margin-bottom:6px}
+  .outcome p{color:#e3e9ff;max-width:600px;font-size:15.5px}
+  footer{max-width:1240px;margin:0 auto;padding:26px 40px 64px;color:var(--n4);font-size:12.5px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .brandmark{font-weight:700;color:var(--n2)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Launch by NTT DATA · Solutions Intelligence</div>
+    <h1>From a name on a list to a proposal that's already <span class="hl">grounded</span>.</h1>
+    <p>The same pipeline, read the way a deal actually moves &mdash; by sales phase. Each skill consumes the last one's output; the Workshop Designer is the hinge that turns a point of view into discovery the proposal is built on.</p>
+    <div class="phaserail">
+      <div class="pr a"><small>Phase 1</small>Account Planning</div>
+      <div class="pr b"><small>Phase 2</small>Pre-Sales</div>
+      <div class="pr c"><small>Phase 3</small>Proposal</div>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <section class="phase planning">
+    <div class="phase-head"><span class="phase-tag">Phase 1</span><h2>Account Planning</h2></div>
+    <div class="phase-sub">Who is this account, what condition are they in, and is it worth pursuing? The intelligence that decides where attention goes.</div>
+    <div class="cards">
+      <div class="card">
+        <div class="order">1</div>
+        <div class="skill">Rocky</div><div class="role">Strategic Research</div>
+        <h3>Raw market intelligence</h3>
+        <p>Primary-source research on the company, its people, and the "why now."</p>
+        <div class="io"><b>In</b> &middot; company name, meeting context, known opportunity<br><b class="o">Out</b> &middot; dossier, stakeholder map, matched case studies</div>
+      </div>
+      <div class="card">
+        <div class="order">2</div>
+        <div class="skill">SIGNAL</div><div class="role">Account Positioning &middot; v1.4</div>
+        <h3>The intelligence layer</h3>
+        <p>Classifies the read &mdash; what condition, how urgent, what posture.</p>
+        <div class="io"><b>In</b> &middot; Rocky dossier, archetype library, tier<br><b class="o">Out</b> &middot; classified read &middot; brief + JSON + Notion row</div>
+      </div>
+    </div>
+  </section>
+  <div class="connector"><div class="arrow">&darr;</div><div class="label">A read worth pursuing</div></div>
+  <section class="phase presales">
+    <div class="phase-head"><span class="phase-tag">Phase 2</span><h2>Pre-Sales</h2></div>
+    <div class="phase-sub">Form the point of view, design the offering that answers it, then run the discovery that grounds the whole pursuit in the client's own reality. This is where Launch earns the proposal.</div>
+    <div class="cards">
+      <div class="card">
+        <div class="order">3</div>
+        <div class="skill">Internal Opportunity Brief</div><div class="role">The Stage Gate</div>
+        <h3>A Launch point of view</h3>
+        <p>The seller's go/no-go: is this the pitch we put in front of the BU?</p>
+        <div class="io"><b>In</b> &middot; SIGNAL read + the way-in<br><b class="o">Out</b> &middot; approved conviction brief</div>
+      </div>
+      <div class="card">
+        <div class="order">4</div>
+        <div class="skill">Solution Designer</div><div class="role">Offering Composition</div>
+        <h3>Ingredients into a menu</h3>
+        <p>Composes the 7 Launch solutions into a named method for the opportunity.</p>
+        <div class="io"><b>In</b> &middot; account condition + approved brief<br><b class="o">Out</b> &middot; the "spine" &middot; value thread &middot; scaffolds</div>
+      </div>
+    </div>
+    <div class="cards" style="margin-top:26px">
+      <div class="card hinge">
+        <div class="order">5</div>
+        <div class="badge">The hinge &middot; pre-sales &rarr; proposal</div>
+        <div class="skill">Workshop Designer</div>
+        <div class="role">Discovery Workshop Design Intelligence &middot; v1.1 &middot; DDD Discovery specialist</div>
+        <h3>The discovery that grounds the pursuit</h3>
+        <p>Takes the SIGNAL read, the IOB point of view, and the designed solution into the room &mdash; and runs the Discovery that converts a hypothesis into the client's own words. This is the skill that leads the sales motion from conviction toward a proposal worth writing.</p>
+        <div class="hinge-grid">
+          <div class="law">
+            <h4>The core law &mdash; one session, one job</h4>
+            <div class="modes">
+              <span class="mode on">Learn <small>&middot; discovery</small></span>
+              <span class="mode">Discuss / Ideate <small>&middot; design</small></span>
+              <span class="mode">Decide <small>&middot; the gate</small></span>
+            </div>
+            <p style="font-size:11.5px;color:var(--n3);margin-top:9px;margin-bottom:0;font-weight:500">Never two in one room. A listening session is pure Learn. Questions built by Spotting Good Ideas, gate-tested; Rocky pulled for research; Fact-Checker before anything ships.</p>
+          </div>
+          <div class="law" style="background:#fff;border-color:#e9e3de">
+            <h4>Three surfaces out</h4>
+            <div class="io" style="font-size:12px;line-height:1.7">
+              <b>Facilitation guide</b> &mdash; internal<br>
+              <b>Participant deck</b> &mdash; <span class="o">&rarr; content chain</span><br>
+              <b>Pre-meeting priming note</b> &mdash; internal
+            </div>
+            <p style="font-size:11.5px;color:var(--n3);margin-top:9px;margin-bottom:0;font-weight:500">Then synthesis &mdash; sacred, between session and readout &mdash; produces the use cases, reliance map, and ERIM value the proposal is built from.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="bridge">
+    <div class="b-ico">&rarr;</div>
+    <div class="b-txt"><b>Synthesis bridges to the proposal.</b> What carries forward: <span class="carry">grounded use cases &middot; the reliance map &middot; baseline + ERIM value statements &middot; the disconfirmation finding.</span> The proposal is assembled from evidence, not speculation.</div>
+  </div>
+  <section class="phase proposal">
+    <div class="phase-head"><span class="phase-tag">Phase 3</span><h2>Proposal</h2></div>
+    <div class="phase-sub">No new skill here &mdash; the proposal is assembled, stress-tested, verified, voiced, and built by the existing content chain. Workshop synthesis is its raw material.</div>
+    <div class="cards">
+      <div class="card">
+        <div class="order">6</div>
+        <div class="skill">Launch Agency</div><div class="role">Creative Studio</div>
+        <h3>Write the proposal</h3>
+        <p>The writer &mdash; turns synthesis + solution into client-facing prose and structure.</p>
+        <div class="io"><b>In</b> &middot; workshop synthesis + solution<br><b class="o">Out</b> &middot; content-[name].md draft</div>
+      </div>
+      <div class="card">
+        <div class="order">7</div>
+        <div class="skill">HUGE Feedback Team</div><div class="role">Critique Panel</div>
+        <h3>Stress-test it</h3>
+        <p>Multi-persona senior critique; prioritized, unsoftened action list.</p>
+        <div class="io"><b>In</b> &middot; the draft<br><b class="o">Out</b> &middot; prioritized revisions</div>
+      </div>
+      <div class="card">
+        <div class="order">8</div>
+        <div class="skill">The Fact-Checker</div><div class="role">Verification</div>
+        <h3>Verify every claim</h3>
+        <p>Claim inventory against primary source before anything is delivered.</p>
+        <div class="io"><b>In</b> &middot; revised draft<br><b class="o">Out</b> &middot; annotated doc + audit log</div>
+      </div>
+      <div class="card">
+        <div class="order">9</div>
+        <div class="skill">Launch Voice</div><div class="role">Brand Voice</div>
+        <h3>Make it sound like Launch</h3>
+        <p>Sharp, Purposeful, Credible. Seasoning on verified prose &mdash; no facts change.</p>
+        <div class="io"><b>In</b> &middot; fact-checked prose<br><b class="o">Out</b> &middot; on-voice copy + audit log</div>
+      </div>
+      <div class="card">
+        <div class="order">10</div>
+        <div class="skill">Launch Pitch</div><div class="role">Deck Generator</div>
+        <h3>Build the deliverable</h3>
+        <p>Turns finished content into the Slidev deck the client sees.</p>
+        <div class="io"><b>In</b> &middot; approved, voiced content-md<br><b class="o">Out</b> &middot; the client-ready proposal deck</div>
+      </div>
+    </div>
+    <div class="note"><b>Why no separate proposal skill:</b> a proposal isn't a distinct kind of thinking &mdash; it's an assembly of upstream work, written and made client-ready. These five skills already do that. A sixth would only duplicate them and give the logic a second place to drift.</div>
+  </section>
+  <div class="outcome">
+    <div class="big">&rarr;</div>
+    <div>
+      <h2>A proposal that's grounded before it's written.</h2>
+      <p>Account planning decides where to look. Pre-sales forms the view and tests it in the room. The proposal is what's left when discovery has already done the convincing &mdash; every claim traceable, every move designed from real people.</p>
+    </div>
+  </div>
+</main>
+<footer>
+  <span class="brandmark">Launch by NTT DATA &middot; Pre-Sales Intelligence, by phase</span>
+  <span>Account Planning &rarr; Pre-Sales &rarr; Proposal</span>
+</footer>
+</body>
+</html>

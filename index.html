@@ -114,6 +114,8 @@ body {
 .badge-deck     { background: rgba(30,90,242,0.1); color: var(--blue); }
 .badge-workshop { background: rgba(255,204,45,0.25); color: #7A6200; }
 [data-theme="dark"] .badge-workshop { color: #FFCC2D; }
+.badge-doc      { background: rgba(206,212,254,0.45); color: #2a2f6b; }
+[data-theme="dark"] .badge-doc { background: rgba(206,212,254,0.12); color: #CED4FE; }
 .section-title { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; flex: 1; }
 .section-count { font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; }
 
@@ -131,6 +133,7 @@ body {
 .card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
 .card-workshop::before { background: var(--yellow); }
 .card-deck::before     { background: var(--blue); }
+.card-doc::before      { background: #CED4FE; }
 .card:hover { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(30,90,242,0.08); transform: translateY(-1px); }
 
 .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 11px; }
@@ -184,7 +187,7 @@ body {
     <div class="stat-div"></div>
     <div class="stat-item"><span class="stat-n" id="stat-workshops">1</span><span class="stat-l">Workshop</span></div>
     <div class="stat-div"></div>
-    <div class="stat-item"><span class="stat-n" id="stat-total">3</span><span class="stat-l">Total artifacts</span></div>
+    <div class="stat-item"><span class="stat-n" id="stat-docs">1</span><span class="stat-l">Docs</span></div>
   </div>
 
   <div class="filter-row">
@@ -192,6 +195,7 @@ body {
     <button class="f-btn active-type" data-type="all">All</button>
     <button class="f-btn" data-type="deck">Decks</button>
     <button class="f-btn" data-type="workshop">Workshops</button>
+    <button class="f-btn" data-type="doc">Docs</button>
   </div>
   <div class="filter-row">
     <span class="filter-label">Category</span>
@@ -281,6 +285,36 @@ body {
 
   </div>
 
+  <!-- Docs -->
+  <div class="section-header" id="section-docs">
+    <span class="section-type-badge badge-doc">Doc</span>
+    <span class="section-title">Internal reference.</span>
+    <span class="section-count" id="count-docs">1 doc</span>
+  </div>
+  <div class="card-grid" id="grid-docs">
+
+    <a class="card card-doc" href="docs/launch-journey-map.html" target="_blank"
+       data-type="doc" data-category="internal">
+      <div class="card-meta">
+        <span class="card-date">2026-06-04</span>
+        <span class="card-cat-badge cat-internal">Internal</span>
+      </div>
+      <div class="card-title">Pre-Sales Intelligence Journey, by phase.</div>
+      <div class="card-desc">The full SA pipeline read by sales phase — Account Planning → Pre-Sales → Proposal. Each skill consumes the last one's output; Workshop Designer is the hinge that turns conviction into discovery the proposal is built on.</div>
+      <div class="card-footer">
+        <div class="card-tags">
+          <span class="card-tag">Process</span>
+          <span class="card-tag">Sales Motion</span>
+          <span class="card-tag">Skills</span>
+        </div>
+        <div class="card-actions">
+          <a class="card-action primary" href="docs/launch-journey-map.html" target="_blank">Open</a>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
 </div>
 
 <script>
@@ -304,24 +338,31 @@ body {
   let activeType = 'all', activeCat = 'all';
 
   function applyFilters() {
-    let deckCount = 0, workshopCount = 0;
+    let deckCount = 0, workshopCount = 0, docCount = 0;
     cards.forEach(card => {
       const show = (activeType === 'all' || card.dataset.type === activeType)
                 && (activeCat  === 'all' || card.dataset.category === activeCat);
       card.style.display = show ? '' : 'none';
       if (show && card.dataset.type === 'deck')     deckCount++;
       if (show && card.dataset.type === 'workshop') workshopCount++;
+      if (show && card.dataset.type === 'doc')      docCount++;
     });
     const deckSection     = document.getElementById('section-decks');
     const workshopSection = document.getElementById('section-workshops');
+    const docSection      = document.getElementById('section-docs');
     const deckGrid        = document.getElementById('grid-decks');
     const workshopGrid    = document.getElementById('grid-workshops');
+    const docGrid         = document.getElementById('grid-docs');
     deckSection.style.display     = deckCount     ? '' : 'none';
     deckGrid.style.display        = deckCount     ? '' : 'none';
     workshopSection.style.display = workshopCount ? '' : 'none';
     workshopGrid.style.display    = workshopCount ? '' : 'none';
+    docSection.style.display      = docCount      ? '' : 'none';
+    docGrid.style.display         = docCount      ? '' : 'none';
     document.getElementById('count-decks').textContent     = deckCount     + (deckCount     === 1 ? ' deck'     : ' decks');
     document.getElementById('count-workshops').textContent = workshopCount + (workshopCount === 1 ? ' workshop' : ' workshops');
+    document.getElementById('count-docs').textContent      = docCount      + (docCount      === 1 ? ' doc'      : ' docs');
+    document.getElementById('stat-docs').textContent       = docCount;
   }
 
   typeBtns.forEach(b => {
