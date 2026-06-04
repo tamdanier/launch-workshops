@@ -144,6 +144,20 @@ fm: `eyebrow`, `cta?`, `presenter?`. Slots: `heading` (`#`), `subheading`, `ques
 
 When in doubt between two, pick the simpler one. Never force a framework layout onto prose.
 
+### Type scale (consistent across layouts)
+
+Slides read as one deck because the type is uniform — not per-layout invention.
+
+| Element | Size | Notes |
+|---|---|---|
+| Slide title (h1) | **2rem** | Uniform on every content slide. Cover/closing are the only larger hero titles. |
+| Card / item title | **0.95rem** (dense) · **1.1rem** (airy) | Dense = multi-column (observation-cards, three-things, matrix); airy = low-density (layered-model). |
+| Body — **airy** | **0.9rem** | Little text: layered-model, statement-split, conversation, narrative, roadmap. |
+| Body — **dense** | **0.8rem** | Lots of text / multi-column: observation-cards, three-things, case-study, journey-map, matrix. |
+| Menu items | lightweight (≈0.8 / 0.66rem) | Deliberately small — reassurance, not study material. The exception. |
+
+Two body sizes by density is intentional. Don't shrink below these to cram more in — cut content instead.
+
 ---
 
 ## Part 3 — Diagrams.
