@@ -193,7 +193,7 @@ Rules Claude Code follows when producing `content/[name].md`:
 3. **Use the exact slot names and class markup** from Part 2. A wrong slot name renders empty — verify against the catalog.
 4. **Headline → `#`, sub/eyebrow → the layout's eyebrow/subheading, footer → `footer`/`footerBar`** per layout. Don't put a footer line in body text.
 5. **`> note:` → HTML comment** (`<!-- … -->`) inside the block. Never rendered.
-5b. **Seller signature:** if the document header sets `presenter`, copy `presenter`/`presenterRole`/`presenterRole2` into the frontmatter of **both the cover (RAW 0) and the closing slide**. Slidev `$frontmatter` is per-slide — the cover's values do not propagate, so the closing slide needs its own copy.
+5b. **Seller signature:** if the document header sets `presenter`, copy `presenter`/`presenterRole`/`presenterRole2` into the frontmatter of **both the cover (RAW 0) and the closing slide** — the full signature (name + titles). Slidev `$frontmatter` is per-slide — the cover's values do not propagate, so the closing slide needs its own copy. The seller **name alone** also renders as a persistent footer (bottom-left) on every content slide automatically (theme `global-bottom.vue`, mode-aware), hidden on cover/closing where the full signature already sits. No per-slide action needed for the footer.
 6. **Voice:** sentence case, periods after headlines, em dashes, no exclamation points, no consultant filler. (Launch voice — apply before this stage, enforce here.)
 7. **Placeholders:** unresolved content as `[XX — owner — what's needed]`, never bare TBD.
 8. **Verify the build:** run `convert` then `slidev build` and confirm zero errors before handoff. Confirm new/uncommon layouts render (DOM check or screenshot).
