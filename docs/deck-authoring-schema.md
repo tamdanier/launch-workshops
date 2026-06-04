@@ -22,8 +22,13 @@ title: Accelerating AI-powered growth      # cover headline if not given per-sli
 audience: Boivin · Gawlik · Micolon        # who's in the room
 status: internal-review                    # internal-review | client-ready
 sensitivity: standard                      # standard | sensitive (see images)
+presenter: Tresa Gowland                   # seller signature — renders on cover + closing
+presenterRole: Launch Industry Lead, MFGCI # title line 1 (optional)
+presenterRole2: Executive Director, Sr. Client Partner  # title line 2 (optional)
 ---
 ```
+
+The `presenter` block is the seller's signature. The transformer renders it on **both the cover and the closing slide** (see Part 5). Set it once here; the writer does not hand-place it.
 
 ### Slide block (repeat per slide)
 
@@ -49,12 +54,12 @@ Body — prose, or "- " bullets, or **bold lead.** sentences.
 
 ## Part 2 — Layout catalog.
 
-18 layouts. Choose by what the content *is*, not by variety for its own sake. Each entry: when to use · mode · frontmatter · slots / markup.
+19 layouts. Choose by what the content *is*, not by variety for its own sake. Each entry: when to use · mode · frontmatter · slots / markup.
 
 ### Openers & dividers
 
 **`cover`** · dark · the title slide.
-fm: `client`, `clientLogo?`, `footer?`. Body: `#` headline + one lead line.
+fm: `client`, `clientLogo?`, `footer?`, `presenter?`/`presenterRole?`/`presenterRole2?` (seller signature, foot of cover). Body: `#` headline + one lead line.
 
 **`section-break`** · dark · divider between movements.
 fm: `sectionNum?`. Body: `#` section title.
@@ -82,7 +87,10 @@ fm: `eyebrow`. Default slot: `#` headline + body. `**bold.**` lead-ins, `- ` bul
 fm: `eyebrow`, `footerBar?`. Slots: `heading` (`#`), `setup`, `cells` → 3× `.tt-cell` with `data-num="01"` ( `.tt-cell-bar`, `.tt-cell-title`, `.tt-cell-body`, `.tt-cell-tag` ).
 
 **`statement-split`** · split · a statement beside a supporting list.
-fm: `eyebrow`, `attribution?`, `listHeading?`. Slot `statement` + default list.
+fm: `eyebrow`, `attribution?`, `listHeading?`. Slot `statement` (dark left) + default (light right). Right-pane prose renders dark — readable on the light panel.
+
+**`menu`** · light · one signature offering + the others as context. Use for "it starts with one, there are more."
+fm: `eyebrow`. Slots: `heading`, `setup`, `hero` (`.menu-hero-label`, `.menu-hero-title`, `.menu-hero-body`), `chips` → a `.menu-grid` of `.menu-item` ( `.menu-item-name` + `.menu-item-body` ), with an optional `.menu-grid-label`.
 
 ### Evidence
 
@@ -111,7 +119,7 @@ fm: `eyebrow`, `axisX`, `axisY`. Slots: `heading`, `quadrants` → exactly 4× `
 **`conversation`** · light · open-floor / discovery questions.
 fm: `eyebrow`, `cta?`, `presenter?`. Slots: `heading` (`#`), `subheading`, `questions` → `.cv-q` ( `.cv-q-num`, `.cv-q-text` ).
 
-**`closing`** · dark · the brand close. Default slot: one closing line.
+**`closing`** · dark · the brand close. Default slot: one closing line. fm: `cta?`, `presenter?`/`presenterRole?`/`presenterRole2?` (seller signature, foot of slide).
 
 **`full-bleed`** · image · a full-frame image moment. Default slot: image + optional caption.
 
@@ -123,6 +131,7 @@ fm: `eyebrow`, `cta?`, `presenter?`. Slots: `heading` (`#`), `subheading`, `ques
 | 3 observations about the client's moment | `observation-cards` |
 | Headline + prose + a few points | `narrative` |
 | Exactly 3 pillars / factors | `three-things` |
+| One signature offering + others | `menu` |
 | A proof story with client + metrics | `case-study` |
 | A row of standalone numbers | `stat-grid` |
 | Persona × stage / before→after | `journey-map` |
@@ -184,6 +193,7 @@ Rules Claude Code follows when producing `content/[name].md`:
 3. **Use the exact slot names and class markup** from Part 2. A wrong slot name renders empty — verify against the catalog.
 4. **Headline → `#`, sub/eyebrow → the layout's eyebrow/subheading, footer → `footer`/`footerBar`** per layout. Don't put a footer line in body text.
 5. **`> note:` → HTML comment** (`<!-- … -->`) inside the block. Never rendered.
+5b. **Seller signature:** if the document header sets `presenter`, copy `presenter`/`presenterRole`/`presenterRole2` into the frontmatter of **both the cover (RAW 0) and the closing slide**. Slidev `$frontmatter` is per-slide — the cover's values do not propagate, so the closing slide needs its own copy.
 6. **Voice:** sentence case, periods after headlines, em dashes, no exclamation points, no consultant filler. (Launch voice — apply before this stage, enforce here.)
 7. **Placeholders:** unresolved content as `[XX — owner — what's needed]`, never bare TBD.
 8. **Verify the build:** run `convert` then `slidev build` and confirm zero errors before handoff. Confirm new/uncommon layouts render (DOM check or screenshot).
@@ -201,12 +211,14 @@ The skill is the home for this transform. Because skills are session-scoped, thi
      https://tamdanier.github.io/launch-workshops/docs/deck-authoring-schema.md -->
 ## Deck authoring (derived)
 Transform a source markdown doc into content/[name].md RAW blocks per the
-canonical schema. 18 layouts (openers, framing, body, evidence, frameworks,
+canonical schema. 19 layouts (openers, framing, body, evidence, frameworks,
 closers) — select by content shape, not variety. Diagrams: build-time
 HTML/CSS or SVG per the diagram style guide (blue=path, yellow=one highlight,
 red=corrective). Images: local in decks/[name]/assets/ or public URL;
-sensitive client imagery never in the public repo. Voice: sentence case,
-periods after headlines, em dashes, no exclamations, no filler. Verify the
-slidev build (base = /launch-workshops/decks/[name]/) before handoff.
+sensitive client imagery never in the public repo. Seller signature: if the
+header sets `presenter`, copy presenter/presenterRole/presenterRole2 onto BOTH
+the cover and closing slide frontmatter (per-slide in Slidev). Voice: sentence
+case, periods after headlines, em dashes, no exclamations, no filler. Verify
+the slidev build (base = /launch-workshops/decks/[name]/) before handoff.
 Full catalog + slot APIs: the canonical schema above.
 ```
