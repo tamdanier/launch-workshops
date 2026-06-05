@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XLA by Design — Directional Read · Launch by NTT DATA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1E5AF2;--yellow:#FFCC2D;--lavender:#CED4FE;--red:#FF1C52;--coral:#FECED9;
+    --n1:#111113;--n2:#252424;--n3:#77706F;--n4:#908A89;--n5:#FFEFE3;--n6:#FCF8F5;--n7:#FFFFFF;
+    --green:#1f9d6b;--font:"Outfit",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);background:var(--n1);color:var(--n7);-webkit-font-smoothing:antialiased;line-height:1.44}
+  .slide{min-height:100vh;width:100%;padding:8vh 7vw;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+  .dark{background:var(--n1);color:var(--n7)}
+  .light{background:var(--n7);color:var(--n1)}
+  .beige{background:var(--n5);color:var(--n1)}
+  .eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin-bottom:1.5rem;display:flex;align-items:center;gap:.8rem}
+  .eyebrow::before{content:"";width:28px;height:2px;background:var(--blue);display:inline-block}
+  h1{font-weight:600;line-height:1.02;letter-spacing:-.025em;font-size:clamp(2.4rem,6vw,5rem)}
+  h2{font-weight:600;line-height:1.06;letter-spacing:-.02em;font-size:clamp(1.9rem,4.2vw,3.3rem);margin-bottom:1.3rem}
+  h4{font-weight:600}
+  p{font-weight:300;font-size:clamp(1rem,1.3vw,1.18rem);max-width:62ch}
+  .lede{font-size:clamp(1.1rem,1.7vw,1.4rem);font-weight:400}
+  .hl-blue{color:var(--blue)}.hl-red{color:var(--red)}.hl-yellow{color:var(--yellow)}
+  strong{font-weight:600}
+  .lmark{position:absolute;bottom:5vh;right:7vw;width:26px;height:26px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px}
+  .lmark i{background:var(--n7)}.light .lmark i,.beige .lmark i{background:var(--n1)}
+  .lmark i:nth-child(2){background:transparent}
+  .pagenum{position:absolute;top:5vh;right:7vw;font-size:.72rem;font-weight:500;letter-spacing:.16em;color:var(--n4)}
+  .light .pagenum,.beige .pagenum{color:var(--n3)}
+  ul.b{list-style:none;margin-top:1.2rem;display:grid;gap:.85rem;max-width:64ch}
+  ul.b li{font-weight:300;font-size:clamp(1rem,1.3vw,1.16rem);padding-left:1.7rem;position:relative}
+  ul.b li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;background:var(--blue);border-radius:1px}
+  ul.b li strong{font-weight:600}
+  .cover{background:radial-gradient(130% 90% at 80% 15%,rgba(30,90,242,.22),transparent 55%),var(--n1)}
+  .cover .wordmark{position:absolute;top:7vh;left:7vw}
+  .cover .wordmark svg{height:28px;width:auto}
+  .cover h1{font-size:clamp(2.8rem,7.2vw,6.2rem);max-width:16ch}
+  .cover .sub{font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;color:var(--lavender);margin-top:1.6rem;max-width:40ch}
+  .cover .meta{margin-top:3rem;font-size:.8rem;font-weight:400;color:var(--n4)}
+  .cover .meta b{color:var(--n7);font-weight:500}
+  .cover .tag{position:absolute;bottom:5vh;left:7vw;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--n3);font-weight:500}
+  .stack{display:grid;gap:.6rem;margin-top:1.4rem;max-width:780px}
+  .layer{display:grid;grid-template-columns:140px 1fr auto;gap:1.2rem;align-items:center;padding:1rem 1.3rem;border-radius:6px}
+  .layer .lab{font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+  .layer .desc{font-weight:300;font-size:.96rem}
+  .layer .rag{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;justify-self:end;padding:.25rem .7rem;border-radius:99px}
+  .layer.sla{background:rgba(31,157,107,.12)}.layer.sla .lab{color:var(--green)}.layer.sla .rag{background:rgba(31,157,107,.2);color:var(--green)}
+  .layer.xla{background:var(--n2)}.layer.xla .lab{color:var(--yellow)}.layer.xla .rag{background:rgba(255,204,45,.2);color:var(--yellow)}
+  .layer.out{background:rgba(255,28,82,.12)}.layer.out .lab{color:var(--red)}.layer.out .rag{background:rgba(255,28,82,.2);color:var(--red)}
+  .stack-note{margin-top:1.4rem;font-weight:300;font-size:1.05rem;color:var(--lavender);max-width:62ch}
+  .stack-note b{color:var(--n7);font-weight:600}
+  .statement{background:var(--blue);color:var(--n7)}
+  .statement .eyebrow{color:var(--lavender)}.statement .eyebrow::before{background:var(--lavender)}
+  .statement h1{font-size:clamp(2.2rem,5.4vw,4.4rem);max-width:19ch}
+  .statement .sig{margin-top:2rem;font-size:.95rem;color:var(--lavender);font-weight:300;max-width:56ch}
+  .pov h2{max-width:20ch}
+  .pov .belief{font-size:clamp(1.4rem,2.6vw,2rem);font-weight:300;line-height:1.22;max-width:26ch;margin-top:.3rem}
+  .pov .belief b{font-weight:600;color:var(--yellow)}
+  .pov .chain{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin-top:2rem;font-size:.82rem;font-weight:500;color:var(--n4)}
+  .pov .chain .c{padding:.55rem .9rem;border:1px solid #333;border-radius:5px;color:var(--n7);line-height:1.25}
+  .pov .chain .c small{color:var(--n4);font-weight:400}
+  .pov .chain .c.lead{border-color:var(--yellow);color:var(--yellow);background:rgba(255,204,45,.08)}
+  .pov .chain .ar{color:var(--blue);font-weight:700}
+  /* name slide */
+  .name{background:radial-gradient(120% 100% at 15% 85%,rgba(30,90,242,.2),transparent 55%),var(--n1)}
+  .name .nm-eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--yellow);margin-bottom:1.6rem}
+  .name h1{font-size:clamp(3rem,8vw,7rem);letter-spacing:-.03em}
+  .name .anchor{font-size:clamp(1.3rem,2.6vw,2.1rem);font-weight:300;color:var(--lavender);margin-top:1.8rem;max-width:26ch;line-height:1.25}
+  .name .anchor b{font-weight:600;color:var(--n7)}
+  .name .anchor .y{color:var(--yellow);font-weight:600}
+  /* additive-to-DWS slide */
+  .additive .lead-line{font-size:clamp(1.05rem,1.5vw,1.3rem);font-weight:300;color:var(--n3);max-width:64ch;margin-bottom:1.6rem}
+  .dwsmap{display:grid;grid-template-columns:1fr auto 1.1fr;gap:1.6rem;align-items:center;margin-top:.5rem}
+  @media(max-width:860px){.dwsmap{grid-template-columns:1fr;gap:1.2rem}}
+  .dws-col{display:grid;gap:.7rem}
+  .dws-col .col-h{font-size:.64rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--n3);margin-bottom:.1rem}
+  .pill{padding:.85rem 1.1rem;border-radius:8px;background:var(--n6);border:1px solid #e7ddd0}
+  .pill .pt{font-weight:600;font-size:1rem}
+  .pill .pd{font-size:.8rem;color:var(--n3);margin-top:.15rem}
+  .enable-arrow{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--blue)}
+  .enable-arrow .ea-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);writing-mode:horizontal-tb;text-align:center;max-width:120px;line-height:1.3}
+  .enable-arrow .ea-big{font-size:2rem;font-weight:700}
+  @media(max-width:860px){.enable-arrow .ea-big{transform:rotate(90deg)}}
+  .launch-layer{padding:1.3rem 1.4rem;border-radius:10px;background:var(--n1);color:var(--n7);border:1px solid var(--blue)}
+  .launch-layer .ll-h{font-size:.64rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--yellow);margin-bottom:.6rem}
+  .launch-layer .ll-t{font-weight:600;font-size:1.15rem;line-height:1.2;margin-bottom:.7rem}
+  .launch-layer .ll-d{font-size:.86rem;color:var(--lavender);line-height:1.4}
+  .additive .close-line{margin-top:1.6rem;font-size:clamp(1.1rem,1.9vw,1.5rem);font-weight:300;max-width:60ch}
+  .additive .close-line b{font-weight:600;color:var(--blue)}
+  .flag-row{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin:1.4rem 0 .3rem;font-weight:300}
+  .flag-row .chip{padding:.5rem .9rem;border-radius:5px;font-weight:500;font-size:.95rem}
+  .chip.kill{background:rgba(255,28,82,.1);color:var(--red);text-decoration:line-through;text-decoration-color:rgba(255,28,82,.5)}
+  .chip.win{background:rgba(30,90,242,.1);color:var(--blue)}
+  .flag-row .ar{color:var(--n3);font-weight:600}
+  .span-note{margin-top:1.6rem;padding:1.1rem 1.4rem;background:var(--n6);border-radius:8px;border-left:3px solid var(--yellow);max-width:72ch}
+  .span-note .h{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--n3);margin-bottom:.5rem}
+  .span-note p{font-size:.92rem;color:var(--n3);max-width:none}
+  .span-note b{color:var(--n1)}
+  .cs{display:grid;grid-template-columns:1.55fr 1fr;gap:2.6rem;align-items:start;margin-top:1rem}
+  @media(max-width:860px){.cs{grid-template-columns:1fr;gap:1.6rem}}
+  .cs-step{padding:1rem 0;border-bottom:1px solid #ece4d6;display:grid;grid-template-columns:96px 1fr;gap:1.1rem;align-items:baseline}
+  .cs-step:last-child{border-bottom:none}
+  .cs-step .sl{font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue)}
+  .cs-step .st{font-weight:300;font-size:1rem}.cs-step .st b{font-weight:600}
+  .cs-side{background:var(--n1);color:var(--n7);border-radius:10px;padding:1.8rem}
+  .cs-side .xla{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:.9rem}
+  .cs-flow{display:flex;flex-direction:column;gap:.45rem}
+  .cs-flow .cf{padding:.6rem .85rem;border:1px solid #333;border-radius:5px;font-size:.84rem;line-height:1.25}
+  .cs-flow .cf small{color:var(--n4);font-weight:400;display:block;font-size:.7rem}
+  .cs-flow .cf.lead{border-color:var(--yellow);color:var(--yellow);background:rgba(255,204,45,.08);font-weight:600}
+  .cs-flow .cf.out{border-color:var(--blue);color:var(--n7);background:rgba(30,90,242,.12)}
+  .cs-flow .cf.out2{border-color:#444;color:var(--n7);background:var(--n2)}
+  .cs-flow .cf.out2 b{color:var(--yellow);font-weight:700;font-size:1.05rem}
+  .cs-flow .ar{color:var(--blue);font-weight:700;text-align:center;font-size:.95rem;line-height:.4}
+  .cs-flow .own{display:inline-block;margin-top:.5rem;font-size:.56rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .55rem;border-radius:99px}
+  .cs-flow .own.launch{background:rgba(255,204,45,.18);color:var(--yellow)}
+  .cs-flow .own.dws{background:rgba(206,212,254,.16);color:var(--lavender)}
+  .cs-side .big{font-size:clamp(2.4rem,4.6vw,3.3rem);font-weight:700;margin-top:.6rem;line-height:1;color:var(--n7)}
+  .cs-side .bl{font-size:.78rem;color:var(--n4);margin-top:.45rem}
+  .foot{position:absolute;bottom:5vh;left:7vw;font-size:.64rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--n4)}
+  .light .foot,.beige .foot{color:var(--n3)}
+  .stages{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem}
+  @media(max-width:860px){.stages{grid-template-columns:1fr 1fr}}
+  .stage{padding:1.4rem 1.2rem;background:var(--n6);border-radius:8px;border-top:3px solid var(--blue)}
+  .stage .si{font-size:1.5rem;font-weight:700;color:var(--lavender)}
+  .stage h4{font-size:1.08rem;margin:.4rem 0 .3rem}
+  .stage .lk{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem}
+  .stage p{font-size:.84rem;color:var(--n3);max-width:none}
+  .gate{margin-top:1.4rem;padding:1.1rem 1.5rem;border:2px dashed var(--blue);border-radius:8px;background:rgba(30,90,242,.05)}
+  .gate b{color:var(--blue)}.gate p{max-width:80ch;font-size:.96rem;color:var(--n1)}
+  .rep .twin{display:grid;grid-template-columns:1fr 1fr;gap:2.4rem;margin-top:1.3rem}
+  @media(max-width:860px){.rep .twin{grid-template-columns:1fr;gap:1.3rem}}
+  .rep .card{padding:1.6rem;border-radius:10px}
+  .rep .card.t{background:rgba(255,28,82,.08);border:1px solid rgba(255,28,82,.25)}
+  .rep .card.m{background:rgba(30,90,242,.1);border:1px solid rgba(30,90,242,.35)}
+  .rep .card .h{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.8rem}
+  .rep .card.t .h{color:var(--red)}.rep .card.m .h{color:var(--lavender)}
+  .rep .card p{font-size:1rem;color:var(--n7);max-width:none}
+  .rep .punch{margin-top:1.7rem;font-size:clamp(1.2rem,2.2vw,1.65rem);font-weight:300;max-width:34ch}
+  .rep .punch b{font-weight:600;color:var(--yellow)}
+  .applied{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);border:1px solid var(--blue);border-radius:99px;padding:.28rem .75rem;margin-bottom:1.1rem}
+  .vert{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.2rem}
+  @media(max-width:860px){.vert{grid-template-columns:1fr}}
+  .vcard{border:1px solid #e7ddd0;border-radius:10px;overflow:hidden}
+  .vcard .vh{padding:1rem 1.3rem;background:var(--n1);color:var(--n7)}
+  .vcard .vh .who{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+  .vcard .vh h4{font-size:1.3rem;margin-top:.2rem}
+  .vcard .vb{padding:1rem 1.3rem;background:var(--n6)}
+  .vr{display:grid;grid-template-columns:74px 1fr;gap:.9rem;padding:.45rem 0;border-bottom:1px solid #ece4d6;font-size:.82rem;line-height:1.32}
+  .vr:last-child{border-bottom:none}
+  .vr .k{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n3);align-self:center}
+  .vr .v{font-weight:300}.vr .v.roof{color:var(--blue);font-weight:600}
+  .openchip{display:inline-block;font-size:.64rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);border:1px solid var(--yellow);border-radius:99px;padding:.3rem .8rem;margin-bottom:1.2rem}
+  .staff{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.3rem}
+  @media(max-width:860px){.staff{grid-template-columns:1fr 1fr}}
+  .sphase{padding:1.2rem 1.1rem;background:var(--n2);border-radius:8px;border-top:3px solid var(--yellow)}
+  .sphase .sp-h{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow);margin-bottom:.6rem}
+  .sphase .sp-m{font-size:1rem;font-weight:300;margin-bottom:.5rem}.sphase .sp-m b{font-weight:600;color:var(--n7)}
+  .sphase .sp-d{font-size:.78rem;color:var(--n4);line-height:1.35}
+  .staff-math{margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:1.4rem;align-items:baseline;font-size:1.02rem;font-weight:300;color:var(--lavender)}
+  .staff-math b{color:var(--n7);font-weight:600}
+  .staff-math .sm-punch{font-size:1.15rem}.staff-math .sm-punch b{font-weight:700}
+  .qlist{margin-top:1.3rem;display:grid;gap:.85rem;max-width:74ch}
+  .q{display:grid;grid-template-columns:46px 1fr;gap:1rem;padding:1.05rem 1.4rem;background:var(--n2);border-radius:8px;align-items:baseline}
+  .q .qn{font-size:1.3rem;font-weight:700;color:var(--blue)}
+  .q .qt{font-weight:300;font-size:1.02rem}.q .qt b{font-weight:600;color:var(--yellow)}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin:1.8rem 0}
+  @media(max-width:860px){.pillars{grid-template-columns:1fr}}
+  .pillar{padding:1.2rem 0;border-top:3px solid var(--blue)}
+  .pillar .t{font-weight:600;font-size:1.25rem;margin-bottom:.4rem}
+  .pillar p{font-size:.94rem;color:var(--n3);max-width:none}
+  .ask{font-size:clamp(1.3rem,2.4vw,1.9rem);font-weight:300;color:var(--blue);margin-top:.5rem}
+  .ask b{font-weight:600}
+  .gates-line{font-size:.92rem;color:var(--n3);max-width:74ch}.gates-line b{color:var(--n1)}
+  .prog{position:fixed;top:0;left:0;height:3px;background:var(--blue);width:0;z-index:60;transition:width .1s}
+  .nav{position:fixed;right:1.3vw;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:.55rem;z-index:50}
+  .nav a{width:8px;height:8px;border-radius:50%;background:#999;opacity:.4;transition:all .25s}
+  .nav a.on{background:var(--blue);opacity:1;transform:scale(1.4)}
+  @media(max-width:860px){.nav{display:none}}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<nav class="nav" id="nav"></nav>
+
+<section class="slide dark cover" id="s1">
+  <div class="wordmark">
+    <svg height="28" width="auto" viewBox="0 0 652 225" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Launch by NTT DATA">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M651.301 86.9686V142.538H618.677V92.133C618.677 78.2924 611.657 72.0951 600.714 72.0951C594.932 72.0951 588.738 75.1937 582.957 81.391V142.538H550.333V0H582.957V51.6441C590.803 45.8599 599.269 42.5547 609.592 42.5547C634.37 42.5547 651.301 59.2874 651.301 86.9686ZM425.828 86.9686V142.538H393.205V92.133C393.205 78.2924 386.184 72.0951 375.241 72.0951C369.46 72.0951 363.266 75.1937 357.484 81.391V142.538H324.861V45.2402H357.484V51.6441C365.33 45.8599 373.796 42.5547 384.12 42.5547C409.103 42.5547 425.828 59.2874 425.828 86.9686ZM307.104 142.538V45.2402H274.893V106.18C269.112 112.377 262.918 115.889 256.93 115.889C246.193 115.889 238.966 109.279 238.966 95.4382V45.2402H206.343V100.396C206.343 128.077 223.068 145.223 247.845 145.223C258.169 145.223 266.634 141.711 274.48 135.721V142.538H307.104ZM539.597 102.668H508.832C507.18 111.551 499.54 117.748 489.629 117.748C475.589 117.748 467.33 107.006 467.33 93.7856C467.33 80.5647 475.589 70.0293 489.629 70.0293C499.334 70.0293 506.973 76.2266 508.625 85.1094H539.39C536.913 60.1137 516.265 42.5547 489.423 42.5547C458.864 42.5547 436.152 64.2452 436.152 93.7856C436.152 123.533 458.864 145.223 489.423 145.223C516.471 145.223 537.119 127.664 539.597 102.668ZM69.4489 112.377H34.1414V5.9907H0.279175V142.538H89.4772C79.7728 135.514 72.3396 124.979 69.4489 112.377ZM189.412 45.2402V142.538H156.995V137.373C149.768 142.124 141.096 145.223 130.36 145.223C104.137 145.223 82.044 122.706 82.044 93.7856C82.044 64.6584 104.137 42.5547 130.36 42.5547C141.096 42.5547 149.768 45.4468 156.995 50.198V45.2402H189.412ZM156.995 108.866V78.7055C150.801 71.8885 143.987 70.0293 136.967 70.0293C123.752 70.0293 113.841 80.3581 113.841 93.7856C113.841 107.213 123.752 117.542 136.967 117.542C143.781 117.542 150.594 115.683 156.995 108.866ZM369.796 176.302H374.371V190.364C375.235 189.265 376.293 188.431 377.544 187.862C378.806 187.272 380.274 186.977 381.946 186.977C383.619 186.977 385.103 187.305 386.398 187.96C387.693 188.6 388.776 189.518 389.645 190.715C390.53 191.912 391.202 193.347 391.661 195.019C392.121 196.675 392.35 198.52 392.35 200.553V201.07C392.35 203.005 392.121 204.8 391.661 206.456C391.202 208.096 390.53 209.522 389.645 210.736C388.759 211.949 387.677 212.892 386.398 213.564C385.119 214.237 383.651 214.573 381.995 214.573C380.306 214.573 378.823 214.286 377.544 213.712C376.281 213.122 375.215 212.277 374.346 211.179L374.305 211.126L374.284 211.1C374.26 211.068 374.236 211.037 374.212 211.005L373.977 214.081H369.796V176.302ZM374.371 194.948V206.506C374.471 206.712 374.578 206.917 374.69 207.12C375.297 208.17 376.101 209.031 377.101 209.703C378.117 210.375 379.372 210.711 380.864 210.711C382.094 210.711 383.143 210.465 384.012 209.973C384.898 209.465 385.611 208.768 386.152 207.883C386.71 206.997 387.119 205.973 387.382 204.808C387.644 203.644 387.775 202.398 387.775 201.07V200.553C387.775 199.225 387.652 197.979 387.406 196.815C387.16 195.634 386.767 194.601 386.226 193.716C385.685 192.814 384.971 192.109 384.086 191.601C383.201 191.076 382.11 190.814 380.815 190.814C379.667 190.814 378.667 191.01 377.814 191.404C376.978 191.797 376.265 192.33 375.674 193.003C375.158 193.576 374.724 194.224 374.371 194.948ZM393.876 187.469L403.375 213.794L402.386 216.491C402.025 217.59 401.591 218.451 401.082 219.074C400.591 219.713 399.984 220.164 399.262 220.426C398.541 220.705 397.664 220.845 396.631 220.845C396.516 220.845 396.311 220.828 396.016 220.795C395.81 220.783 395.644 220.771 395.519 220.759C395.491 220.756 395.466 220.754 395.442 220.751L395.401 220.746L395.426 224.436C395.655 224.501 396.049 224.583 396.606 224.682C397.164 224.78 397.623 224.829 397.983 224.829C399.197 224.829 400.238 224.608 401.107 224.165C401.992 223.739 402.747 223.181 403.37 222.493C403.993 221.804 404.501 221.074 404.895 220.304C405.305 219.549 405.633 218.844 405.879 218.188L416.553 187.469H411.683L405.505 207.379L398.844 187.469H393.876ZM459.376 214.081V178.27H454.678V205.964L436.576 178.27H431.829V214.081H436.576V186.46L454.604 214.081H459.376ZM479.275 182.156V214.081H474.601V182.156H463.115V178.27H474.601H479.275H490.785V182.156H479.275ZM508.716 214.081V182.156H520.227V178.27H508.716H504.043H492.557V182.156H504.043V214.081H508.716ZM544.726 214.081H539.782H537.249H535.036V178.27H537.102H539.782H545.169C547.514 178.27 549.653 178.663 551.588 179.45C553.523 180.221 555.187 181.344 556.581 182.82C557.991 184.279 559.074 186.05 559.828 188.133C560.582 190.199 560.959 192.527 560.959 195.118V197.258C560.959 199.848 560.582 202.185 559.828 204.267C559.074 206.333 557.983 208.096 556.557 209.555C555.146 211.015 553.441 212.138 551.441 212.925C549.457 213.696 547.219 214.081 544.726 214.081ZM544.726 210.219H539.782V182.156H545.169C546.94 182.156 548.506 182.443 549.867 183.017C551.244 183.591 552.408 184.435 553.359 185.55C554.31 186.649 555.032 188.001 555.524 189.608C556.016 191.199 556.261 193.019 556.261 195.069V197.258C556.261 199.865 555.827 202.144 554.958 204.095C554.105 206.03 552.826 207.538 551.121 208.621C549.416 209.686 547.284 210.219 544.726 210.219ZM579.874 178.27H580.907L594.607 214.081H589.737L586.326 204.71H571.349L567.945 214.081H563.1L576.75 178.27H577.784H579.874ZM572.761 200.824H584.912L578.83 184.115L572.761 200.824ZM608.43 182.156V214.081H603.757V182.156H592.271V178.27H603.757H608.43H619.941V182.156H608.43ZM635.609 178.27H636.643L650.342 214.081H645.472L642.062 204.71H627.084L623.681 214.081H618.835L632.486 178.27H633.519H635.609ZM628.496 200.824H640.647L634.565 184.114L628.496 200.824Z" fill="white"/>
+    </svg>
+  </div>
+  <div class="pagenum">01 / 16</div>
+  <h1 class="reveal">Machines don't hit numbers. People do.</h1>
+  <div class="sub reveal">XLA by Design — an outcome-based approach to workplace experience, and the offering structure it calls for.</div>
+  <div class="meta reveal">A directional read for Launch's POV on XLA. For internal alignment only.</div>
+  <div class="tag">Working name: "XLA by Design" — open for input</div>
+</section>
+
+<section class="slide light" id="s2">
+  <div class="pagenum">02 / 16</div>
+  <div class="eyebrow reveal">Where we're coming from</div>
+  <h2 class="reveal">The SLA world measures the <span class="hl-blue">work</span>.</h2>
+  <p class="lede reveal">A real floor — honestly measured, keeps the lights on.</p>
+  <ul class="b reveal">
+    <li>Tickets closed on time. Systems reported available. Response within target.</li>
+    <li>The shelf approach packages that floor: <strong>fixed scope, fixed weeks, fixed price.</strong></li>
+    <li>Predictable to buy, predictable to deliver. Nothing wrong with a floor.</li>
+    <li>The shift: the buyer now wants <strong>the ceiling</strong> — and the floor can't reach it.</li>
+  </ul>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark" id="s3">
+  <div class="pagenum">03 / 16</div>
+  <div class="eyebrow reveal">The crack in that world</div>
+  <h2 class="reveal">Green SLAs. <span class="hl-red">Red outcomes.</span></h2>
+  <p class="reveal">Everyone knows this company. Calls answered, trucks rolled, tickets closed — every operational target green. And it's a punchline for customer frustration. The scoreboard says fine; the business says otherwise.</p>
+  <div class="stack reveal">
+    <div class="layer sla"><span class="lab">SLA · activity</span><span class="desc">Calls answered in 30s · issues "resolved" · trucks dispatched</span><span class="rag">All green</span></div>
+    <div class="layer xla"><span class="lab">Experience</span><span class="desc">Cancel-intent calls · "I dread calling" · pressing 0 to escape</span><span class="rag">Unmeasured</span></div>
+    <div class="layer out"><span class="lab">Business outcome</span><span class="desc">Churn to cord-cutting · regulatory complaints · switching to competitors</span><span class="rag">Red</span></div>
+  </div>
+  <p class="stack-note reveal">The SLA layer hits every target while the outcome that pays the bills bleeds. <b>The experience in the middle is the part nobody measured — and it's the part that moves the outcome.</b> The industry defaults to this. NTT DATA included.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide beige" id="s4">
+  <div class="pagenum">04 / 16</div>
+  <div class="eyebrow reveal">The shift</div>
+  <h2 class="reveal">Experience isn't <span class="hl-blue">correlated</span> with the outcome.<br>It's <span class="hl-blue">how the outcome gets achieved.</span></h2>
+  <ul class="b reveal">
+    <li>The familiar read: "experience drives outcomes" — measure it because it moves alongside the result.</li>
+    <li>The real read: <strong>you can't hit the number without designing the experience that produces it.</strong></li>
+    <li>Reduce tickets — <em>how</em>, if you haven't designed away the reason people file them?</li>
+  </ul>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide statement" id="s6">
+  <div class="pagenum">05 / 16</div>
+  <div class="eyebrow reveal">The Launch point of view</div>
+  <h1 class="reveal">An SLA is a promise about how people will behave. You can't keep it without designing for the person.</h1>
+  <div class="sig reveal">Miss the experience, miss the number. Experience isn't a layer on top of the outcome — it's what makes the outcome reachable at all.</div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark pov" id="s7">
+  <div class="pagenum">06 / 16</div>
+  <div class="eyebrow reveal">What we believe — and why we lead with it</div>
+  <h2 class="reveal">SLAs can't be met without designing the experience.</h2>
+  <div class="belief reveal">So we <b>lead with experience</b> — and let it drive everything downstream.</div>
+  <div class="chain reveal">
+    <span class="c lead">designed<br>experience</span><span class="ar">→</span>
+    <span class="c">experience signal<br><small>the metric that moves</small></span><span class="ar">→</span>
+    <span class="c">operational<br>KPI</span><span class="ar">→</span>
+    <span class="c">outcome</span><span class="ar">→</span>
+    <span class="c">the roof</span>
+  </div>
+  <p class="reveal" style="margin-top:1.8rem;color:var(--n4)">Lead anywhere else on that chain and you're measuring the symptom. Lead with the experience and the whole chain becomes reachable.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark name" id="s7b">
+  <div class="pagenum">07 / 16</div>
+  <div class="nm-eyebrow reveal">The offering</div>
+  <h1 class="reveal">XLA by Design</h1>
+  <div class="anchor reveal">The experience isn't <b>surveyed</b>. It's <span class="y">designed</span> — to the metric that moves the outcome.</div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide light additive" id="s7c">
+  <div class="pagenum">08 / 16</div>
+  <div class="eyebrow reveal">How this fits with DWS — we enhance, we don't compete</div>
+  <h2 class="reveal">DWS names the destination. We're <span class="hl-blue">how you get there.</span></h2>
+  <p class="lead-line reveal">The NTT DATA DWS point of view already maps SLAs → XLAs → outcomes, with persona journeys and a full traceability chain. That blueprint is right. XLA by Design is the <strong>execution discipline</strong> that makes it real on a specific client — the metric found in real behavior, the conversion proven in dollars. We're not a competing framework; we're the muscle behind theirs.</p>
+  <div class="dwsmap reveal">
+    <div class="dws-col">
+      <div class="col-h">DWS experience pillars — the framework</div>
+      <div class="pill"><div class="pt">People experiences</div><div class="pd">Care teams, staff, leaders — engaged and supported.</div></div>
+      <div class="pill"><div class="pt">Operational experiences</div><div class="pd">Secure, connected, reliable operations.</div></div>
+      <div class="pill"><div class="pt">Technology experiences</div><div class="pd">Modern tools, automation, care coordination.</div></div>
+    </div>
+    <div class="enable-arrow">
+      <div class="ea-label">SLAs → XLAs<br>the arrow Launch supplies</div>
+      <div class="ea-big">→</div>
+    </div>
+    <div class="launch-layer">
+      <div class="ll-h">XLA by Design — the enablement layer</div>
+      <div class="ll-t">We design the experience that turns each pillar into a measurable, met XLA.</div>
+      <div class="ll-d">For every pillar, we find the metric that moves, wire it to the outcome, and carry the conversion to the roof. DWS runs the service and reports the SLA. We make the SLA reachable — and the XLA real. Their framework asserts SLAs → XLAs; we're the part that does the arrow.</div>
+    </div>
+  </div>
+  <p class="close-line reveal">We don't replace a single thing in their model. <b>We make the experience layer it promises actually deliverable.</b> The persona journeys Alexis built are exactly the input this method runs on — XLA by Design makes that work load-bearing, not decorative.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide light" id="s8">
+  <div class="pagenum">09 / 16</div>
+  <div class="eyebrow reveal">We are enablement — Launch owns the experience layer</div>
+  <h2 class="reveal">We don't run the SLA. We design the experience that <span class="hl-blue">makes it movable.</span></h2>
+  <div class="cs reveal">
+    <div class="cs-steps">
+      <div class="cs-step"><span class="sl">The goal</span><span class="st">Cut the cost of Medicare calls — reach <b>&gt;60% authentication</b>, more self-serve, fewer transfers.</span></div>
+      <div class="cs-step"><span class="sl">The problem</span><span class="st">Couldn't get there. <b>37% authentication, 82% transferred to an agent.</b> The IVR contained almost nothing.</span></div>
+      <div class="cs-step"><span class="sl">The diagnosis</span><span class="st">Members were <b>pressing 0 to escape the IVR</b> — a behavioral tell (qualitative). The funnel data then <b>proved containment was the lever and sized it</b> (quantitative). Tell + data, converging on one number.</span></div>
+      <div class="cs-step"><span class="sl">The metric</span><span class="st">Containment rate — converted into a contractable XLA.</span></div>
+    </div>
+    <div class="cs-side">
+      <div class="xla">The XLA we wrote — and who owns what</div>
+      <div class="cs-flow">
+        <div class="cf lead">Self-serve task completed without agent intervention <small>the designed experience → metric that moves</small><span class="own launch">Launch owns this layer</span></div>
+        <div class="ar">↓</div>
+        <div class="cf">Containment rate ↑ <small>operational KPI</small><span class="own dws">DWS owns the SLA / KPI</span></div>
+        <div class="ar">↓</div>
+        <div class="cf out2">275k calls saved &nbsp;·&nbsp; <b>$2.92M</b> <small>two outcomes — volume and cost, from a 10% containment lift</small></div>
+        <div class="ar">↓</div>
+        <div class="cf out">CMS membership &amp; access obligations <small>the roof — the regulatory entitlement the program is measured and paid against</small></div>
+      </div>
+      <div class="bl">Launch designs the experience that makes the KPI movable. DWS runs and reports the KPI. The experience layer is what turns their SLA into a met one.</div>
+    </div>
+  </div>
+  <p class="reveal" style="margin-top:1.6rem;font-size:1.05rem;font-weight:300;color:var(--n1);max-width:74ch"><strong>Finding the metric that moves is the differentiation.</strong> Not the personas — those are table stakes. The art is the craft of finding the one behavioral number that, when it moves, makes the outcome reachable — analyze from how people behave <em>and</em> proven in the data. That's qualitative and quantitative, and it can't be copied off a slide.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide light" id="s9">
+  <div class="pagenum">10 / 16</div>
+  <div class="eyebrow reveal">The methodology</div>
+  <h2 class="reveal">Four stages. Each one builds a link in the chain.</h2>
+  <div class="stages reveal">
+    <div class="stage"><div class="si">1</div><h4>Persona Discovery</h4><div class="lk">builds: designed experience</div><p>Ground the real person — shadow the work, analyze the data already there. Find the tell and the number it moves.</p></div>
+    <div class="stage"><div class="si">2</div><h4>Experience Design</h4><div class="lk">finds: signal + metric</div><p>Design the future state. Identify the metric that moves; locate where the value is.</p></div>
+    <div class="stage"><div class="si">3</div><h4>Delivery &amp; Measurement</h4><div class="lk">proves: signal → outcome</div><p>Instrument the behavioral signal; carry the conversion arithmetic to the roof.</p></div>
+    <div class="stage"><div class="si">4</div><h4>Continuous Innovation</h4><div class="lk">keeps: the chain live</div><p>Re-validate as the client and the roof change. Where the multi-year relationship lives.</p></div>
+  </div>
+  <div class="gate reveal"><p><b>Before stage 1 — a diagnostic, not delivery.</b> Known vertical (we already have the roof and the chain) or a new one (we build it first)? That read sets the scope — which is exactly why it can't be pre-priced as a package.</p></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark rep" id="s10">
+  <div class="pagenum">11 / 16</div>
+  <div class="eyebrow reveal">The objection we need to answer</div>
+  <h2 class="reveal">Repeatable — without being a template.</h2>
+  <p class="reveal" style="color:var(--n4)">This is repeatable because it establishes a methodology for designing an XLA experience — not a fixed engagement to resell.</p>
+  <div class="twin reveal">
+    <div class="card t"><div class="h">What does NOT repeat</div><p>The engagement itself. We never stamp the same scope, the same weeks, the same deliverables on two clients. That's the template trap — and it's what caps the money.</p></div>
+    <div class="card m"><div class="h">What DOES repeat</div><p>The <strong>method for designing the XLA experience.</strong> The diagnostic, the four stages, the way we find the metric that moves. It runs every time — and produces a different, right-sized engagement each time.</p></div>
+  </div>
+  <div class="punch reveal">The method is the asset. <b>The diagnostic is the product. The engagement is its output.</b></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide light" id="s11">
+  <div class="pagenum">12 / 16</div>
+  <span class="applied reveal">Applied — how the method reads your live deals</span>
+  <h2 class="reveal">Same spine. <span class="hl-blue">Different roof.</span></h2>
+  <p class="reveal">The IVR was the proof it works. Here's the method applied to the deals in this room — the roof changes, the chain re-derives to reach it.</p>
+  <div class="vert reveal">
+    <div class="vcard">
+      <div class="vh"><div class="who">Healthcare · Keena</div><h4>Value-Based Care</h4></div>
+      <div class="vb">
+        <div class="vr"><span class="k">Problem</span><span class="v">Clinicians lose time-to-care to EHR friction — and that friction surfaces as readmissions and missed quality gaps the hospital is penalized for.</span></div>
+        <div class="vr"><span class="k">Value</span><span class="v">We make the experience measurable as <em>behavior</em> wired to the penalty — defending real Medicare dollars, not just surveying sentiment. <strong style="color:var(--blue)">e.g. 48-hr post-discharge follow-up completion — the behavioral count that predicts the readmission HRRP penalizes.</strong></span></div>
+        <div class="vr"><span class="k">Signal</span><span class="v">After-hours EHR minutes · care-gap closure</span></div>
+        <div class="vr"><span class="k">Roof</span><span class="v roof">HRRP (≤3% of Medicare inpatient pay) · MIPS band · CAHPS</span></div>
+      </div>
+    </div>
+    <div class="vcard">
+      <div class="vh"><div class="who">Utilities · Nathan · Con Edison ($90M RFP)</div><h4>Grid Reliability</h4></div>
+      <div class="vb">
+        <div class="vr"><span class="k">Problem</span><span class="v">Field & control-room crews lose time to tooling friction — and under performance-based rates, service & reliability misses become negative revenue adjustments off the authorized return.</span></div>
+        <div class="vr"><span class="k">Value</span><span class="v">We design the experience that moves the reliability behavior the rate plan measures — turning a compliance exposure into defensible performance. <strong style="color:var(--blue)">e.g. field-work re-roll rate — the behavioral count that moves the reliability metric the rate plan pays on.</strong></span></div>
+        <div class="vr"><span class="k">Signal</span><span class="v">Workarounds / re-logins per shift <em>(hypothesis — discovery confirms)</em></span></div>
+        <div class="vr"><span class="k">Roof</span><span class="v roof">Performance-based rates — negative revenue adjustments for service/reliability misses</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="reveal" style="margin-top:1.2rem;font-size:.92rem;color:var(--n3)">Healthcare is grounded — the roof is real CMS penalty exposure, and the chain matches the DWS POV. Utilities is the live one: the roof is confirmed in Con Ed's rate filings; the behavioral signal is the hypothesis discovery would confirm. <strong style="color:var(--blue)">Nathan — want to run the metric-that-moves discovery on Con Ed? Let's find the number that wins the RFP.</strong></p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark" id="s12">
+  <div class="pagenum">13 / 16</div>
+  <span class="openchip reveal">Illustrative — the unit math</span>
+  <h2 class="reveal">How do you size an <span class="hl-yellow">XLA by Design</span> engagement?</h2>
+  <p class="reveal" style="color:var(--n4)">We size it from the persona as the unit — not from a calendar. Here's the shape of the math; plug in the real numbers per pursuit. The point is what it reveals about the floor.</p>
+  <div class="staff reveal">
+    <div class="sphase">
+      <div class="sp-h">1 · Discovery</div>
+      <div class="sp-m">10 personas × 5 subjects = <b>50 interviews</b></div>
+      <div class="sp-d">At a 1:3 ratio (prep · talk · synthesize) ≈ <b>150 hrs</b> — before walk-the-mile, shadowing, and the data analysis where the metric is found. Researchers + analysts.</div>
+    </div>
+    <div class="sphase">
+      <div class="sp-h">2 · Experience Design</div>
+      <div class="sp-m">≈ <b>2 weeks per workflow</b></div>
+      <div class="sp-d">The designer from each persona carries continuity in from Phase 1. Scales with the number of workflows redesigned.</div>
+    </div>
+    <div class="sphase">
+      <div class="sp-h">3 · Delivery &amp; Measurement</div>
+      <div class="sp-m">Engineering + dashboard</div>
+      <div class="sp-d">Instrument the behavioral signal, build the measurement. Engineering enters here.</div>
+    </div>
+    <div class="sphase">
+      <div class="sp-h">4 · Continuous</div>
+      <div class="sp-m">Standing analyst cadence</div>
+      <div class="sp-d">Monitoring keeps the chain live — the multi-year line.</div>
+    </div>
+  </div>
+  <div class="staff-math reveal">
+    <span>At a <b>$200/hr</b> blended rate, discovery interviews alone (150 hrs) ≈ <b>$30K</b> — one slice of one phase.</span>
+    <span class="sm-punch">The floor lands well north of a pre-priced package — and <b class="hl-yellow">every persona you add scales it.</b></span>
+  </div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide light" id="s12c">
+  <div class="pagenum">14 / 16</div>
+  <div class="eyebrow reveal">So — to be clear about what you're buying</div>
+  <h2 class="reveal">This isn't a template. <span class="hl-blue">That's the point.</span></h2>
+  <p class="reveal">Now that you've seen the method and the math, here's why it's priced to the outcome, not the calendar — and why that's the strength, not the catch.</p>
+  <ul class="b reveal">
+    <li>Pre-sized engagements present as menu items. Packages may read as commodity — savvy buyers discount them. Premiums are paid on outcomes.</li>
+    <li>The pursuit team is tasked with <strong>designing the outcome — and the engagement that meets it.</strong></li>
+    <li>That could be a <strong>$300K</strong> engagement. It could be a <strong>$3M</strong> one. The outcome decides, not a calendar.</li>
+  </ul>
+  <div class="span-note reveal">
+    <div class="h">Why pre-sizing would leave money on the table</div>
+    <p>A $20M offering sold at $300K a pop needs <b>66 engagements</b> — at 8 weeks each, that's <b>530+ weeks ≈ a decade</b>, or only ~$2M a year. Pre-sizing caps the program. The math doesn't math.</p>
+  </div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark" id="s12b">
+  <div class="pagenum">15 / 16</div>
+  <span class="openchip reveal">Open — let's decide together</span>
+  <h2 class="reveal">The questions the unit-math doesn't answer yet.</h2>
+  <p class="reveal" style="color:var(--n4)">The math gives us a floor. We need an operating model.</p>
+  <div class="qlist reveal">
+    <div class="q"><span class="qn">1</span><span class="qt"><b>Who sizes it?</b> The practice / pursuit lead owns effort and duration against the outcome — what does that authority look like?</span></div>
+    <div class="q"><span class="qn">2</span><span class="qt"><b>What seniority where?</b> Discovery and the metric-that-moves work need real analytical skill set up front — is the blended rate the right model, or do phases carry different rates?</span></div>
+    <div class="q"><span class="qn">3</span><span class="qt"><b>How do we resource "leave no stone unturned"</b> without it going open-ended? Where's the discipline that keeps it staged, not endless?</span></div>
+  </div>
+  <p class="reveal" style="margin-top:1.3rem;font-size:.95rem;color:var(--lavender)"><strong style="color:var(--yellow)">The current pursuits - Keena and Nathan is where this gets real.</strong> The cleanest way to answer these is to pilot the operating model on a live account. Pursuit team will figure out the staffing there.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide beige" id="s13">
+  <div class="pagenum">16 / 16</div>
+  <div class="eyebrow reveal">Why this leads to bigger, better deals</div>
+  <h2 class="reveal">Outcome-priced. Multi-year. We own the loop.</h2>
+  <div class="pillars reveal">
+    <div class="pillar"><div class="t">Uncapped</div><p>Priced to the outcome, not the calendar — the deal scales with the value.</p></div>
+    <div class="pillar"><div class="t">Sticky</div><p>Stage 4 keeps the chain live. The relationship renews because the measurement never stops.</p></div>
+    <div class="pillar"><div class="t">Defensible</div><p>The metric that moves is ours — the thing a competitor can't template.</p></div>
+  </div>
+  <div class="ask reveal">So — is this the right read? <b>That's the signal I'm after.</b></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<script>
+  const prog=document.getElementById('prog');
+  addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%5*60)+'ms';io.observe(el)});
+  const slides=[...document.querySelectorAll('.slide')],nav=document.getElementById('nav');
+  slides.forEach((s,i)=>{if(i===0)return;const f=document.createElement('div');f.className='foot';f.textContent='Internal · Tam Danier';s.appendChild(f)});
+  slides.forEach((s,i)=>{const a=document.createElement('a');a.href='#'+s.id;a.title='Slide '+(i+1);nav.appendChild(a)});
+  const dots=[...nav.children];
+  const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const i=slides.indexOf(e.target);dots.forEach(d=>d.classList.remove('on'));dots[i]&&dots[i].classList.add('on')}}),{threshold:.5});
+  slides.forEach(s=>so.observe(s));
+  addEventListener('keydown',e=>{
+    const cur=slides.findIndex(s=>{const r=s.getBoundingClientRect();return r.top>=-5&&r.top<innerHeight*.5});
+    if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();(slides[cur+1]||slides[cur])?.scrollIntoView({behavior:'smooth'})}
+    if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();(slides[cur-1]||slides[0])?.scrollIntoView({behavior:'smooth'})}
+  });
+</script>
+</body>
+</html>
