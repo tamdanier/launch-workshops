@@ -1,11 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <!-- Background chip -->
   <rect width="32" height="32" rx="6" fill="#111113"/>
-  <!-- L-mark: top-left square -->
-  <rect x="5" y="5" width="9" height="9" rx="1.5" fill="#FFCC2D"/>
-  <!-- L-mark: bottom-left square -->
-  <rect x="5" y="18" width="9" height="9" rx="1.5" fill="#FFCC2D"/>
-  <!-- L-mark: bottom-right square -->
-  <rect x="18" y="18" width="9" height="9" rx="1.5" fill="#FFCC2D"/>
-  <!-- top-right: void / negative space — the argument -->
+  <!-- Launch L-mark — scaled from 216×216 to 24×24 inside 4px padding -->
+  <g transform="translate(4,4) scale(0.1111)">
+    <path fill="#FFCC2D" d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/>
+    <path fill="#FFCC2D" d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/>
+  </g>
 </svg>
