@@ -141,6 +141,13 @@
     border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
     opacity:.55;transition:opacity .2s,color .2s}
   .print-btn:hover{opacity:1;color:var(--n7)}
+  .fs-btn{position:fixed;top:4.4vh;right:calc(7vw + 130px);font-size:.6rem;font-weight:600;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
+    border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
+    opacity:.55;transition:opacity .2s,color .2s}
+  .fs-btn:hover{opacity:1;color:var(--n7)}
+  /* In fullscreen, drop chrome that breaks the immersion */
+  :fullscreen .nav,:fullscreen .prog,:fullscreen .print-btn,:fullscreen .fs-btn{display:none !important}
   /* ── PDF export ───────────────────────────────────────────────────── */
   @media print{
     @page{size:1440px 810px;margin:0}
@@ -202,6 +209,7 @@
 <body>
 <div class="prog" id="prog"></div>
 <nav class="nav" id="nav"></nav>
+<button class="fs-btn" id="fsBtn" title="Present (F)">⛶ PRESENT</button>
 <button class="print-btn" id="pdfBtn" title="Download as PDF">↓ PDF</button>
 
 <section class="slide dark cover" id="c1">
@@ -449,7 +457,15 @@
   slides.forEach(s=>so.observe(s));
   addEventListener('keydown',e=>{const cur=slides.findIndex(s=>{const r=s.getBoundingClientRect();return r.top>=-5&&r.top<innerHeight*.5});
     if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();(slides[cur+1]||slides[cur])?.scrollIntoView({behavior:'smooth'})}
-    if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();(slides[cur-1]||slides[0])?.scrollIntoView({behavior:'smooth'})}});
+    if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();(slides[cur-1]||slides[0])?.scrollIntoView({behavior:'smooth'})}
+    if(e.key==='f'||e.key==='F'){e.preventDefault();toggleFullscreen()}});
+
+  /* ── presentation mode (fullscreen) ───────────────────────────────── */
+  function toggleFullscreen(){
+    if(document.fullscreenElement){document.exitFullscreen()}
+    else{document.documentElement.requestFullscreen().catch(err=>console.warn('Fullscreen blocked:',err.message))}
+  }
+  document.getElementById('fsBtn').addEventListener('click',toggleFullscreen);
 
   /* ── PDF export via html2canvas + jsPDF ────────────────────────────── */
   document.getElementById('pdfBtn').addEventListener('click', async () => {
