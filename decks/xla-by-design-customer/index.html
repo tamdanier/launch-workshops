@@ -142,10 +142,11 @@
   /* ── PDF export ───────────────────────────────────────────────────── */
   @media print{
     @page{size:1440px 810px;margin:0}
-    html,body{width:1440px}
-    .slide{height:810px !important;min-height:unset !important;overflow:hidden !important;
-      page-break-after:always;break-after:page;page-break-inside:avoid;
-      justify-content:flex-start !important}
+    html,body{width:1440px;margin:0;padding:0}
+    .slide{display:block !important;width:1440px !important;
+      height:810px !important;min-height:unset !important;
+      overflow:hidden !important;padding:56px 100px !important;
+      page-break-after:always;break-after:page}
     .nav,.prog,.print-btn{display:none !important}
     .reveal{opacity:1 !important;transform:none !important;transition:none !important}
   }
