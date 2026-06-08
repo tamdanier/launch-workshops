@@ -64,3 +64,21 @@ Absolutely-positioned chrome at `left:7vw` (footer) and `right:7vw` (L-mark) col
 **Why those values:** `.55rem` keeps the footer on one line at 375px (267px wide, well under the `calc(100% - 14vw - 36px)` max). 16×16 L-mark matches the ~13px footer text height with 3px breathing room. Tested on iPhone SE width (375px); 40px clearance between footer text and L-mark.
 
 Also keep the existing `.foot { max-width: calc(100% - 14vw - 36px) }` as a safety net — without it, longer footer text overflows into the L-mark even at the smaller font size.
+
+## Share URLs (masked iframe wrapper)
+
+Each deck that gets shared externally gets a **short, masked URL** at the repo root, separate from its real `/decks/<long-name>/` path. The address bar stays on the short URL through the entire session (true URL masking, achievable on a static host only via iframe).
+
+**Pattern** (working reference: [xladesignxlaunch/index.html](xladesignxlaunch/index.html) → [decks/xla-by-design-customer/](decks/xla-by-design-customer/)):
+
+1. Create `<slug>/index.html` at the repo root containing a full-viewport iframe pointing to `/decks/<real-name>/`. Always include `allow="fullscreen; clipboard-write"` and `allowfullscreen` so PRESENT mode and SHARE button work inside the iframe.
+2. Add `<meta name="robots" content="noindex">` to the bare deck's `<head>` so search engines surface only the masked URL.
+3. Add a `⇪ SHARE` button to the deck that copies the masked URL (`https://tamdanierlaunch-artifacts.xyz/<slug>/`) via `navigator.clipboard.writeText` with `document.execCommand('copy')` fallback for older browsers. Show a brief toast on success.
+4. The wrapper page gets proper Open Graph tags (`og:title`, `og:description`, `og:url`) so Slack/email link previews look right.
+
+**Slug rule:** the masked slug is the seller-facing URL; choose something short and memorable, not a description (`xladesignxlaunch`, not `xla-by-design-digital-workplace-services-deck`). The descriptive name stays on the real folder for repo navigation.
+
+**Known trade-offs (accepted):**
+- Deep links don't update the address bar — fine for presentations.
+- Anyone who inspects the iframe source can find the bare URL. True hiding from determined inspection requires server-side rewrites (Cloudflare/Vercel) — not available on the current stack.
+- The masked URL doesn't carry slide-anchor (`#c7`) navigation in the address bar.

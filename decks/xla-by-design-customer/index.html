@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XLA by Design · Digital Workplace Services · Launch by NTT DATA</title>
+<meta name="robots" content="noindex">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,8 +147,19 @@
     border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
     opacity:.55;transition:opacity .2s,color .2s}
   .fs-btn:hover{opacity:1;color:var(--n7)}
+  .sh-btn{position:fixed;top:4.4vh;right:calc(7vw + 215px);font-size:.6rem;font-weight:600;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
+    border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
+    opacity:.55;transition:opacity .2s,color .2s}
+  .sh-btn:hover{opacity:1;color:var(--n7)}
+  .toast{position:fixed;bottom:5vh;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--n1);color:var(--n7);font-family:var(--font);font-size:.78rem;
+    font-weight:500;letter-spacing:.04em;padding:.7rem 1.1rem;border-radius:6px;
+    border:1px solid #2c2b2b;z-index:60;opacity:0;pointer-events:none;
+    transition:opacity .25s,transform .25s}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   /* In fullscreen, drop chrome that breaks the immersion */
-  :fullscreen .nav,:fullscreen .prog,:fullscreen .print-btn,:fullscreen .fs-btn{display:none !important}
+  :fullscreen .nav,:fullscreen .prog,:fullscreen .print-btn,:fullscreen .fs-btn,:fullscreen .sh-btn{display:none !important}
   /* ── PDF export ───────────────────────────────────────────────────── */
   @media print{
     @page{size:1440px 810px;margin:0}
@@ -209,8 +221,10 @@
 <body>
 <div class="prog" id="prog"></div>
 <nav class="nav" id="nav"></nav>
+<button class="sh-btn" id="shBtn" title="Copy share link">⇪ SHARE</button>
 <button class="fs-btn" id="fsBtn" title="Present (F)">⛶ PRESENT</button>
 <button class="print-btn" id="pdfBtn" title="Download as PDF">↓ PDF</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <section class="slide dark cover" id="c1">
   <div class="wordmark">
@@ -466,6 +480,22 @@
     else{document.documentElement.requestFullscreen().catch(err=>console.warn('Fullscreen blocked:',err.message))}
   }
   document.getElementById('fsBtn').addEventListener('click',toggleFullscreen);
+
+  /* ── share (copy masked share URL) ────────────────────────────────── */
+  const SHARE_URL='https://tamdanierlaunch-artifacts.xyz/xladesignxlaunch/';
+  const toast=document.getElementById('toast');
+  function showToast(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(showToast._t);showToast._t=setTimeout(()=>toast.classList.remove('on'),2000)}
+  document.getElementById('shBtn').addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(SHARE_URL);showToast('Link copied — '+SHARE_URL.replace(/^https?:\/\//,''))}
+    catch(e){
+      // Fallback for older browsers / non-secure contexts
+      const ta=document.createElement('textarea');ta.value=SHARE_URL;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');showToast('Link copied — '+SHARE_URL.replace(/^https?:\/\//,''))}
+      catch(e2){showToast('Copy failed — '+SHARE_URL)}
+      finally{document.body.removeChild(ta)}
+    }
+  });
 
   /* ── PDF export via html2canvas + jsPDF ────────────────────────────── */
   document.getElementById('pdfBtn').addEventListener('click', async () => {
