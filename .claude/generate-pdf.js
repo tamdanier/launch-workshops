@@ -75,7 +75,7 @@ async function exportDeck(deckId) {
 
   try {
     const page = await browser.newPage();
-    await page.setViewport({ width: W, height: H });
+    await page.setViewport({ width: W, height: H, deviceScaleFactor: 1 });
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 30_000 });
     await page.waitForFunction(() => document.fonts.ready);
 
@@ -89,6 +89,36 @@ async function exportDeck(deckId) {
       document.querySelectorAll('.print-btn').forEach(el => el.style.display = 'none');
       document.documentElement.style.scrollBehavior = 'auto';
     });
+
+    // Screenshot-per-slide approach: bypasses Puppeteer's px→pt page-size
+    // rounding (810px = 607.5pt is fractional, causing cumulative drift when
+    // using the CSS print pipeline).
+    const slideHandles = await page.$$('.slide');
+    const jpegs = [];
+
+    for (const handle of slideHandles) {
+      const box = await handle.boundingBox();
+      await page.evaluate(y => window.scrollTo(0, y), box.y);
+      // Two rAF passes: scroll settles, then paint completes
+      await page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))));
+      jpegs.push((await page.screenshot({ type: 'jpeg', quality: 92 })).toString('base64'));
+    }
+
+    // Assemble screenshots into a multi-page PDF via a minimal image-HTML doc
+    const body = jpegs.map(b64 =>
+      `<div><img src="data:image/jpeg;base64,${b64}"></div>`
+    ).join('');
+
+    await page.setContent(
+      `<!doctype html><html><head><meta charset="utf-8"><style>` +
+      `*{margin:0;padding:0;box-sizing:border-box}` +
+      `@page{size:${W}px ${H}px;margin:0}` +
+      `html,body{width:${W}px}` +
+      `div{width:${W}px;height:${H}px;overflow:hidden;page-break-after:always;break-after:page}` +
+      `img{width:${W}px;height:${H}px;display:block}` +
+      `</style></head><body>${body}</body></html>`,
+      { waitUntil: 'domcontentloaded' }
+    );
 
     await page.pdf({
       path:            outPath,
