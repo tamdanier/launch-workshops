@@ -16,10 +16,31 @@
 </style>
 </head>
 <body>
-<iframe
+<iframe id="deck"
   src="/decks/xla-by-design-customer/"
   title="XLA by Design"
   allow="fullscreen; clipboard-write"
   allowfullscreen></iframe>
+<script>
+  // Keep keyboard focus on the deck so arrow keys / F / PageUp etc. reach
+  // its handlers. Without this, focus sits on the parent and key events
+  // never enter the iframe.
+  const ifr = document.getElementById('deck');
+  function focusDeck(){ try{ ifr.contentWindow.focus(); }catch(e){} }
+  ifr.addEventListener('load', focusDeck);
+  window.addEventListener('focus', focusDeck);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) focusDeck(); });
+  // Belt-and-suspenders: if a key arrives at the parent, forward it to
+  // the iframe by re-dispatching as a KeyboardEvent.
+  const FORWARD = new Set(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','PageUp','PageDown','Home','End','f','F',' ']);
+  window.addEventListener('keydown', e => {
+    if (!FORWARD.has(e.key)) return;
+    try {
+      const ev = new ifr.contentWindow.KeyboardEvent('keydown', { key: e.key, code: e.code, bubbles: true, cancelable: true });
+      ifr.contentWindow.document.dispatchEvent(ev);
+      e.preventDefault();
+    } catch(err) {}
+  });
+</script>
 </body>
 </html>
