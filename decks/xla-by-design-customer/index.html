@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
   :root{
     --blue:#1E5AF2;--yellow:#FFCC2D;--lavender:#CED4FE;--red:#FF1C52;--coral:#FECED9;
@@ -200,7 +202,7 @@
 <body>
 <div class="prog" id="prog"></div>
 <nav class="nav" id="nav"></nav>
-<button class="print-btn" onclick="window.print()" title="Save as PDF">↓ PDF</button>
+<button class="print-btn" id="pdfBtn" title="Download as PDF">↓ PDF</button>
 
 <section class="slide dark cover" id="c1">
   <div class="wordmark">
@@ -448,6 +450,44 @@
   addEventListener('keydown',e=>{const cur=slides.findIndex(s=>{const r=s.getBoundingClientRect();return r.top>=-5&&r.top<innerHeight*.5});
     if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();(slides[cur+1]||slides[cur])?.scrollIntoView({behavior:'smooth'})}
     if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();(slides[cur-1]||slides[0])?.scrollIntoView({behavior:'smooth'})}});
+
+  /* ── PDF export via html2canvas + jsPDF ────────────────────────────── */
+  document.getElementById('pdfBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('pdfBtn');
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.style.opacity = '1';
+    try {
+      await document.fonts.ready;
+      // Reveal everything so animations don't blank a slide
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+
+      const allSlides = [...document.querySelectorAll('.slide')];
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1440, 810], hotfixes: ['px_scaling'] });
+
+      for (let i = 0; i < allSlides.length; i++) {
+        btn.textContent = `Generating ${i + 1}/${allSlides.length}…`;
+        const canvas = await html2canvas(allSlides[i], {
+          width: 1440, height: 810,
+          windowWidth: 1440, windowHeight: 810,
+          scale: 2, useCORS: true, backgroundColor: null, logging: false,
+        });
+        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+        if (i > 0) pdf.addPage([1440, 810], 'landscape');
+        pdf.addImage(imgData, 'JPEG', 0, 0, 1440, 810);
+      }
+
+      pdf.save('XLA-by-Design-Launch-by-NTT-DATA.pdf');
+    } catch (err) {
+      console.error(err);
+      alert('PDF generation failed: ' + err.message);
+    } finally {
+      btn.textContent = original;
+      btn.disabled = false;
+      btn.style.opacity = '';
+    }
+  });
 </script>
 </body>
 </html>
