@@ -107,7 +107,7 @@
   .cs-flow .cf.out2 b{color:var(--yellow);font-weight:700;font-size:1.05rem}
   .cs-flow .ar{color:var(--blue);font-weight:700;text-align:center;font-size:.95rem;line-height:.4}
   .cs-side .bl{font-size:.78rem;color:var(--n4);margin-top:.45rem}
-  .foot{position:absolute;bottom:5vh;left:7vw;font-size:.64rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--n4)}
+  .foot{position:absolute;bottom:5vh;left:7vw;font-size:.64rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--n4);max-width:calc(100% - 14vw - 36px)}
   .light .foot,.beige .foot{color:var(--n3)}
   .stages{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem}
   @media(max-width:860px){.stages{grid-template-columns:1fr 1fr}}
@@ -143,7 +143,8 @@
     @page{size:1440px 810px;margin:0}
     html,body{width:1440px}
     .slide{height:810px !important;min-height:unset !important;overflow:hidden !important;
-      page-break-after:always;break-after:page}
+      page-break-after:always;break-after:page;page-break-inside:avoid;
+      justify-content:flex-start !important}
     .nav,.prog,.print-btn{display:none !important}
     .reveal{opacity:1 !important;transform:none !important;transition:none !important}
   }
