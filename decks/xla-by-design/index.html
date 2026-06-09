@@ -858,13 +858,13 @@
 <script>
   const prog=document.getElementById('prog');
   addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';});
-  // slide entrance observer
-  const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('si')}),{threshold:0,rootMargin:'0px 0px -8% 0px'});
-  slides.forEach(s=>sio.observe(s));
-  slides[0]&&slides[0].classList.add('si'); // cover always visible
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%5*60)+'ms';io.observe(el)});
   const slides=[...document.querySelectorAll('.slide')],nav=document.getElementById('nav');
+  // slide entrance observer — must be after slides is declared
+  const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('si')}),{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  slides.forEach(s=>sio.observe(s));
+  slides[0]&&slides[0].classList.add('si'); // cover always visible
   slides.forEach((s,i)=>{if(i===0)return;const f=document.createElement('div');f.className='foot';f.textContent='Internal · Tam Danier';s.appendChild(f)});
   slides.forEach((s,i)=>{const a=document.createElement('a');a.href='#'+s.id;a.title='Slide '+(i+1);nav.appendChild(a)});
   const dots=[...nav.children];
