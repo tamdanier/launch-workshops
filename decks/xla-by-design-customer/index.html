@@ -610,7 +610,7 @@
   addEventListener('keydown',e=>{if(e.key==='f'||e.key==='F'){e.preventDefault();toggleFullscreen()}});
 
   /* ── share (copy masked share URL) ────────────────────────────────── */
-  const SHARE_URL='https://tamdanierlaunch-artifacts.xyz/xladesignxlaunch/';
+  const SHARE_URL='https://launch-deck-gate.tam-danier.workers.dev/xladesignxlaunch/';
   const toast=document.getElementById('toast');
   function showToast(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(showToast._t);showToast._t=setTimeout(()=>toast.classList.remove('on'),2000)}
   document.getElementById('shBtn').addEventListener('click',async()=>{
