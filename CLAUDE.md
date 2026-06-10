@@ -65,6 +65,29 @@ Absolutely-positioned chrome at `left:7vw` (footer) and `right:7vw` (L-mark) col
 
 Also keep the existing `.foot { max-width: calc(100% - 14vw - 36px) }` as a safety net — without it, longer footer text overflows into the L-mark even at the smaller font size.
 
+## SHARE and PRESENT buttons (mandatory chrome)
+
+Every deck, doc, and workshop on this platform must include **⇪ SHARE** and **⛶ PRESENT** buttons. PDF-only nav is not a complete implementation.
+
+**Button positions** (right-to-left: PDF → PRESENT → SHARE):
+- `.print-btn` — `right: calc(7vw + 58px)`
+- `.fs-btn` (PRESENT) — `right: calc(7vw + 130px)`
+- `.sh-btn` (SHARE) — `right: calc(7vw + 215px)`
+
+**PRESENT** — calls `document.documentElement.requestFullscreen()`. Hide all nav chrome in `:fullscreen` via `display:none !important`. The `f` key is the keyboard shortcut — wire it via `addEventListener('keydown', ...)`.
+
+**SHARE** — copies the SHARE_URL via `navigator.clipboard.writeText` with `document.execCommand('copy')` fallback. Use the masked slug URL if one exists; fall back to the direct deck URL. Show a toast confirmation.
+
+**Fullscreen rule:** always include:
+```css
+:fullscreen .nav, :fullscreen .prog,
+:fullscreen .print-btn, :fullscreen .fs-btn, :fullscreen .sh-btn { display: none !important; }
+```
+
+**For Slidev/compiled decks** (hpi, servicenow): the compiled bundle cannot be edited. Create an iframe wrapper at `<slug>/index.html` at the repo root with SHARE + PRESENT buttons overlaid at `z-index:100`. The wrapper page fullscreens itself (containing the iframe). See `hpi/index.html` and `servicenow/index.html` as working references.
+
+---
+
 ## Share URLs (masked iframe wrapper)
 
 Each deck that gets shared externally gets a **short, masked URL** at the repo root, separate from its real `/decks/<long-name>/` path. The address bar stays on the short URL through the entire session (true URL masking, achievable on a static host only via iframe).
