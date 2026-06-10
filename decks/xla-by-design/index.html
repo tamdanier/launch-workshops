@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XLA by Design · Directional Read · Launch by NTT DATA</title>
-<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -166,16 +165,24 @@
   .role p{font-size:.86rem;color:var(--n3);font-weight:300;line-height:1.4;max-width:none}
   .role .owns{margin-top:.6rem;font-size:.8rem;color:var(--n1);font-weight:300}
   .role .owns b{font-weight:600}
-  .roles-with-sidebar{display:grid;grid-template-columns:1fr 300px;gap:1.4rem;align-items:start;margin-top:1.1rem}
-  .roles-left-col{display:flex;flex-direction:column;gap:.65rem}
-  .roles-left-col .roles{margin-top:0}
-  .roles-sidebar{display:flex;flex-direction:column;gap:1rem}
-  .roles-loop{padding:1rem 1.4rem;border-left:3px solid var(--blue);background:rgba(30,90,242,.06);font-size:.9rem;font-weight:300;color:var(--n1)}
+  .roles-loop{margin-top:1.3rem;padding:1rem 1.4rem;border-left:3px solid var(--blue);background:rgba(30,90,242,.06);max-width:82ch;font-size:1rem;font-weight:300;color:var(--n1)}
   .roles-loop b{font-weight:600;color:var(--blue)}
-  .scale-note{font-size:.82rem;color:var(--n3);font-weight:300}
-  #s12s .scale-note{padding:.8rem 1rem;border:1px solid #e8e4e0;border-radius:7px;background:var(--n6)}
-  .lmark{position:absolute;bottom:5vh;right:7vw;width:26px;height:26px;color:var(--n7)}
-  .light .lmark,.beige .lmark{color:var(--n1)}
+  .scale-note{margin-top:1rem;font-size:.84rem;color:var(--n3);font-weight:300}
+
+  /* RFP validation slide */
+  .rfp .lead-line{font-size:clamp(1.05rem,1.5vw,1.3rem);font-weight:300;color:var(--n3);max-width:80ch;margin-bottom:1.3rem}
+  .rfp .lead-line b{color:var(--n1);font-weight:600}
+  .rfp-quotes{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.4rem}
+  @media(max-width:900px){.rfp-quotes{grid-template-columns:1fr}}
+  .rfpq{padding:1.1rem 1.3rem;border-radius:9px;background:var(--n2);border-left:3px solid var(--blue)}
+  .rfpq .q{display:block;font-size:.92rem;font-weight:300;color:var(--n7);line-height:1.4;font-style:italic}
+  .rfpq .src{margin-top:.6rem;font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--lavender)}
+  .rfp .punch{margin-top:1.5rem;font-size:clamp(1.2rem,2vw,1.55rem);font-weight:300;line-height:1.28;max-width:52ch}
+  .rfp .punch b{font-weight:600;color:var(--yellow)}
+  .rfp .norm{margin-top:1rem;font-size:.92rem;color:var(--n4);font-weight:300;max-width:80ch}
+  .lmark{position:absolute;bottom:5vh;right:7vw;width:26px;height:26px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px}
+  .lmark i{background:var(--n7)}.light .lmark i,.beige .lmark i{background:var(--n1)}
+  .lmark i:nth-child(2){background:transparent}
   .pagenum{position:absolute;top:5vh;right:7vw;font-size:.72rem;font-weight:500;letter-spacing:.16em;color:var(--n4)}
   .light .pagenum,.beige .pagenum{color:var(--n3)}
   ul.b{list-style:none;margin-top:1.2rem;display:grid;gap:.85rem;max-width:64ch}
@@ -183,8 +190,8 @@
   ul.b li::before{content:"";position:absolute;left:0;top:.62em;width:9px;height:9px;background:var(--blue);border-radius:1px}
   ul.b li strong{font-weight:600}
   .cover{background:radial-gradient(130% 90% at 80% 15%,rgba(30,90,242,.22),transparent 55%),var(--n1)}
-  .cover .wordmark{position:absolute;top:7vh;left:7vw}
-  .cover .wordmark svg{height:28px;width:auto}
+  .cover .wordmark{position:absolute;top:7vh;left:7vw;font-weight:600;font-size:1rem}
+  .cover .wordmark span{color:var(--n4);font-weight:400}
   .cover h1{font-size:clamp(2.8rem,7.2vw,6.2rem);max-width:16ch}
   .cover .sub{font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;color:var(--lavender);margin-top:1.6rem;max-width:40ch}
   .cover .meta{margin-top:3rem;font-size:.8rem;font-weight:400;color:var(--n4)}
@@ -212,18 +219,6 @@
   .pov .chain .c small{color:var(--n4);font-weight:400}
   .pov .chain .c.lead{border-color:var(--yellow);color:var(--yellow);background:rgba(255,204,45,.08)}
   .pov .chain .ar{color:var(--blue);font-weight:700}
-
-  /* closing brand mark — s13 */
-  .close-brand{position:absolute;bottom:3.5rem;left:50%;transform:translateX(-50%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:.45rem}
-  .close-brand .cb-name{font-size:1.05rem;font-weight:700;color:var(--n1);letter-spacing:.01em}
-  .close-brand .cb-name span{color:var(--blue)}
-  .close-brand .cb-tag{font-size:.72rem;font-weight:400;color:var(--n3);letter-spacing:.04em;text-transform:lowercase}
-  /* chain on light/beige slides */
-  .shift-chain{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin-top:1.6rem;font-size:.82rem;font-weight:500;color:var(--n3)}
-  .shift-chain .c{padding:.55rem .9rem;border:1px solid #C8C4C3;border-radius:5px;color:var(--n2);line-height:1.25;text-align:center}
-  .shift-chain .c small{color:var(--n3);font-weight:400}
-  .shift-chain .c.lead{border-color:var(--blue);color:var(--blue);background:rgba(30,90,242,.05)}
-  .shift-chain .ar{color:var(--blue);font-weight:700;font-size:1rem}
   /* name slide */
   .name{background:radial-gradient(120% 100% at 15% 85%,rgba(30,90,242,.2),transparent 55%),var(--n1)}
   .name .nm-eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--yellow);margin-bottom:1.6rem}
@@ -265,7 +260,6 @@
   .cs-step:last-child{border-bottom:none}
   .cs-step .sl{font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue)}
   .cs-step .st{font-weight:300;font-size:1rem}.cs-step .st b{font-weight:600}
-  .cs-right{display:flex;flex-direction:column;gap:1.1rem}
   .cs-side{background:var(--n1);color:var(--n7);border-radius:10px;padding:1.8rem}
   .cs-side .xla{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:.9rem}
   .cs-flow{display:flex;flex-direction:column;gap:.45rem}
@@ -341,46 +335,8 @@
   .nav a{width:8px;height:8px;border-radius:50%;background:#999;opacity:.4;transition:all .25s}
   .nav a.on{background:var(--blue);opacity:1;transform:scale(1.4)}
   @media(max-width:860px){.nav{display:none}}
-
-  /* ── slide entrance ──────────────────────────────────────────────────── */
-  .slide{opacity:0;transform:translateY(28px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
-  .slide.si{opacity:1;transform:none}
   .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
   .reveal.in{opacity:1;transform:none}
-  /* ── nav chrome: PDF / PRESENT / SHARE ───────────────────────────── */
-  .print-btn{position:fixed;top:4.4vh;right:calc(7vw + 58px);font-size:.6rem;font-weight:600;
-    letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
-    border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
-    opacity:.55;transition:opacity .2s,color .2s}
-  .print-btn:hover{opacity:1;color:var(--n7)}
-  .fs-btn{position:fixed;top:4.4vh;right:calc(7vw + 130px);font-size:.6rem;font-weight:600;
-    letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
-    border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
-    opacity:.55;transition:opacity .2s,color .2s}
-  .fs-btn:hover{opacity:1;color:var(--n7)}
-  .sh-btn{position:fixed;top:4.4vh;right:calc(7vw + 215px);font-size:.6rem;font-weight:600;
-    letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
-    border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
-    opacity:.55;transition:opacity .2s,color .2s}
-  .sh-btn:hover{opacity:1;color:var(--n7)}
-  .toast{position:fixed;bottom:5vh;left:50%;transform:translateX(-50%) translateY(20px);
-    background:var(--n1);color:var(--n7);font-family:var(--font);font-size:.78rem;
-    font-weight:500;letter-spacing:.04em;padding:.7rem 1.1rem;border-radius:6px;
-    border:1px solid #2c2b2b;z-index:60;opacity:0;pointer-events:none;
-    transition:opacity .25s,transform .25s}
-  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-  /* In fullscreen, drop chrome that breaks the immersion */
-  :fullscreen .nav,:fullscreen .prog,:fullscreen .print-btn,:fullscreen .fs-btn,:fullscreen .sh-btn{display:none !important}
-  /* @media print intentionally omitted — PDF export uses html2canvas+jsPDF (see CLAUDE.md) */
-
-  /* supporting resources tag */
-  .supp-label{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--n3);margin-top:1.4rem;margin-bottom:.6rem;padding-left:.1rem}
-  .roles.supp{grid-template-columns:1fr 1fr;margin-top:.5rem}
-  .role.supp-role{background:var(--n6);border:1px solid #e8e4e0}
-  .role.supp-role .rh{background:var(--n5);color:var(--n3)}
-  .role.supp-role h4{font-size:.95rem}
-  .role.supp-role p{font-size:.82rem;color:var(--n3)}
-  .role.supp-role .owns{font-size:.78rem}
 </style>
 <style>
   .vchain-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1rem}
@@ -397,15 +353,6 @@
   .vx-row .vv b{font-weight:600}
   .vx-row.lever .vv{color:var(--blue);font-weight:600}
   .vx-row.signal .vv{color:var(--n1);font-weight:500}
-
-  /* supporting resources tag */
-  .supp-label{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--n3);margin-top:1.4rem;margin-bottom:.6rem;padding-left:.1rem}
-  .roles.supp{grid-template-columns:1fr 1fr;margin-top:.5rem}
-  .role.supp-role{background:var(--n6);border:1px solid #e8e4e0}
-  .role.supp-role .rh{background:var(--n5);color:var(--n3)}
-  .role.supp-role h4{font-size:.95rem}
-  .role.supp-role p{font-size:.82rem;color:var(--n3)}
-  .role.supp-role .owns{font-size:.78rem}
 </style>
 
 <style>
@@ -422,54 +369,16 @@
   .v3 .vx-row.signal .vv{font-weight:600;color:var(--n1)}
   .v3 .vx-row.lever .vv{color:var(--blue);font-weight:600}
   .vsub{font-size:.92rem;color:var(--n3);margin-top:.2rem}
-
-  /* supporting resources tag */
-  .supp-label{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--n3);margin-top:1.4rem;margin-bottom:.6rem;padding-left:.1rem}
-  .roles.supp{grid-template-columns:1fr 1fr;margin-top:.5rem}
-  .role.supp-role{background:var(--n6);border:1px solid #e8e4e0}
-  .role.supp-role .rh{background:var(--n5);color:var(--n3)}
-  .role.supp-role h4{font-size:.95rem}
-  .role.supp-role p{font-size:.82rem;color:var(--n3)}
-  .role.supp-role .owns{font-size:.78rem}
 </style>
 
-<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<style>
-  /* ── dense-slide overrides: reduce vertical footprint so content fits 810px capture ── */
-  #s8{padding:4vh 7vw}
-  #s8 h2{margin-bottom:.7rem}
-  #s8 .cs{margin-top:.7rem}
-  #s8 .cs-step{padding:.65rem 0}
-  #s8 .cs-side{padding:1.2rem}
-  #s8 .cs-flow{gap:.28rem}
-  #s8 .cs-flow .cf{padding:.38rem .65rem}
-
-  #s12s{padding:4vh 7vw}
-  #s12s h2{margin-bottom:.6rem}
-  #s12s .roles-with-sidebar{margin-top:.6rem}
-  #s12s .role{padding:.85rem 1rem}
-  #s12s .role .owns{margin-top:.35rem}
-  #s12s .supp-label{margin-top:.65rem;margin-bottom:.35rem}
-  #s12s .roles.supp{margin-top:.3rem}
-  #s12s .role.supp-role{padding:.75rem .9rem}
-</style>
 </head>
 <body>
 <div class="prog" id="prog"></div>
 <nav class="nav" id="nav"></nav>
-<button class="sh-btn" id="shBtn" title="Copy share link">⇪ SHARE</button>
-<button class="fs-btn" id="fsBtn" title="Present (F)">⛶ PRESENT</button>
-<button class="print-btn" id="pdfBtn">↓ PDF</button>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <section class="slide dark cover" id="s1">
-  <div class="wordmark">
-    <svg height="28" width="auto" viewBox="0 0 652 225" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Launch by NTT DATA">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M651.301 86.9686V142.538H618.677V92.133C618.677 78.2924 611.657 72.0951 600.714 72.0951C594.932 72.0951 588.738 75.1937 582.957 81.391V142.538H550.333V0H582.957V51.6441C590.803 45.8599 599.269 42.5547 609.592 42.5547C634.37 42.5547 651.301 59.2874 651.301 86.9686ZM425.828 86.9686V142.538H393.205V92.133C393.205 78.2924 386.184 72.0951 375.241 72.0951C369.46 72.0951 363.266 75.1937 357.484 81.391V142.538H324.861V45.2402H357.484V51.6441C365.33 45.8599 373.796 42.5547 384.12 42.5547C409.103 42.5547 425.828 59.2874 425.828 86.9686ZM307.104 142.538V45.2402H274.893V106.18C269.112 112.377 262.918 115.889 256.93 115.889C246.193 115.889 238.966 109.279 238.966 95.4382V45.2402H206.343V100.396C206.343 128.077 223.068 145.223 247.845 145.223C258.169 145.223 266.634 141.711 274.48 135.721V142.538H307.104ZM539.597 102.668H508.832C507.18 111.551 499.54 117.748 489.629 117.748C475.589 117.748 467.33 107.006 467.33 93.7856C467.33 80.5647 475.589 70.0293 489.629 70.0293C499.334 70.0293 506.973 76.2266 508.625 85.1094H539.39C536.913 60.1137 516.265 42.5547 489.423 42.5547C458.864 42.5547 436.152 64.2452 436.152 93.7856C436.152 123.533 458.864 145.223 489.423 145.223C516.471 145.223 537.119 127.664 539.597 102.668ZM69.4489 112.377H34.1414V5.9907H0.279175V142.538H89.4772C79.7728 135.514 72.3396 124.979 69.4489 112.377ZM189.412 45.2402V142.538H156.995V137.373C149.768 142.124 141.096 145.223 130.36 145.223C104.137 145.223 82.044 122.706 82.044 93.7856C82.044 64.6584 104.137 42.5547 130.36 42.5547C141.096 42.5547 149.768 45.4468 156.995 50.198V45.2402H189.412ZM156.995 108.866V78.7055C150.801 71.8885 143.987 70.0293 136.967 70.0293C123.752 70.0293 113.841 80.3581 113.841 93.7856C113.841 107.213 123.752 117.542 136.967 117.542C143.781 117.542 150.594 115.683 156.995 108.866ZM369.796 176.302H374.371V190.364C375.235 189.265 376.293 188.431 377.544 187.862C378.806 187.272 380.274 186.977 381.946 186.977C383.619 186.977 385.103 187.305 386.398 187.96C387.693 188.6 388.776 189.518 389.645 190.715C390.53 191.912 391.202 193.347 391.661 195.019C392.121 196.675 392.35 198.52 392.35 200.553V201.07C392.35 203.005 392.121 204.8 391.661 206.456C391.202 208.096 390.53 209.522 389.645 210.736C388.759 211.949 387.677 212.892 386.398 213.564C385.119 214.237 383.651 214.573 381.995 214.573C380.306 214.573 378.823 214.286 377.544 213.712C376.281 213.122 375.215 212.277 374.346 211.179L374.305 211.126L374.284 211.1C374.26 211.068 374.236 211.037 374.212 211.005L373.977 214.081H369.796V176.302ZM374.371 194.948V206.506C374.471 206.712 374.578 206.917 374.69 207.12C375.297 208.17 376.101 209.031 377.101 209.703C378.117 210.375 379.372 210.711 380.864 210.711C382.094 210.711 383.143 210.465 384.012 209.973C384.898 209.465 385.611 208.768 386.152 207.883C386.71 206.997 387.119 205.973 387.382 204.808C387.644 203.644 387.775 202.398 387.775 201.07V200.553C387.775 199.225 387.652 197.979 387.406 196.815C387.16 195.634 386.767 194.601 386.226 193.716C385.685 192.814 384.971 192.109 384.086 191.601C383.201 191.076 382.11 190.814 380.815 190.814C379.667 190.814 378.667 191.01 377.814 191.404C376.978 191.797 376.265 192.33 375.674 193.003C375.158 193.576 374.724 194.224 374.371 194.948ZM393.876 187.469L403.375 213.794L402.386 216.491C402.025 217.59 401.591 218.451 401.082 219.074C400.591 219.713 399.984 220.164 399.262 220.426C398.541 220.705 397.664 220.845 396.631 220.845C396.516 220.845 396.311 220.828 396.016 220.795C395.81 220.783 395.644 220.771 395.519 220.759C395.491 220.756 395.466 220.754 395.442 220.751L395.401 220.746L395.426 224.436C395.655 224.501 396.049 224.583 396.606 224.682C397.164 224.78 397.623 224.829 397.983 224.829C399.197 224.829 400.238 224.608 401.107 224.165C401.992 223.739 402.747 223.181 403.37 222.493C403.993 221.804 404.501 221.074 404.895 220.304C405.305 219.549 405.633 218.844 405.879 218.188L416.553 187.469H411.683L405.505 207.379L398.844 187.469H393.876ZM459.376 214.081V178.27H454.678V205.964L436.576 178.27H431.829V214.081H436.576V186.46L454.604 214.081H459.376ZM479.275 182.156V214.081H474.601V182.156H463.115V178.27H474.601H479.275H490.785V182.156H479.275ZM508.716 214.081V182.156H520.227V178.27H508.716H504.043H492.557V182.156H504.043V214.081H508.716ZM544.726 214.081H539.782H537.249H535.036V178.27H537.102H539.782H545.169C547.514 178.27 549.653 178.663 551.588 179.45C553.523 180.221 555.187 181.344 556.581 182.82C557.991 184.279 559.074 186.05 559.828 188.133C560.582 190.199 560.959 192.527 560.959 195.118V197.258C560.959 199.848 560.582 202.185 559.828 204.267C559.074 206.333 557.983 208.096 556.557 209.555C555.146 211.015 553.441 212.138 551.441 212.925C549.457 213.696 547.219 214.081 544.726 214.081ZM544.726 210.219H539.782V182.156H545.169C546.94 182.156 548.506 182.443 549.867 183.017C551.244 183.591 552.408 184.435 553.359 185.55C554.31 186.649 555.032 188.001 555.524 189.608C556.016 191.199 556.261 193.019 556.261 195.069V197.258C556.261 199.865 555.827 202.144 554.958 204.095C554.105 206.03 552.826 207.538 551.121 208.621C549.416 209.686 547.284 210.219 544.726 210.219ZM579.874 178.27H580.907L594.607 214.081H589.737L586.326 204.71H571.349L567.945 214.081H563.1L576.75 178.27H577.784H579.874ZM572.761 200.824H584.912L578.83 184.115L572.761 200.824ZM608.43 182.156V214.081H603.757V182.156H592.271V178.27H603.757H608.43H619.941V182.156H608.43ZM635.609 178.27H636.643L650.342 214.081H645.472L642.062 204.71H627.084L623.681 214.081H618.835L632.486 178.27H633.519H635.609ZM628.496 200.824H640.647L634.565 184.114L628.496 200.824Z" fill="white"/>
-    </svg>
-  </div>
-  <div class="pagenum">01 / 23</div>
+  <div class="wordmark">Launch <span>by NTT DATA</span></div>
+  <div class="pagenum">01 / 24</div>
   <h1 class="reveal">Machines don't hit numbers. People do.</h1>
   <div class="sub reveal">XLA by Design. An outcome-based approach to workplace experience, and the offering structure it calls for.</div>
   <div class="meta reveal">A directional read for Launch's POV on XLA. For internal alignment only.</div>
@@ -477,40 +386,23 @@
 </section>
 
 <section class="slide dark intent" id="s1b">
-  <div class="pagenum">02 / 23</div>
+  <div class="pagenum">02 / 24</div>
   <div class="eyebrow reveal">How to read this, before we start</div>
   <h2 class="reveal">A POV built <span class="hl-blue">for the co-creation</span>. Not a finished offering.</h2>
-  <p class="lead-line reveal">DWS already has a framework that maps SLAs&nbsp;&rarr;&nbsp;XLAs&nbsp;&rarr;&nbsp;outcomes. The brief asked how to make that push real in practice. <b>This is a first draft. It draws on Launch methodology, NTT DATA delivery experience, and market research: combined into something sharp enough to react to.</b> Three things to hold as you read:</p>
+  <p class="lead-line reveal">The brief charged us with co-creating a joint Launch + DWS offering that makes the SLA&nbsp;&rarr;&nbsp;XLA push real. <b>This is my input to that work, deliberately opinionated so we have something sharp to react to together.</b> Five things to hold as you read:</p>
   <div class="intents reveal">
     <div class="intent-row"><span class="in">1</span><span class="it"><b>Input, not output.</b> This is Launch's contribution to the joint offering, a starting point for the co-creation with DWS, not a replacement for it.</span></div>
     <div class="intent-row"><span class="in">2</span><span class="it"><b>Additive to DWS, by design.</b> DWS names the destination; we're the execution layer that makes it real. This is the brief's own &ldquo;why Launch + DWS&rdquo; logic, built out.</span></div>
     <div class="intent-row"><span class="in">3</span><span class="it"><b>One challenge to the brief: pricing.</b> The brief benchmarks a fixed sprint. I want to make the case for pricing to the <em>outcome</em> instead, and get your read on it. That's the signal I most want.</span></div>
+    <div class="intent-row"><span class="in">4</span><span class="it"><b>The core, not the whole package.</b> I went deep on the methodology and the value. The GTM playbook, BU one-pager, and practice mapping are the next layer, once we align on this.</span></div>
+    <div class="intent-row"><span class="in">5</span><span class="it"><b>&ldquo;XLA by Design&rdquo; is a proposed name.</b> Working title to align with Vishal &mdash; open for input, not decided.</span></div>
   </div>
-  <p class="pin reveal">React to the <b>thinking</b>. Where it needs DWS's reality to hold: ServiceNow, delivery, the practice model. That's what turns this into a joint offering.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
-</section>
-
-<section class="slide dark rep" id="s12d">
-  <div class="pagenum">03 / 23</div>
-  <div class="eyebrow reveal">The bet this offering needs to win</div>
-  <h2 class="reveal">Necessary or valuable.<br><span class="hl-yellow">The narrative decides.</span></h2>
-
-  <div class="twin reveal">
-    <div class="card t">
-      <div class="h">Valuable — today's default</div>
-      <p>Included when the seller knows Launch. When they don't, it stays out. Every deal is a fresh argument for the same seat.</p>
-    </div>
-    <div class="card m">
-      <div class="h">Necessary — the goal</div>
-      <p>Without it, the engagement doesn't deliver. That's the only framing that puts it in every deal.</p>
-    </div>
-  </div>
-  <p class="punch reveal">Here's the sentence: <b>"An SLA is a promise about how people will behave. Design for the person, or miss the number."</b> That's the standard offer.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <p class="pin reveal">So as you watch: react to the <b>thinking</b>, and tell me where it needs DWS's reality to be true &mdash; ServiceNow, delivery, the practice model. That's what turns this from a Launch POV into our joint offering.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light" id="s2">
-  <div class="pagenum">04 / 23</div>
+  <div class="pagenum">03 / 24</div>
   <div class="eyebrow reveal">Where we're coming from</div>
   <h2 class="reveal">The SLA world measures the <span class="hl-blue">work</span>.</h2>
   <p class="lede reveal">A real floor, honestly measured, keeps the lights on.</p>
@@ -520,11 +412,11 @@
     <li>Predictable to buy, predictable to deliver. Nothing wrong with a floor.</li>
     <li>The shift: the buyer now wants <strong>the ceiling</strong>, and the floor can't reach it.</li>
   </ul>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide dark" id="s3">
-  <div class="pagenum">05 / 23</div>
+  <div class="pagenum">04 / 24</div>
   <div class="eyebrow reveal">The crack in that world</div>
   <h2 class="reveal">Green SLAs. <span class="hl-red">Red outcomes.</span></h2>
   <p class="reveal">Everyone knows this company. Calls answered, trucks rolled, tickets closed, every operational target green. And it's a punchline for customer frustration. The scoreboard says fine; the business says otherwise.</p>
@@ -534,11 +426,11 @@
     <div class="layer out"><span class="lab">Business outcome</span><span class="desc">Churn to cord-cutting · regulatory complaints · switching to competitors</span><span class="rag">Red</span></div>
   </div>
   <p class="stack-note reveal">The SLA layer hits every target while the outcome that pays the bills bleeds. <b>The experience in the middle is the part nobody measured, and it's the part that moves the outcome.</b> The industry defaults to this. NTT DATA included.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide beige" id="s4">
-  <div class="pagenum">06 / 23</div>
+  <div class="pagenum">05 / 24</div>
   <div class="eyebrow reveal">The shift</div>
   <h2 class="reveal">Experience isn't <span class="hl-blue">correlated</span> with the outcome.<br>It's <span class="hl-blue">how the outcome gets achieved.</span></h2>
   <ul class="b reveal">
@@ -546,35 +438,43 @@
     <li>The real read: <strong>you can't hit the number without designing the experience that produces it.</strong></li>
     <li>Reduce tickets, <em>how</em>, if you haven't designed away the reason people file them?</li>
   </ul>
-  <div class="shift-chain reveal">
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide statement" id="s6">
+  <div class="pagenum">06 / 24</div>
+  <div class="eyebrow reveal">The Launch point of view</div>
+  <h1 class="reveal">An SLA is a promise about how people will behave. You can't keep it without designing for the person.</h1>
+  <div class="sig reveal">Miss the experience, miss the number. Experience isn't a layer on top of the outcome. It's what makes the outcome reachable at all.</div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark pov" id="s7">
+  <div class="pagenum">07 / 24</div>
+  <div class="eyebrow reveal">What we believe, and why we lead with it</div>
+  <h2 class="reveal">SLAs can't be met without designing the experience.</h2>
+  <div class="belief reveal">So we <b>lead with experience</b>, and let it drive everything downstream.</div>
+  <div class="chain reveal">
     <span class="c lead">designed<br>experience</span><span class="ar">→</span>
     <span class="c">experience signal<br><small>the metric that moves</small></span><span class="ar">→</span>
     <span class="c">operational<br>KPI</span><span class="ar">→</span>
     <span class="c">outcome</span><span class="ar">→</span>
     <span class="c">the roof</span>
   </div>
-  <p class="reveal" style="color:var(--n3);margin-top:1.2rem;font-style:italic">Lead anywhere else on that chain and you're measuring the symptom. Lead with the experience and the whole chain becomes reachable.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
-</section>
-
-<section class="slide statement" id="s6">
-  <div class="pagenum">07 / 23</div>
-  <div class="eyebrow reveal">The Launch point of view</div>
-  <h1 class="reveal">An SLA is a promise about how people will behave. You can't keep it without designing for the person.</h1>
-  <div class="sig reveal">Miss the experience, miss the number. Experience isn't a layer on top of the outcome. It's what makes the outcome reachable at all.</div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <p class="reveal" style="margin-top:1.8rem;color:var(--n4)">Lead anywhere else on that chain and you're measuring the symptom. Lead with the experience and the whole chain becomes reachable.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide dark name" id="s7b">
-  <div class="pagenum">08 / 23</div>
+  <div class="pagenum">08 / 24</div>
   <div class="nm-eyebrow reveal">The offering</div>
   <h1 class="reveal">XLA by Design</h1>
   <div class="anchor reveal">Experience is <span class="y">designed</span>, not <b>surveyed</b>, to the metric that moves the outcome.</div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light additive" id="s7c">
-  <div class="pagenum">09 / 23</div>
+  <div class="pagenum">09 / 24</div>
   <div class="eyebrow reveal">How this fits with DWS: we enhance, we don't compete</div>
   <h2 class="reveal">DWS names the destination. We're <span class="hl-blue">how you get there.</span></h2>
   <p class="lead-line reveal">The NTT DATA DWS point of view already maps SLAs → XLAs → outcomes, with persona journeys and a full traceability chain. That blueprint is right. XLA by Design is the <strong>execution discipline</strong> that makes it real on a specific client, the metric found in real behavior, the conversion proven in dollars. We're not a competing framework; we're the muscle behind theirs.</p>
@@ -596,11 +496,11 @@
     </div>
   </div>
   <p class="close-line reveal">We don't replace a single thing in their model. <b>We make the experience layer it promises actually deliverable.</b> The persona journeys Alexis built are exactly the input this method runs on, XLA by Design makes that work load-bearing, not decorative.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light" id="s8">
-  <div class="pagenum">10 / 23</div>
+  <div class="pagenum">10 / 24</div>
   <div class="eyebrow reveal">We are enablement. Launch owns the experience layer</div>
   <h2 class="reveal">We don't run the SLA. We design the experience that <span class="hl-blue">makes it movable.</span></h2>
   <div class="cs reveal">
@@ -610,28 +510,26 @@
       <div class="cs-step"><span class="sl">The diagnosis</span><span class="st">Members were <b>pressing 0 to escape the IVR</b>, a behavioral tell (qualitative). The funnel data then <b>proved containment was the lever and sized it</b> (quantitative). Tell + data, converging on one number.</span></div>
       <div class="cs-step"><span class="sl">The metric</span><span class="st">Containment rate, converted into a contractable XLA.</span></div>
     </div>
-    <div class="cs-right">
-      <div class="cs-side">
-        <div class="xla">The XLA we wrote, and who owns what</div>
-        <div class="cs-flow">
-          <div class="cf lead">Self-serve task completed without agent intervention <small>the designed experience → metric that moves</small><span class="own launch">Launch owns this layer</span></div>
-          <div class="ar">↓</div>
-          <div class="cf">Containment rate ↑ <small>operational KPI</small><span class="own dws">DWS owns the SLA / KPI</span></div>
-          <div class="ar">↓</div>
-          <div class="cf out2">275k calls saved &nbsp;·&nbsp; <b>$2.92M</b> <small>two outcomes, volume and cost, from a 10% containment lift</small></div>
-          <div class="ar">↓</div>
-          <div class="cf out">CMS membership &amp; access obligations <small>the roof, the regulatory entitlement the program is measured and paid against</small></div>
-        </div>
-        <div class="bl">Launch designs the experience that makes the KPI movable. DWS runs and reports the KPI. The experience layer is what turns their SLA into a met one.</div>
+    <div class="cs-side">
+      <div class="xla">The XLA we wrote, and who owns what</div>
+      <div class="cs-flow">
+        <div class="cf lead">Self-serve task completed without agent intervention <small>the designed experience → metric that moves</small><span class="own launch">Launch owns this layer</span></div>
+        <div class="ar">↓</div>
+        <div class="cf">Containment rate ↑ <small>operational KPI</small><span class="own dws">DWS owns the SLA / KPI</span></div>
+        <div class="ar">↓</div>
+        <div class="cf out2">275k calls saved &nbsp;·&nbsp; <b>$2.92M</b> <small>two outcomes, volume and cost, from a 10% containment lift</small></div>
+        <div class="ar">↓</div>
+        <div class="cf out">CMS membership &amp; access obligations <small>the roof, the regulatory entitlement the program is measured and paid against</small></div>
       </div>
-      <p class="reveal" style="font-size:1rem;font-weight:300;color:var(--n1);line-height:1.55"><strong>Finding the metric that moves is the differentiation.</strong> Not the personas. Those are table stakes. The art is the craft of finding the one behavioral number that, when it moves, makes the outcome reachable. Analyze from how people behave <em>and</em> proven in the data. That's qualitative and quantitative, and it can't be copied off a slide.</p>
+      <div class="bl">Launch designs the experience that makes the KPI movable. DWS runs and reports the KPI. The experience layer is what turns their SLA into a met one.</div>
     </div>
   </div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <p class="reveal" style="margin-top:1.6rem;font-size:1.05rem;font-weight:300;color:var(--n1);max-width:74ch"><strong>Finding the metric that moves is the differentiation.</strong> Not the personas. Those are table stakes. The art is the craft of finding the one behavioral number that, when it moves, makes the outcome reachable. Analyze from how people behave <em>and</em> proven in the data. That's qualitative and quantitative, and it can't be copied off a slide.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light leverage" id="s8d">
-  <div class="pagenum">11 / 23</div>
+  <div class="pagenum">11 / 24</div>
   <div class="eyebrow reveal">How we find it</div>
   <h2 class="reveal">You can't optimize an SLA. <span class="hl-blue">You design the experience that meets it.</span></h2>
   <p class="lead-line reveal">An SLA is a result, not a dial. You can't turn it directly. You reach it through the experience upstream that produces it. <b>Containment wasn't chosen because it's a nice number. It was chosen because it's the maximum-leverage node on the SLAs that matter.</b></p>
@@ -656,11 +554,11 @@
   </div>
   <p class="teach reveal"><b>This is the analysis competitors can't template.</b> Find the lever with the most downstream pull on the SLAs the business is measured on, then find the drivers you can actually design against. Move the drivers, the lever rises, the SLAs are met.</p>
   <p class="why reveal" style="font-size:1.15rem;color:var(--n1);font-weight:300;border-left:3px solid var(--blue);padding-left:1.2rem">That's not a claim. That's a causal chain. <b>XLA is how SLAs are met.</b></p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light mvk" id="s8e">
-  <div class="pagenum">12 / 23</div>
+  <div class="pagenum">12 / 24</div>
   <div class="eyebrow reveal">The argument to be ready for</div>
   <h2 class="reveal">A metric is not a KPI. <span class="hl-blue">The difference is mathematical.</span></h2>
   <p class="lead-line reveal">You will hear it: "some metrics just don't connect to outcomes." The answer is not to disagree. It's to reframe. <b>If you're tracking a metric that doesn't connect to an outcome, you're tracking the wrong metric.</b> The disconnect they're describing is real, and it's the evidence the KPI hasn't been found yet. That's the work.</p>
@@ -688,31 +586,65 @@
     </div>
   </div>
   <p class="rebut reveal">The science is knowing a metric from a KPI. <b>The art is finding the KPI, because the one that moves is usually not the one being tracked.</b> That takes someone skilled at reading the relationship between numbers and behavior. The same applies to uptime and personalization: contributory, never the whole outcome on their own.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
-
-<section class="slide dark rep" id="s8f">
-  <div class="pagenum">13 / 23</div>
-  <div class="eyebrow reveal">The failure mode this offering is designed to prevent</div>
-  <h2 class="reveal">The right XLA is discovered, <span class="hl-yellow">not chosen.</span></h2>
-  <p class="reveal" style="color:var(--n4)">Any proposal can name a metric. Proving it's the right one is the work.</p>
-  <div class="twin reveal">
-    <div class="card t">
-      <div class="h">XLA introduced</div>
-      <p>A metric named upfront and tracked alongside SLA targets. The proposal does not ask whether it is the right metric, because the design work was never done. The XLA is assumed, not earned.</p>
+<section class="slide dark rfp" id="s8f">
+  <div class="pagenum">13 / 24</div>
+  <div class="eyebrow reveal">The market is writing our thesis into contracts</div>
+  <h2 class="reveal">We are not the only ones saying it. <span class="hl-yellow">Buyers are demanding it.</span></h2>
+  <p class="lead-line reveal">The Con Edison ETS RFP, live right now, does not ask for SLA compliance. It writes the experience layer into binding contract language. <b>This is the thesis of XLA by Design, authored by the buyer.</b></p>
+  <div class="rfp-quotes reveal">
+    <div class="rfpq">
+      <div class="q">"IT service delivery aligned to value streams, measurable business outcomes, and continuous improvement."</div>
+      <div class="src">Con Ed RFP, ETS Objectives</div>
     </div>
-    <div class="card m">
-      <div class="h">XLA by Design</div>
-      <p>The discipline that finds the signal before naming it the XLA. Proved in the data. Designed against in the experience. Contractable because it was earned, not assumed.</p>
+    <div class="rfpq">
+      <div class="q">Define XLA KPIs as primary measures of service quality, not supplementary ones. Establish direct linkage between SLA performance and XLA outcomes.</div>
+      <div class="src">Con Ed RFP, Exhibit 2.3-B, binding obligation</div>
+    </div>
+    <div class="rfpq">
+      <div class="q">"Every service delivered must be traceable to a Con Ed business outcome."</div>
+      <div class="src">Con Ed RFP, value-stream requirement</div>
+    </div>
+    <div class="rfpq">
+      <div class="q">Persona-based XLA frameworks distinguishing field technicians, remote workers, and executives, with continuous experience measurement.</div>
+      <div class="src">Con Ed RFP, Exhibit 2.3-B</div>
     </div>
   </div>
-  <p class="punch reveal">Introducing an XLA is easy. <b>Designing one that moves the number is the work.</b></p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <p class="punch reveal">Traditional SLAs are explicitly called insufficient. <b>The causal chain we drew is now a contractual requirement.</b></p>
+  <p class="norm reveal">Con Edison is early, not unique. As outcome-based contracting spreads across regulated industries, we predict this becomes the norm. The offering is not a value-add waiting for demand. The demand is already in writing, and we need to be the ones ready to answer it.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark vanity" id="s8c">
+  <div class="pagenum">14 / 24</div>
+  <div class="eyebrow reveal">The trap, and why we don't fall in it</div>
+  <h2 class="reveal">A vanity metric vs. <span class="hl-yellow">a metric that matters.</span></h2>
+  <p class="lead-line reveal">Here's the mistake the whole category makes, and the one our competitors will make on this exact kind of deal. <b>It's easy to build an experience score that measures itself. It's hard to find the number wired to a dollar.</b> We know the difference because we look for it on purpose.</p>
+  <div class="vsplit reveal">
+    <div class="vbox bad">
+      <div class="vh">&times; The vanity metric</div>
+      <div class="vname">A rising "Experience Score" (EIS)</div>
+      <div class="vdesc">A 0&ndash;100 composite that becomes the roof itself. The goal turns into &ldquo;the score went up.&rdquo; Feels rigorous: dashboards, weightings, trends, but it terminates in itself rather than laddering to an outcome.</div>
+      <div class="vex">Why it fails the test: <b>a higher score isn't a business outcome.</b> The failure isn't the inputs, it's that the score is treated as the destination. &ldquo;Confidence 63 &rarr; target 80&rdquo; is a target with nothing wired beneath it.</div>
+    </div>
+    <div class="vbox good">
+      <div class="vh">&rarr; The metric that matters</div>
+      <div class="vname">A behavioral count wired to the dollar</div>
+      <div class="vdesc">The one thing people <em>do</em> when the experience fails, already counted, proven in the data to move the outcome the buyer is accountable for.</div>
+      <div class="vchain">Device not ready Day 1 &nbsp;<span class="a">&rarr;</span>&nbsp; 108 new hires &times; 2.1-day wait &nbsp;<span class="a">&rarr;</span>&nbsp; <span class="d">$62K productivity loss</span> &nbsp;<span class="a">&rarr;</span>&nbsp; attrition the bank is trying to stop</div>
+      <div class="vex" style="margin-top:.9rem">Why it wins: <b>it converts to money and it can't be gamed.</b> The score can drift green while this stays red, which is exactly the gap that costs the client.</div>
+    </div>
+  </div>
+  <p class="moat reveal">Everyone can build the score. <b>Finding the metric that matters is the discipline, and the moat.</b></p>
+  <p class="reveal" style="margin-top:.9rem;font-size:.9rem;color:var(--n4);font-weight:300;max-width:80ch">To be clear: a contributory metric like sentiment is not the enemy. We track it, and we show how it ladders to the KPI and the outcome. The trap is the score that has nowhere to ladder.</p>
+  <p class="credit reveal">The Experience Score isn't a strawman. It's the most common pattern in the category, including in our own strongest work. Naming the trap is how we make sure we engineer past it on every engagement.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light proof" id="s8b">
-  <div class="pagenum">14 / 23</div>
+  <div class="pagenum">15 / 24</div>
   <div class="eyebrow reveal">We're already doing this, deal by deal</div>
   <h2 class="reveal">Launch has run this play five times. <span class="hl-blue">We just never named it.</span></h2>
   <p class="lead-line reveal">Every one of these started the same way: ground the people, design the experience, wire it to a DWS outcome. And it was <b>rebuilt from scratch each time.</b> The spine doesn't invent a new motion. It names the one we keep improvising.</p>
@@ -725,25 +657,38 @@
   </div>
   <p class="quote reveal">&ldquo;Similar to past EX persona work for DWS&hellip; will require some customization from what we've assembled before, but tons of overlap, we should be able to apply it here.&rdquo;<span>From the Chick-fil-A deal brief. That sentence is the whole case: a method we re-apply and re-customize every time, with no name and no structure.</span></p>
   <p class="turn reveal">This is the answer to &ldquo;is it one offering or several?&rdquo; <b>One spine, many roofs.</b> Formalizing it makes it repeatable and flexible, instead of rebuilt by hand on every deal.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light" id="s9">
-  <div class="pagenum">15 / 23</div>
+  <div class="pagenum">16 / 24</div>
   <div class="eyebrow reveal">The methodology</div>
   <h2 class="reveal">Four stages. Each one builds a link in the chain.</h2>
   <div class="stages reveal">
-    <div class="stage"><div class="si">1</div><h4>Experience Discovery</h4><div class="lk">builds: designed experience</div><p>Ground the real person: shadow the work, analyze the data already there. Find the tell and the number it moves.</p></div>
+    <div class="stage"><div class="si">1</div><h4>Persona Discovery</h4><div class="lk">builds: designed experience</div><p>Ground the real person: shadow the work, analyze the data already there. Find the tell and the number it moves.</p></div>
     <div class="stage"><div class="si">2</div><h4>Experience Design</h4><div class="lk">finds: signal + metric</div><p>Design the future state. Identify the metric that moves; locate where the value is.</p></div>
     <div class="stage"><div class="si">3</div><h4>Delivery &amp; Measurement</h4><div class="lk">proves: signal → outcome</div><p>Instrument the behavioral signal; carry the conversion arithmetic to the roof.</p></div>
     <div class="stage"><div class="si">4</div><h4>Continuous Innovation</h4><div class="lk">keeps: the chain live</div><p>Re-validate as the client and the roof change. Where the multi-year relationship lives.</p></div>
   </div>
   <div class="gate reveal"><p><b>Before stage 1, a diagnostic, not delivery.</b> Known vertical (we already have the roof and the chain) or a new one (we build it first)? That read sets the scope, which is exactly why it can't be pre-priced as a package.</p></div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="slide dark rep" id="s10">
+  <div class="pagenum">17 / 24</div>
+  <div class="eyebrow reveal">The objection we need to answer</div>
+  <h2 class="reveal">Repeatable, without being a template.</h2>
+  <p class="reveal" style="color:var(--n4)">This is repeatable because it establishes a methodology for designing an XLA experience, not a fixed engagement to resell.</p>
+  <div class="twin reveal">
+    <div class="card t"><div class="h">What does NOT repeat</div><p>The engagement itself. We never stamp the same scope, the same weeks, the same deliverables on two clients. That's the template trap, and it's what caps the money.</p></div>
+    <div class="card m"><div class="h">What DOES repeat</div><p>The <strong>method for designing the XLA experience.</strong> The diagnostic, the four stages, the way we find the metric that moves. It runs every time, and produces a different, right-sized engagement each time.</p></div>
+  </div>
+  <div class="punch reveal">The method is the asset. <b>The diagnostic is the product. The engagement is its output.</b></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light" id="s11">
-  <div class="pagenum">16 / 23</div>
+  <div class="pagenum">18 / 24</div>
   <span class="applied reveal">Applied: Healthcare, provider-side</span>
   <h2 class="reveal">One method, <span class="hl-blue">read three ways.</span></h2>
   <p class="vsub reveal">The IVR proved it works. These examples are illustrative, each the same chain: state the constraint, design the behavior, instrument the signal that moves, tie it to the lever the business defends. The hard part is the discovery, a design researcher skilled at interrogating data finding the one signal that matters.</p>
@@ -770,11 +715,11 @@
       <div class="vx-row lever"><span class="vk">Lever</span><span class="vv">Throughput &middot; access standards &middot; MIPS</span></div>
     </div>
   </div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light" id="s11u">
-  <div class="pagenum">17 / 23</div>
+  <div class="pagenum">19 / 24</div>
   <span class="applied reveal">Applied: Utilities, standard ops and surge</span>
   <h2 class="reveal">Standard ops and surge. <span class="hl-blue">Both are designed.</span></h2>
   <p class="vsub reveal">Illustrative. A utility runs hundreds of operational SLAs; these are the ones with a human in the loop, separated into the everyday baseline and the storm event the regulator watches. This is the shape of the Con Edison orals.</p>
@@ -801,11 +746,11 @@
       <div class="vx-row lever"><span class="vk">Lever</span><span class="vv">SAIFI &middot; reliability standing</span></div>
     </div>
   </div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide dark" id="s12">
-  <div class="pagenum">18 / 23</div>
+  <div class="pagenum">20 / 24</div>
   <span class="openchip reveal">Illustrative: what drives the size</span>
   <h2 class="reveal">The engagement is sized by <span class="hl-yellow">the shape of the work.</span></h2>
   <p class="reveal" style="color:var(--n4)">Not a calendar. Six variables set the scope of Discovery, and they are knowable per pursuit.</p>
@@ -832,75 +777,35 @@
     </div>
   </div>
   <p class="scale-note reveal">Same offering, opposite shapes. <b style="color:var(--n7)">This is why it cannot be pre-priced.</b> The pursuit team reads these six variables and sizes to them.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light" id="s12s">
-  <div class="pagenum">19 / 23</div>
+  <div class="pagenum">21 / 24</div>
   <div class="eyebrow reveal">Who does this work</div>
   <h2 class="reveal">Two senior profiles. <span class="hl-blue">The signal lives in the loop between them.</span></h2>
   <p class="reveal" style="color:var(--n3)">Discovery pairs two senior profiles. The signal is found in the loop between them.</p>
-  <div class="roles-with-sidebar">
-    <div class="roles-left-col">
-      <div class="roles reveal">
-        <div class="role">
-          <div class="rh">Qualitative</div>
-          <h4>Senior Design Researcher</h4>
-          <p>Reads the behavioral tell in the real environment and frames which metric is a candidate to be the one that moves. Keeps the work design-led.</p>
-          <div class="owns"><b>Activities:</b> discovery strategy, discovery execution, on-site observation, synthesis, the insights report. The scarcer, more senior hire.</div>
-        </div>
-        <div class="role">
-          <div class="rh">Quantitative</div>
-          <h4>Senior Data Scientist</h4>
-          <p>Proves the signal is wired to the outcome and sizes it. Causal inference, not predictive model-building.</p>
-          <div class="owns"><b>Activities:</b> funnel and cohort analysis, lagged correlation and lead-lag testing, regression and time-series, quasi-experiments, sizing the lever. A dedicated ML engineer enters only when data scale or transcript and telemetry volume demands it.</div>
-        </div>
-      </div>
-      <div class="supp-label reveal">Supporting resources</div>
-      <div class="roles supp reveal">
-        <div class="role supp-role">
-          <div class="rh">Part-time · Advisory</div>
-          <h4>AI Engineer.</h4>
-          <p>Consults on AI opportunities identified during Discovery and Design. Flags where AI augmentation is viable against the signal being designed to.</p>
-          <div class="owns"><b>Engages:</b> Discovery synthesis and Design sprints. Not a full-time team member; brought in when the signal or workflow has a credible AI application.</div>
-        </div>
-        <div class="role supp-role">
-          <div class="rh">Part-time · Phase 03</div>
-          <h4>Dashboard &amp; Measurement Engineer.</h4>
-          <p>Builds the instrumentation and dashboards that make the measurement chain operational. Enters when Design is complete and the signal is confirmed.</p>
-          <div class="owns"><b>Engages:</b> Measurement setup phase (Phase 03). Wires the signal to the reporting chain and hands off to the continuous loop.</div>
-        </div>
-      </div>
-    </div>
-    <div class="roles-sidebar">
-      <p class="roles-loop reveal">The researcher surfaces the candidate tells. The data scientist tests which one is wired to the outcome. <b>The art is the loop between them,</b> with the Senior Researcher holding the synthesis that keeps it from terminating in a vanity score.</p>
-      <p class="scale-note reveal">The Design phase shifts shape: <b style="color:var(--n1)">one designer per experience, about two weeks each.</b> Concept-and-validation adds a sprint per cycle, up to three. Discovery is front-loaded and senior; design and measurement run leaner.</p>
-    </div>
-  </div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
-</section>
-
-
-<section class="slide light" id="s12t">
-  <div class="pagenum">20 / 23</div>
-  <div class="eyebrow reveal">Who does this work — pursuit side</div>
-  <h2 class="reveal">The third profile. The one who <span class="hl-blue">holds the room.</span></h2>
-
-  <div class="roles reveal" style="grid-template-columns:1fr">
+  <div class="roles reveal">
     <div class="role">
-      <div class="rh">Strategic</div>
-      <h4>Pursuit Strategist.</h4>
-      <p>In a large cross-practice deal, resistance to the XLA design scope comes from other NTT DATA practices competing for the same budget. This profile holds the room in those pre-submission negotiations by speaking SA and delivery-lead.</p>
-      <div class="owns"><b>Activities:</b> Pursuit qualification, scope framing, internal alignment, protecting the design scope from last-minute compression. The person who answers "what are you doing here?" and makes the case.</div>
+      <div class="rh">Qualitative</div>
+      <h4>Senior Design Researcher</h4>
+      <p>Reads the behavioral tell in the real environment and frames which metric is a candidate to be the one that moves. Keeps the work design-led.</p>
+      <div class="owns"><b>Activities:</b> discovery strategy, discovery execution, on-site observation, synthesis, the insights report. The scarcer, more senior hire.</div>
+    </div>
+    <div class="role">
+      <div class="rh">Quantitative</div>
+      <h4>Senior Data Scientist</h4>
+      <p>Proves the signal is wired to the outcome and sizes it. Causal inference, not predictive model-building.</p>
+      <div class="owns"><b>Activities:</b> funnel and cohort analysis, lagged correlation and lead-lag testing, regression and time-series, quasi-experiments, sizing the lever. A dedicated ML engineer enters only when data scale or transcript and telemetry volume demands it.</div>
     </div>
   </div>
-  <p class="roles-loop reveal">A pursuit profile, not a field one. <b>Without it, the field work gets squeezed before the client ever sees it.</b></p>
-  <p class="scale-note reveal">The researcher and data scientist prove the work is possible. <b style="color:var(--n1)">The pursuit strategist proves it is required.</b></p>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <p class="roles-loop reveal">The researcher surfaces the candidate tells. The data scientist tests which one is wired to the outcome. <b>The art is the loop between them,</b> with the Senior Researcher holding the synthesis that keeps it from terminating in a vanity score.</p>
+  <p class="scale-note reveal">The Design phase shifts shape: <b style="color:var(--n1)">one designer per experience, about two weeks each.</b> Concept-and-validation adds a sprint per cycle, up to three. Discovery is front-loaded and senior; design and measurement run leaner.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide light" id="s12c">
-  <div class="pagenum">21 / 23</div>
+  <div class="pagenum">22 / 24</div>
   <div class="eyebrow reveal">So, to be clear about what you're buying</div>
   <h2 class="reveal">This isn't a template. <span class="hl-blue">That's the point.</span></h2>
   <p class="reveal">This is the commercial consequence of everything you have seen. The work is priced to the outcome, not the calendar, and that is the strength, not the catch.</p>
@@ -913,11 +818,11 @@
     <div class="h">Why pre-sizing would leave money on the table</div>
     <p>A $20M offering sold at $300K a pop needs <b>66 engagements</b>. At 8 weeks each, that's <b>530+ weeks ≈ a decade</b>, or only ~$2M a year. Pre-sizing caps the program. The math doesn't math.</p>
   </div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide dark" id="s12b">
-  <div class="pagenum">22 / 23</div>
+  <div class="pagenum">23 / 24</div>
   <span class="openchip reveal">Open: let's decide together</span>
   <h2 class="reveal">The questions the unit-math doesn't answer yet.</h2>
   <p class="reveal" style="color:var(--n4)">The math gives us a floor. We need an operating model.</p>
@@ -925,11 +830,12 @@
     <div class="q"><span class="qn">1</span><span class="qt"><b>Who sizes it?</b> The practice or pursuit lead owns effort and duration against the outcome. What does that authority look like?</span></div>
     <div class="q"><span class="qn">2</span><span class="qt"><b>How do we resource "leave no stone unturned"</b> without it going open-ended? Where is the discipline that keeps it staged, not endless?</span></div>
   </div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <p class="reveal" style="margin-top:1.3rem;font-size:.95rem;color:var(--lavender)"><strong style="color:var(--yellow)">The current pursuits, Keena and Nathan, are where this gets real.</strong> The cleanest way to answer these is to pilot the operating model on a live account. The pursuit team works out the staffing there.</p>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <section class="slide beige" id="s13">
-  <div class="pagenum">23 / 23</div>
+  <div class="pagenum">24 / 24</div>
   <div class="eyebrow reveal">Why this leads to bigger, better deals</div>
   <h2 class="reveal">Outcome-priced. Multi-year. We own the loop.</h2>
   <div class="pillars reveal">
@@ -937,11 +843,8 @@
     <div class="pillar"><div class="t">Sticky</div><p>Stage 4 keeps the chain live. The relationship renews because the measurement never stops.</p></div>
     <div class="pillar"><div class="t">Defensible</div><p>The metric that moves is ours. The thing a competitor can't template.</p></div>
   </div>
-  <div class="close-brand reveal">
-    <div class="cb-name">XLA by Design <span>by Launch</span></div>
-    <div class="cb-tag">machines don't hit numbers. people do.</div>
-  </div>
-  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="ask reveal">So, is this the right read? <b>That's the signal I'm after.</b></div>
+  <div class="lmark"><i></i><i></i><i></i><i></i></div>
 </section>
 
 <script>
@@ -950,10 +853,6 @@
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%5*60)+'ms';io.observe(el)});
   const slides=[...document.querySelectorAll('.slide')],nav=document.getElementById('nav');
-  // slide entrance observer — must be after slides is declared
-  const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('si')}),{threshold:0,rootMargin:'0px 0px -8% 0px'});
-  slides.forEach(s=>sio.observe(s));
-  slides[0]&&slides[0].classList.add('si'); // cover always visible
   slides.forEach((s,i)=>{if(i===0)return;const f=document.createElement('div');f.className='foot';f.textContent='Internal · Tam Danier';s.appendChild(f)});
   slides.forEach((s,i)=>{const a=document.createElement('a');a.href='#'+s.id;a.title='Slide '+(i+1);nav.appendChild(a)});
   const dots=[...nav.children];
@@ -963,54 +862,6 @@
     const cur=slides.findIndex(s=>{const r=s.getBoundingClientRect();return r.top>=-5&&r.top<innerHeight*.5});
     if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();(slides[cur+1]||slides[cur])?.scrollIntoView({behavior:'smooth'})}
     if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();(slides[cur-1]||slides[0])?.scrollIntoView({behavior:'smooth'})}
-  });
-  // ── presentation mode (fullscreen) ──────────────────────────────────
-  function toggleFullscreen(){
-    if(document.fullscreenElement){document.exitFullscreen()}
-    else{document.documentElement.requestFullscreen().catch(err=>console.warn('Fullscreen blocked:',err.message))}
-  }
-  document.getElementById('fsBtn').addEventListener('click',toggleFullscreen);
-  addEventListener('keydown',e=>{if(e.key==='f'||e.key==='F'){e.preventDefault();toggleFullscreen()}});
-
-  // ── share (copy deck link) ───────────────────────────────────────────
-  const SHARE_URL='https://tamdanierlaunch-artifacts.xyz/decks/xla-by-design/';
-  const toast=document.getElementById('toast');
-  function showToast(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(showToast._t);showToast._t=setTimeout(()=>toast.classList.remove('on'),2000)}
-  document.getElementById('shBtn').addEventListener('click',async()=>{
-    try{await navigator.clipboard.writeText(SHARE_URL);showToast('Link copied — '+SHARE_URL.replace(/^https?:\/\//,''))}
-    catch(_){
-      const ta=document.createElement('textarea');ta.value=SHARE_URL;ta.style.position='fixed';ta.style.opacity='0';
-      document.body.appendChild(ta);ta.select();
-      try{document.execCommand('copy');showToast('Link copied — '+SHARE_URL.replace(/^https?:\/\//,''))}
-      catch(e2){showToast('Copy failed — '+SHARE_URL)}
-      document.body.removeChild(ta);
-    }
-  });
-
-  // ── PDF export (html2canvas + jsPDF — see CLAUDE.md for why not window.print) ──
-  document.getElementById('pdfBtn').addEventListener('click',async()=>{
-    const btn=document.getElementById('pdfBtn');
-    btn.disabled=true;
-    // force all animations visible before capture
-    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
-    document.querySelectorAll('.slide').forEach(el=>el.classList.add('si'));
-    await document.fonts.ready;
-    const allSlides=[...document.querySelectorAll('.slide')];
-    const {jsPDF}=window.jspdf;
-    const pdf=new jsPDF({orientation:'landscape',unit:'px',format:[1440,810],hotfixes:['px_scaling']});
-    for(let i=0;i<allSlides.length;i++){
-      btn.textContent=`Generating ${i+1}/${allSlides.length}…`;
-      const canvas=await html2canvas(allSlides[i],{
-        width:1440,height:810,
-        windowWidth:1440,windowHeight:810,
-        scale:2,useCORS:true,backgroundColor:null,logging:false,
-      });
-      if(i>0)pdf.addPage([1440,810],'landscape');
-      pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,1440,810);
-    }
-    pdf.save('XLA-by-Design-Internal.pdf');
-    btn.textContent='↓ PDF';
-    btn.disabled=false;
   });
 </script>
 </body>
