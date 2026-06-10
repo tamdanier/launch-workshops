@@ -347,16 +347,7 @@
     border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
     opacity:.55;transition:opacity .2s,color .2s}
   .print-btn:hover{opacity:1;color:var(--n7)}
-  /* ── PDF export ───────────────────────────────────────────────────── */
-  @media print{
-    @page{size:1440px 810px;margin:0}
-    html,body{width:1440px}
-    .slide{height:810px !important;min-height:unset !important;overflow:hidden !important;
-      page-break-after:always;break-after:page}
-    .nav,.prog,.print-btn{display:none !important}
-    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
-    .slide{opacity:1 !important;transform:none !important;transition:none !important}
-  }
+  /* @media print intentionally omitted — PDF export uses html2canvas+jsPDF (see CLAUDE.md) */
 
   /* supporting resources tag */
   .supp-label{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--n3);margin-top:1.4rem;margin-bottom:.6rem;padding-left:.1rem}
@@ -418,11 +409,13 @@
   .role.supp-role .owns{font-size:.78rem}
 </style>
 
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </head>
 <body>
 <div class="prog" id="prog"></div>
 <nav class="nav" id="nav"></nav>
-<button class="print-btn" onclick="window.print()" title="Save as PDF">↓ PDF</button>
+<button class="print-btn" id="pdfBtn">↓ PDF</button>
 
 <section class="slide dark cover" id="s1">
   <div class="wordmark">
@@ -916,6 +909,31 @@
     const cur=slides.findIndex(s=>{const r=s.getBoundingClientRect();return r.top>=-5&&r.top<innerHeight*.5});
     if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();(slides[cur+1]||slides[cur])?.scrollIntoView({behavior:'smooth'})}
     if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();(slides[cur-1]||slides[0])?.scrollIntoView({behavior:'smooth'})}
+  });
+  // ── PDF export (html2canvas + jsPDF — see CLAUDE.md for why not window.print) ──
+  document.getElementById('pdfBtn').addEventListener('click',async()=>{
+    const btn=document.getElementById('pdfBtn');
+    btn.disabled=true;
+    // force all animations visible before capture
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+    document.querySelectorAll('.slide').forEach(el=>el.classList.add('si'));
+    await document.fonts.ready;
+    const allSlides=[...document.querySelectorAll('.slide')];
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'landscape',unit:'px',format:[1440,810],hotfixes:['px_scaling']});
+    for(let i=0;i<allSlides.length;i++){
+      btn.textContent=`Generating ${i+1}/${allSlides.length}…`;
+      const canvas=await html2canvas(allSlides[i],{
+        width:1440,height:810,
+        windowWidth:1440,windowHeight:810,
+        scale:2,useCORS:true,backgroundColor:null,logging:false,
+      });
+      if(i>0)pdf.addPage([1440,810],'landscape');
+      pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,1440,810);
+    }
+    pdf.save('XLA-by-Design-Internal.pdf');
+    btn.textContent='↓ PDF';
+    btn.disabled=false;
   });
 </script>
 </body>
