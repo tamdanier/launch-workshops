@@ -226,15 +226,29 @@
   @media(max-width:860px){.nav{display:none}}
   .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
   .reveal.in{opacity:1;transform:none}
-  /* ── print button ─────────────────────────────────────────────────── */
+  /* ── nav chrome: PDF / PRESENT / SHARE ───────────────────────────── */
   .print-btn{position:fixed;top:4.4vh;right:calc(7vw + 58px);font-size:.6rem;font-weight:600;
     letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
     border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
     opacity:.55;transition:opacity .2s,color .2s}
   .print-btn:hover{opacity:1;color:var(--n7)}
-  /* ── PDF export ───────────────────────────────────────────────────── */
-  @media print{
-    @page{size:1440px 810px;margin:0}
+  .fs-btn{position:fixed;top:4.4vh;right:calc(7vw + 130px);font-size:.6rem;font-weight:600;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
+    border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
+    opacity:.55;transition:opacity .2s,color .2s}
+  .fs-btn:hover{opacity:1;color:var(--n7)}
+  .sh-btn{position:fixed;top:4.4vh;right:calc(7vw + 215px);font-size:.6rem;font-weight:600;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--n3);background:transparent;
+    border:none;cursor:pointer;font-family:var(--font);z-index:55;padding:0;
+    opacity:.55;transition:opacity .2s,color .2s}
+  .sh-btn:hover{opacity:1;color:var(--n7)}
+  .toast{position:fixed;bottom:5vh;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--n1);color:var(--n7);font-family:var(--font);font-size:.78rem;
+    font-weight:500;letter-spacing:.04em;padding:.7rem 1.1rem;border-radius:6px;
+    border:1px solid #2c2b2b;z-index:60;opacity:0;pointer-events:none;
+    transition:opacity .25s,transform .25s}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  :fullscreen .nav,:fullscreen .prog,:fullscreen .print-btn,:fullscreen .fs-btn,:fullscreen .sh-btn{display:none !important}
     html,body{width:1440px}
     .slide{height:810px !important;min-height:unset !important;overflow:hidden !important;
       page-break-after:always;break-after:page}
@@ -335,6 +349,10 @@
 <body>
 <div class="prog" id="prog"></div>
 <nav class="nav" id="nav"></nav>
+<div id="toast" class="toast"></div>
+<button class="sh-btn" id="shBtn" title="Copy share link">&#x21EA; SHARE</button>
+<button class="fs-btn" id="fsBtn" title="Present (F)">&#x26F6; PRESENT</button>
+<button class="print-btn" id="pdfBtn" title="Download as PDF">&#x2193; PDF</button>
 
 <section class="slide dark cover" id="c1">
   <div class="wordmark">Launch <span>by NTT DATA</span></div>
@@ -588,6 +606,64 @@
   addEventListener('keydown',e=>{const cur=slides.findIndex(s=>{const r=s.getBoundingClientRect();return r.top>=-5&&r.top<innerHeight*.5});
     if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();(slides[cur+1]||slides[cur])?.scrollIntoView({behavior:'smooth'})}
     if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();(slides[cur-1]||slides[0])?.scrollIntoView({behavior:'smooth'})}});
+
+  /* ── presentation mode (fullscreen) ───────────────────────────────── */
+  function toggleFullscreen(){
+    if(document.fullscreenElement){document.exitFullscreen()}
+    else{document.documentElement.requestFullscreen().catch(err=>console.warn('Fullscreen blocked:',err.message))}
+  }
+  document.getElementById('fsBtn').addEventListener('click',toggleFullscreen);
+  addEventListener('keydown',e=>{if(e.key==='f'||e.key==='F'){e.preventDefault();toggleFullscreen()}});
+
+  /* ── share (copy masked share URL) ────────────────────────────────── */
+  const SHARE_URL='https://tamdanierlaunch-artifacts.xyz/xladesignxlaunch/';
+  const toast=document.getElementById('toast');
+  function showToast(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(showToast._t);showToast._t=setTimeout(()=>toast.classList.remove('on'),2000)}
+  document.getElementById('shBtn').addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(SHARE_URL);showToast('Link copied — '+SHARE_URL.replace(/^https?:\/\//,''))}
+    catch(e){
+      const ta=document.createElement('textarea');ta.value=SHARE_URL;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');showToast('Link copied — '+SHARE_URL.replace(/^https?:\/\//,''))}
+      catch(e2){showToast('Copy failed — '+SHARE_URL)}
+      finally{document.body.removeChild(ta)}
+    }
+  });
+
+  /* ── PDF export via html2canvas + jsPDF ────────────────────────────── */
+  document.getElementById('pdfBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('pdfBtn');
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.style.opacity = '1';
+    try {
+      await document.fonts.ready;
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+      const allSlides = [...document.querySelectorAll('.slide')];
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1440, 810], hotfixes: ['px_scaling'] });
+      for (let i = 0; i < allSlides.length; i++) {
+        btn.textContent = 'Generating ' + (i+1) + '/' + allSlides.length + '…';
+        const canvas = await html2canvas(allSlides[i], {
+          width: 1440, height: 810,
+          windowWidth: 1440, windowHeight: 810,
+          scale: 2, useCORS: true, backgroundColor: null, logging: false,
+        });
+        if (i > 0) pdf.addPage([1440, 810], 'landscape');
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 1440, 810);
+      }
+      pdf.save('XLA-by-Design-Launch-by-NTT-DATA.pdf');
+    } catch (err) {
+      console.error(err);
+      alert('PDF generation failed: ' + err.message);
+    } finally {
+      btn.textContent = original;
+      btn.disabled = false;
+      btn.style.opacity = '';
+    }
+  });
 </script>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </body>
 </html>
