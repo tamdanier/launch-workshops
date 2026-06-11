@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XLA by Design: The Engagement Model</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+  :root{
+    --blue:#1E5AF2; --yellow:#FFCC2D; --lavender:#CED4FE; --red:#FF1C52;
+    --n1:#111113; --n2:#1a1a1c; --n3:#5c5957; --n4:#8a8482; --n6:#f5f1ea; --n7:#fdfbf7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',sans-serif;background:var(--n1);color:var(--n7);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:5vh 6vw 8vh}
+  .top{margin-bottom:3.5rem}
+  .eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);border:1px solid var(--yellow);border-radius:99px;display:inline-block;padding:.4rem 1rem;margin-bottom:1.6rem}
+  h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;line-height:1.02;letter-spacing:-.02em;margin-bottom:1.2rem}
+  h1 .y{color:var(--yellow)}
+  .lede{font-size:clamp(1.05rem,1.6vw,1.3rem);font-weight:300;color:var(--lavender);max-width:70ch}
+  .lede b{color:var(--n7);font-weight:600}
+  /* duration band: width encodes relative calendar length */
+  .band{display:flex;gap:6px;margin:2.6rem 0 1rem;align-items:stretch}
+  .band .seg{padding:1rem 1.1rem;border-radius:8px;display:flex;flex-direction:column;justify-content:space-between;min-height:96px;overflow:hidden}
+  .band .seg .lab{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  .band .seg .wk{font-size:.66rem;font-weight:400;margin-top:.5rem;opacity:.88;line-height:1.3}
+  .band .d{background:var(--blue);color:#fff;flex:29}
+  .band .de{background:var(--yellow);color:var(--n1);flex:16}
+  .band .dd{background:var(--lavender);color:var(--n1);flex:10}
+  .band .dc{background:#2c2b2b;color:var(--n4);flex:8;border:1px dashed #4a4846}
+  @media(max-width:820px){.band{flex-wrap:wrap}.band .seg{flex:1 1 45%}}
+  .band-scale{display:flex;justify-content:space-between;font-size:.62rem;color:var(--n4);font-weight:300;margin:.3rem .2rem 0}
+  .band-note{font-size:.78rem;color:var(--n4);font-weight:300;margin:.6rem 0 3rem}
+  /* timeline spine */
+  .phase{position:relative;padding:0 0 3rem 3rem;border-left:2px solid #2c2b2b;margin-left:1rem}
+  .phase:last-child{border-left:2px solid transparent}
+  .dot{position:absolute;left:-11px;top:0;width:20px;height:20px;border-radius:50%;border:3px solid var(--n1)}
+  .dot.b{background:var(--blue)} .dot.y{background:var(--yellow)} .dot.l{background:var(--lavender)} .dot.r{background:var(--red)}
+  .ph-h{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:.3rem}
+  .ph-n{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--n4)}
+  .ph-t{font-size:1.6rem;font-weight:700;letter-spacing:-.01em}
+  .ph-dur{font-size:.8rem;font-weight:700;color:var(--n1);background:var(--yellow);padding:.2rem .7rem;border-radius:99px}
+  .ph-dur.b{background:var(--blue);color:#fff} .ph-dur.l{background:var(--lavender)} .ph-dur.r{background:var(--red);color:#fff}
+  .ph-sum{font-size:1rem;font-weight:300;color:var(--lavender);max-width:74ch;margin:.5rem 0 1.4rem}
+  .ph-sum b{color:var(--n7);font-weight:600}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}.band{grid-template-columns:1fr 1fr}}
+  .blk-h{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
+  .blk-h.act{color:var(--blue)} .blk-h.cav{color:var(--yellow)} .blk-h.risk{color:var(--red)}
+  ul{list-style:none}
+  li{font-size:.86rem;font-weight:300;color:#d8d2cb;line-height:1.4;padding-left:1rem;position:relative;margin-bottom:.5rem}
+  li:before{content:'';position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:var(--n4)}
+  li b{color:var(--n7);font-weight:600}
+  .rm{background:var(--n2);border-radius:8px;padding:1rem 1.2rem;margin-top:.3rem}
+  .rm .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:.5rem 0;border-top:1px solid #2c2b2b;font-size:.82rem}
+  .rm .row:first-child{border-top:none}
+  .rm .rk{color:#e98a78;font-weight:500} .rm .mt{color:#9fd4a8;font-weight:300}
+  .rm .lbl{font-size:.56rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n4);display:block;margin-bottom:.2rem}
+  .hours{font-size:.78rem;color:var(--n4);font-weight:300;margin-top:1rem;padding-top:.8rem;border-top:1px solid #2c2b2b}
+  .hours b{color:var(--yellow);font-weight:600}
+  /* domain coverage map — woven into Discovery */
+  .dom{background:var(--n2);border-radius:8px;padding:1.2rem 1.3rem;margin:1.4rem 0 .3rem}
+  .dom-h{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.3rem}
+  .dom-sub{font-size:.84rem;font-weight:300;color:#d8d2cb;line-height:1.45;margin-bottom:1rem;max-width:72ch}
+  .dom-sub b{color:var(--n7);font-weight:600}
+  .dom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+  @media(max-width:820px){.dom-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.dom-grid{grid-template-columns:1fr}}
+  .dom-cell{background:var(--n1);border:1px solid #2c2b2b;border-radius:7px;padding:.7rem .8rem;border-left:3px solid var(--blue)}
+  .dom-cell .dn{font-size:.84rem;font-weight:600;color:var(--n7);line-height:1.25}
+  .dom-cell .dd2{font-size:.68rem;font-weight:300;color:var(--n4);margin-top:.25rem;line-height:1.3}
+  .foot{margin-top:2rem;font-size:.74rem;color:var(--n4);font-weight:300;border-top:1px solid #2c2b2b;padding-top:1.4rem}
+  .caveat-banner{background:rgba(255,204,45,.08);border-left:3px solid var(--yellow);padding:1rem 1.3rem;border-radius:0 7px 7px 0;margin:1rem 0 0;font-size:.88rem;font-weight:300;color:#e8dfca}
+  .caveat-banner b{color:var(--yellow);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="eyebrow">XLA by Design · Internal · The Engagement Model</div>
+    <h1>Four phases, <span class="y">sized to the shape of the work.</span></h1>
+    <p class="lede">This is how an XLA by Design engagement runs end to end, with the activities that justify the hours, the caveats that set expectations, and the risks we manage at each phase. <b>The durations below are modeled on a 1,600-person organization with 8 to 18 personas, the Con Edison scale.</b></p>
+    <div class="band">
+      <div class="seg d"><span class="lab">Discovery</span><span class="wk">14–29 weeks</span></div>
+      <div class="seg de"><span class="lab">Design</span><span class="wk">8–16 weeks</span></div>
+      <div class="seg dd"><span class="lab">Delivery</span><span class="wk">4–10 weeks</span></div>
+      <div class="seg dc"><span class="lab">Continuous</span><span class="wk">monthly, ongoing</span></div>
+    </div>
+    <div class="band-scale"><span>Project start</span><span>Right-sized: 6 to 13 months</span><span>Standing loop &rarr;</span></div>
+    <p class="band-note">Segment widths show relative calendar length, not exact scale. Discovery and Design are the long phases and run in sequence. Design's width shows the modeled single-pod case; running pods in parallel compresses it toward the 8-week floor. Continuous Innovation is the standing monthly loop after delivery, not part of the project calendar. Calendar time runs longer than labor time, because the client sets the pace on access.</p>
+  </div>
+
+  <!-- PHASE 1: DISCOVERY -->
+  <div class="phase">
+    <div class="dot b"></div>
+    <div class="ph-h">
+      <span class="ph-n">Phase 1</span>
+      <span class="ph-t">Experience Discovery</span>
+      <span class="ph-dur b">14–29 weeks labor</span>
+    </div>
+    <p class="ph-sum">Reverse-engineer how the system actually works and find the metric that moves the outcome, across all six business domains of the enterprise. <b>This is the heaviest phase, and the one most often stalled by the client.</b> The researcher and data scientist work hand in hand: one reads the behavior, the other proves the signal in the data.</p>
+    <div class="cols">
+      <div>
+        <div class="blk-h act">Activities</div>
+        <ul>
+          <li><b>Persona validation.</b> Test the hypothesized 8–18 personas against the real workforce. Segment by tenure and role, select 5 subjects each.</li>
+          <li><b>Interviews and synthesis.</b> 40–90 subjects at the 1:3 rule: every interview hour carries three more in prep and synthesis.</li>
+          <li><b>On-site observation.</b> Field and control-room personas are shadowed in the real environment. Storm-shift ride-alongs where the work demands it.</li>
+          <li><b>System data analysis.</b> The data scientist profiles ~16–26 connected systems: funnel, telemetry, lead-lag tests.</li>
+          <li><b>Interconnection mapping.</b> Trace what moves what across systems. This is the "how was it designed" reverse-engineering.</li>
+          <li><b>Signal finding.</b> The joint loop: marry behavior to data, surface the KPI that moves, often several metrics laddering to one not yet tracked.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="blk-h cav">Caveats</div>
+        <ul>
+          <li><b>The client sets the pace, not us.</b> Persona-pool access, interview scheduling, and data requests all wait on the client. They do the blocking.</li>
+          <li><b>The data is not waiting on day one.</b> Do not assume information is available up front. Much of the calendar is spent waiting on records and access.</li>
+          <li><b>The system is opaque to its owner.</b> The client knows what they implemented, not how it interconnects. That is why discovery takes time.</li>
+          <li><b>This is right-sized, not padded.</b> Discovery and Design are the long phases. Their sum, plus delivery, sets the honest range: roughly 6 months at the low end to 13 at the high end. Every deal has a duration that is too short to be credible; this is what credible looks like for this shape.</li>
+        </ul>
+        <div class="blk-h risk" style="margin-top:1.2rem">Risks &amp; mitigations</div>
+        <div class="rm">
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>Client access delays stall the work for weeks.</div><div class="mt"><span class="lbl">Mitigation</span>Front-load every data and pool request. Make access dependencies explicit in the SOW and the weekly report.</div></div>
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>Discovery feels open-ended to the client.</div><div class="mt"><span class="lbl">Mitigation</span>Weekly insights reports: what we did, learned, and what is next. The accumulating blueprint shows progress every week.</div></div>
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>Personas multiply beyond the validated set.</div><div class="mt"><span class="lbl">Mitigation</span>Treat the brief as hypothesis. Validate, refine, or reject; do not let scope balloon unbounded.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="dom">
+      <div class="dom-h">What Discovery covers · 6 business domains</div>
+      <p class="dom-sub">An XLA by Design engagement spans the whole enterprise, not a single function. <b>These six domains are how Con Edison experiences the value</b>, and together they are why the persona set runs 8 to 18 and the connected systems 16 to 26. Discovery maps personas and signals across all six; no domain is left dark.</p>
+      <div class="dom-grid">
+        <div class="dom-cell"><div class="dn">Grid Ops &amp; SCADA</div><div class="dd2">Control-room and operations personas; the telemetry and dispatch systems that run the grid.</div></div>
+        <div class="dom-cell"><div class="dn">Customer Experience &amp; Billing</div><div class="dd2">Service, contact-center, and billing personas; the systems customers and CSRs touch.</div></div>
+        <div class="dom-cell"><div class="dn">Field Workforce</div><div class="dd2">Field technicians and storm-shift crews; mobile, work-management, and safety systems.</div></div>
+        <div class="dom-cell"><div class="dn">Regulatory &amp; Compliance</div><div class="dd2">Rate-case and compliance personas; the reporting and audit systems the regulator sees.</div></div>
+        <div class="dom-cell"><div class="dn">Corporate &amp; Finance</div><div class="dd2">Back-office, HR, and finance personas; the enterprise platforms that run the business.</div></div>
+        <div class="dom-cell"><div class="dn">Digital Innovation &amp; Analytics</div><div class="dd2">Data, platform, and innovation personas; the analytics layer the other five feed.</div></div>
+      </div>
+    </div>
+    <div class="hours">Sizing: <b>~496 hrs (8 personas / 16 systems)</b> to <b>~943 hrs (18 personas / 26 systems)</b>. The long pole flips: system-bound at the low end, research-bound at the high end. The six domains set the breadth; the persona and system counts within them set the hours.</div>
+  </div>
+
+  <!-- PHASE 2: DESIGN -->
+  <div class="phase">
+    <div class="dot y"></div>
+    <div class="ph-h">
+      <span class="ph-n">Phase 2</span>
+      <span class="ph-t">Experience Design</span>
+      <span class="ph-dur">8–16 weeks · staffing sets the calendar</span>
+    </div>
+    <p class="ph-sum">Design the experience that moves the signal discovery found. <b>One pod per experience, about two weeks to a concept, then three validation sprints.</b> The labor is fixed by the number of experiences; the calendar flexes on how many pods run in parallel.</p>
+    <div class="cols">
+      <div>
+        <div class="blk-h act">Activities</div>
+        <ul>
+          <li><b>Concept design.</b> One pod (1 senior plus 1 junior designer, research and design and test) per experience. Roughly two weeks to a testable concept, carrying the persona continuity in from discovery.</li>
+          <li><b>Validation sprint, round 1.</b> Put the concept in front of real users. Measure against the signal, not opinion.</li>
+          <li><b>Validation sprint, round 2.</b> Refine on evidence. Close the gap between the designed behavior and the observed one.</li>
+          <li><b>Validation sprint, round 3.</b> Confirm the design moves the candidate metric before it goes to build. One sprint added per cycle.</li>
+          <li><b>Design-to-signal traceability.</b> Every design decision tied back to the metric it is meant to move and the outcome beneath it.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="blk-h cav">Caveats</div>
+        <ul>
+          <li><b>Validation is not a formality.</b> Three rounds exist because a first concept rarely moves the signal. If it did, the metric was not load-bearing.</li>
+          <li><b>Parallelism buys calendar, not labor.</b> Six pods running the six experiences at once is the 8-week floor. One pod pipelining all six is the 16-week ceiling. The work is the same 48 pod-weeks either way.</li>
+          <li><b>Validation rounds set the floor.</b> Even one experience takes 2 weeks to design plus 3 validation sprints. No amount of staffing compresses a single experience below roughly 8 weeks.</li>
+        </ul>
+        <div class="blk-h risk" style="margin-top:1.2rem">Risks &amp; mitigations</div>
+        <div class="rm">
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>A concept fails validation late, forcing rework.</div><div class="mt"><span class="lbl">Mitigation</span>Validate against the signal early and cheaply. A failed round-1 concept is information, not waste.</div></div>
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>Design drifts from the discovered signal toward aesthetics.</div><div class="mt"><span class="lbl">Mitigation</span>Hold every decision to design-to-signal traceability. If it does not move the metric, it does not ship.</div></div>
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>Validation user access stalls, like discovery.</div><div class="mt"><span class="lbl">Mitigation</span>Reuse the discovery interview pool and access agreements. Do not re-negotiate access mid-engagement.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="hours">Sizing: <b>~48 pod-weeks</b> of labor for 6 experiences (2 weeks design plus 3 validation sprints each). Calendar runs <b>~8 weeks at 6 parallel pods</b> to <b>~16 weeks at 1 pipelined pod</b>. Pod = 1 senior plus 1 junior designer. More pods buy a shorter calendar at the same labor and cost.</div>
+  </div>
+
+  <!-- PHASE 3: DELIVERY & MEASUREMENT -->
+  <div class="phase">
+    <div class="dot l"></div>
+    <div class="ph-h">
+      <span class="ph-n">Phase 3</span>
+      <span class="ph-t">Delivery &amp; Measurement</span>
+      <span class="ph-dur l">4–10 weeks</span>
+    </div>
+    <p class="ph-sum">Instrument the behavioral signal and build the measurement that proves it moved. <b>This is where dashboards and the measurement plan get built</b> and where engineering enters. The designed experience goes live and the signal becomes a tracked, contractable measure. Duration scales with the number of signals instrumented and the integrations each requires.</p>
+    <div class="cols">
+      <div>
+        <div class="blk-h act">Activities</div>
+        <ul>
+          <li><b>Signal instrumentation.</b> Build the data capture for the metric that moves, so it is measured continuously, not surveyed.</li>
+          <li><b>Measurement build.</b> Wire the signal to the operational KPI and the business outcome. The traceability chain becomes live telemetry.</li>
+          <li><b>Baseline and target setting.</b> Establish where the signal sits today and the target that corresponds to the outcome.</li>
+          <li><b>Handoff to the run model.</b> The measurement feeds the client's existing dashboards and the Living XLA framework.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="blk-h cav">Caveats</div>
+        <ul>
+          <li><b>Engineering enters here, not earlier.</b> Build effort is real but follows a validated design. Building before the signal is proven is the common, expensive mistake.</li>
+          <li><b>Instrumentation depends on data access.</b> The same client-pace caveat applies: capturing the signal may require new integration the client must enable.</li>
+          <li><b>This phase proves the thesis or disproves it.</b> If the instrumented signal does not move with the experience, discovery missed. That is why discovery rigor matters.</li>
+        </ul>
+        <div class="blk-h risk" style="margin-top:1.2rem">Risks &amp; mitigations</div>
+        <div class="rm">
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>The signal cannot be instrumented with current tooling.</div><div class="mt"><span class="lbl">Mitigation</span>Confirm observability during discovery. If a signal cannot be observed, it is not the signal.</div></div>
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>Measurement terminates in a vanity score.</div><div class="mt"><span class="lbl">Mitigation</span>Wire every measure to the outcome beneath it. A score that does not ladder to a business result is not shipped.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="hours">Sizing: scoped per signal and per integration. Engineering effort is the variable; the measurement design is fixed by the discovery output.</div>
+  </div>
+
+  <!-- PHASE 4: CONTINUOUS -->
+  <div class="phase">
+    <div class="dot r"></div>
+    <div class="ph-h">
+      <span class="ph-n">Phase 4</span>
+      <span class="ph-t">Continuous Innovation</span>
+      <span class="ph-dur r">Monthly cadence · the multi-year line</span>
+    </div>
+    <p class="ph-sum">Track the KPI's performance and build the roadmap that moves it to target. <b>A monthly loop, not a quarterly review.</b> This is the standing relationship: the signal is monitored, the experience is re-tuned, and the roadmap to the outcome target is maintained as the business changes.</p>
+    <div class="cols">
+      <div>
+        <div class="blk-h act">Activities</div>
+        <ul>
+          <li><b>Monthly performance tracking.</b> Measure the KPI against its target every month. The cadence is monthly because the business moves monthly.</li>
+          <li><b>Roadmap to target.</b> Build and maintain the plan that closes the gap between the current signal and the outcome target.</li>
+          <li><b>Re-validation.</b> As the client and its levers change, confirm the signal still moves the outcome. Adjust the designed experience when it drifts.</li>
+          <li><b>Living artifact.</b> The journey-map blueprint stays current. It is a living, breathing document, not a one-time deliverable.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="blk-h cav">Caveats</div>
+        <ul>
+          <li><b>Monthly, not quarterly.</b> A quarterly exercise is too slow to catch drift. The loop is monthly by design.</li>
+          <li><b>This is where outcome-based contracting lives.</b> The at-risk pool is measured here, against the signal proven in discovery.</li>
+          <li><b>The relationship compounds.</b> Each cycle deepens the understanding of the system, which is why the value grows rather than plateaus.</li>
+        </ul>
+        <div class="blk-h risk" style="margin-top:1.2rem">Risks &amp; mitigations</div>
+        <div class="rm">
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>The signal decays as the business changes.</div><div class="mt"><span class="lbl">Mitigation</span>Monthly re-validation catches drift early. The loop exists precisely to keep the signal load-bearing.</div></div>
+          <div class="row"><div class="rk"><span class="lbl">Risk</span>The engagement is treated as finished at go-live.</div><div class="mt"><span class="lbl">Mitigation</span>The continuous loop is the contract, not an add-on. Outcomes are met over time, not at launch.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="hours">Sizing: a standing monthly cadence. The roadmap and re-validation keep the outcome reachable as conditions change.</div>
+  </div>
+
+  <div class="caveat-banner">
+    <b>The honest through-line on duration:</b> the right-sized range is 6 to 13 months, the sum of the three sequential phases for this shape. Labor is knowable and modeled here. Calendar time is not ours to set alone. What extends the weeks: more personas to validate, more connected systems to map, more physical (on-site) observation, more experiences to design and validate, and above all client access to people and information. That access gating, more than our effort, is what pushes a large engagement toward the top of the range. We justify the time by what the client receives along the way, and by what they hold at the end: an understanding of how their own system works, and the experience designed to move it.
+  </div>
+
+  <div class="foot">
+    Internal · Tam Danier · XLA by Design engagement model. Durations modeled on a 1,600-person organization at Con Edison scale (8–18 personas, 16–26 connected systems). Per-unit coefficients are working estimates pending validation against a live engagement. Sizing covers labor; the right-sized calendar range (6 to 13 months) is the sum of the sequential phases, and runs longer under client-access gating.
+  </div>
+</div>
+</body>
+</html>
