@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discovery · The Drawing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  :root{
+    --blue:#1E5AF2; --yellow:#FFCC2D; --lavender:#CED4FE; --red:#FF1C52; --teal:#3FB6A8;
+    --ink:#0a1828; --paper:#0d1d30; --line:#1f3a55; --line2:#2d4d6e;
+    --draft:#5a8bbf; --draftdim:#365b80; --chalk:#cfe3f5; --white:#eef6ff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--chalk);overflow:hidden;
+    background-image:
+      linear-gradient(rgba(58,110,160,.07) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(58,110,160,.07) 1px,transparent 1px),
+      linear-gradient(rgba(58,110,160,.13) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(58,110,160,.13) 1px,transparent 1px);
+    background-size:28px 28px,28px 28px,140px 140px,140px 140px;
+  }
+  .stage{position:fixed;inset:0;display:flex;flex-direction:column}
+
+  /* title block — drafting corner */
+  .titleblock{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;
+    padding:18px 26px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(13,29,48,.9),transparent);z-index:30}
+  .tb-l .proj{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--draft);text-transform:uppercase}
+  .tb-l .ttl{font-size:19px;font-weight:700;letter-spacing:-.01em;color:var(--white);margin-top:3px}
+  .tb-l .ttl .y{color:var(--yellow)}
+  .tb-r{text-align:right;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:var(--draftdim);line-height:1.7;text-transform:uppercase}
+  .tb-r .rev{color:var(--draft)}
+
+  /* CASE STATEMENT — persistent drafting note bar */
+  .casebar{position:fixed;top:70px;left:0;right:0;z-index:28;display:flex;align-items:flex-start;gap:14px;
+    max-width:980px;margin:0 auto;padding:11px 22px;
+    background:rgba(13,29,48,.82);border:1px solid var(--line);border-radius:8px;
+    backdrop-filter:blur(2px)}
+  .casebar .cb-tag{flex:none;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--yellow);border:1px solid var(--yellow);border-radius:4px;padding:4px 8px;margin-top:1px}
+  .casebar .cb-text{font-size:13px;font-weight:300;color:var(--chalk);line-height:1.45}
+  .casebar .cb-text b{color:var(--white);font-weight:600}
+  @media(max-width:760px){.casebar{position:static;max-width:none;margin:0 12px;flex-wrap:wrap}}
+
+  /* the drawing area */
+  .canvas-area{flex:1;position:relative;display:flex;align-items:center;justify-content:center;padding:118px 26px 124px}
+  svg{width:100%;height:100%;max-width:1180px;display:block}
+
+  /* drafting text styles inside svg via classes */
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .sans{font-family:'Outfit',sans-serif}
+
+  /* layer fade-in */
+  .lyr{opacity:0;transition:opacity .7s ease, transform .7s ease}
+  .lyr.on{opacity:1}
+  .lyr.rise{transform:translateY(8px)} .lyr.rise.on{transform:translateY(0)}
+  .draw-path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s ease}
+  .lyr.on .draw-path{stroke-dashoffset:0}
+
+  /* bottom legend / ladder dock */
+  .dock{position:fixed;bottom:0;left:0;right:0;border-top:1px solid var(--line);
+    background:linear-gradient(0deg,rgba(10,24,40,.96),rgba(10,24,40,.78));padding:14px 26px 16px;z-index:30;min-height:118px}
+  .ladder{display:flex;align-items:stretch;gap:0;max-width:1180px;margin:0 auto}
+  .rung{flex:1;position:relative;opacity:.22;transition:opacity .55s ease;padding:6px 16px 6px 0}
+  .rung.on{opacity:1}
+  .rung .rk{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--draft);margin-bottom:4px}
+  .rung .rt{font-size:15px;font-weight:700;color:var(--white);line-height:1.1}
+  .rung .rd{font-size:10.5px;font-weight:300;color:var(--chalk);opacity:.8;margin-top:3px;line-height:1.3}
+  .rung .arr{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--draftdim);font-size:18px}
+  .rung:last-child .arr{display:none}
+  .rung.insight{border-bottom:2px solid var(--blue)}
+  .rung.signal{border-bottom:2px solid var(--teal)}
+  .rung.xla{border-bottom:2px solid var(--yellow)}
+  .rung.bla{border-bottom:2px solid var(--red)}
+
+  /* role caption card — upper left of canvas, swaps per layer */
+  .rolecap{position:fixed;top:150px;left:34px;z-index:25;max-width:300px;opacity:0;transition:opacity .5s ease}
+  .rolecap.on{opacity:1}
+  .rolecap .step{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px}
+  .rolecap .who{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--white);line-height:1}
+  .rolecap .does{font-size:12.5px;font-weight:300;color:var(--chalk);opacity:.85;margin-top:8px;line-height:1.4;border-left:2px solid var(--line2);padding-left:10px}
+  .rolecap.r1 .step{color:var(--blue)} .rolecap.r1 .who{border-bottom:none}
+  .rolecap.r2 .step{color:var(--teal)}
+  .rolecap.r3 .step{color:var(--yellow)}
+  .rolecap.r4 .step{color:var(--red)}
+
+  /* progress pips */
+  .pips{position:fixed;bottom:128px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:31}
+  .pip{width:30px;height:3px;border-radius:2px;background:var(--line2);transition:background .4s}
+  .pip.on{background:var(--draft)}
+  .pip.cur{background:var(--yellow)}
+
+  .hint{position:fixed;bottom:128px;right:26px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:var(--draftdim);z-index:31;text-transform:uppercase}
+  .hint b{color:var(--draft)}
+
+  @media(max-width:760px){
+    .rolecap{position:static;max-width:none;margin:0;padding:0 26px 8px}
+    .canvas-area{padding:120px 12px 150px}
+    .tb-r{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="titleblock">
+    <div class="tb-l">
+      <div class="proj">XLA by Design · Discovery · Field Workforce × Grid Ops</div>
+      <div class="ttl">The work is finding the <span class="y">right signal.</span></div>
+    </div>
+    <div class="tb-r">
+      Sheet D-01<br>
+      Scale · 1 work order<br>
+      <span class="rev">Rev ▸ <span id="revno">0</span> of 7</span>
+    </div>
+  </div>
+
+  <!-- CASE STATEMENT · persistent context, the situation stated once -->
+  <div class="casebar">
+    <span class="cb-tag">The case</span>
+    <span class="cb-text">Con Edison proposes one service metric: <b>time-on-site.</b> Optimize it and the technicians keep coming back. <b>Discovery exists to find the metric that actually carries the SLA</b>, before a single body is committed to the build.</span>
+  </div>
+
+  <!-- ROLE CAPTION (swaps) -->
+  <div class="rolecap r0" id="cap0" data-cap>
+    <div class="step">Base condition</div>
+    <div class="who">The proposed SLA</div>
+    <div class="does">The business offers one service metric: time-on-site under target. Reasonable on paper. The drawing will show it is the wrong number to sign.</div>
+  </div>
+  <div class="rolecap r0" id="cap1" data-cap>
+    <div class="step">Rev 01 · the conventional path</div>
+    <div class="who">A traditional IT firm</div>
+    <div class="does">Takes the metric at face value. Route optimizer, faster mobile app, a tighter visit. The trip gets shorter. It still repeats. They hit the SLA and miss the outcome.</div>
+  </div>
+  <div class="rolecap r1" id="cap2" data-cap>
+    <div class="step">Rev 02 · reads behavior</div>
+    <div class="who">Researcher</div>
+    <div class="does">Shadows the crew. Sees the technician arrive without the part. The insight: they are not slow, they are coming back.</div>
+  </div>
+  <div class="rolecap r2" id="cap3" data-cap>
+    <div class="step">Rev 03 · proves or kills</div>
+    <div class="who">Data Engineer</div>
+    <div class="does">Wires the systems together and tests the claim. Time-on-site gives way to first-time-fix, the metric that actually carries the SLA.</div>
+  </div>
+  <div class="rolecap r3" id="cap4" data-cap>
+    <div class="step">Rev 04 · feasibility</div>
+    <div class="who">AI Engineer</div>
+    <div class="does">Marks where AI moves the proven signal. Eliminate the return trip. Never a model the signal has not earned.</div>
+  </div>
+  <div class="rolecap r4" id="cap5" data-cap>
+    <div class="step">The through-line</div>
+    <div class="who">Insight to contract</div>
+    <div class="does">One signal, drawn all the way up. This is what the weeks, the access, and the rights buy, and what the conventional path never reaches.</div>
+  </div>
+  <div class="rolecap r3" id="cap6" data-cap>
+    <div class="step">The solution discovery produced</div>
+    <div class="who">A different build</div>
+    <div class="does">Conventional optimizes the visit. Design-led never sends an incomplete order. Same signal, two builds. Only discovery tells you which to make.</div>
+  </div>
+  <div class="rolecap r3" id="cap7" data-cap>
+    <div class="step">What the contract must give us</div>
+    <div class="who">Access and rights</div>
+    <div class="does">The discovery you just watched runs on access. These four belong in the SOW, named and dated. The pace clause protects the provider as much as us.</div>
+  </div>
+
+  <div class="canvas-area">
+    <!-- SVG SCENE injected below -->
+    <svg id="scene" viewBox="0 0 1180 600" xmlns="http://www.w3.org/2000/svg" aria-label="Discovery blueprint"></svg>
+  </div>
+
+  <div class="pips" id="pips"></div>
+  <div class="hint"><b>→</b> advance layer &nbsp;·&nbsp; <b>←</b> back</div>
+
+  <!-- LADDER DOCK -->
+  <div class="dock">
+    <div class="ladder">
+      <div class="rung insight" id="rung0">
+        <span class="arr">→</span>
+        <div class="rk">01 · Insight</div>
+        <div class="rt">They keep coming back.</div>
+        <div class="rd">Qualitative. Observed in the field.</div>
+      </div>
+      <div class="rung signal" id="rung1">
+        <span class="arr">→</span>
+        <div class="rk">02 · Signal</div>
+        <div class="rt">First-time-fix rate.</div>
+        <div class="rd">38% of overruns are repeat visits. r=0.7. Measurable.</div>
+      </div>
+      <div class="rung xla" id="rung2">
+        <span class="arr">→</span>
+        <div class="rk">03 · XLA</div>
+        <div class="rt">Experience-level agreement.</div>
+        <div class="rd">Completeness at dispatch, designed and tracked.</div>
+      </div>
+      <div class="rung bla" id="rung3">
+        <div class="rk">04 · BLA</div>
+        <div class="rt">Business-level agreement.</div>
+        <div class="rd">Fewer trips, lower cost-to-serve. Contractable.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+/* Discovery · The Drawing (rev B — deconflicted, accumulating layers) */
+const NS="http://www.w3.org/2000/svg";
+const scene=document.getElementById("scene");
+function el(t,a={},p=scene){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);p.appendChild(n);return n;}
+function group(cls,i){const g=el("g",{class:`lyr ${cls}`});g.dataset.layer=i;return g;}
+const C={draft:"#5a8bbf",draftdim:"#365b80",line:"#1f3a55",blue:"#1E5AF2",yellow:"#FFCC2D",teal:"#3FB6A8",red:"#FF1C52",chalk:"#cfe3f5",white:"#eef6ff",lav:"#CED4FE",ink:"#0a1828"};
+
+const defs=el("defs",{});
+const mk=el("marker",{id:"ahBlue",markerWidth:9,markerHeight:9,refX:6,refY:3,orient:"auto",markerUnits:"strokeWidth"},defs);
+el("path",{d:"M0,0 L6,3 L0,6 Z",fill:C.blue},mk);
+const mkg=el("marker",{id:"ahGrey",markerWidth:9,markerHeight:9,refX:6,refY:3,orient:"auto",markerUnits:"strokeWidth"},defs);
+el("path",{d:"M0,0 L6,3 L0,6 Z",fill:"#6b7a8d"},mkg);
+
+const techX=190,techY=250,woX=590,woY=250,asX=990,asY=250;
+
+/* LAYER 0 base */
+const L0=group("base on",0);
+el("rect",{x:40,y:24,width:1100,height:476,fill:"none",stroke:C.line,"stroke-width":1,"stroke-dasharray":"2 5"},L0);
+[[40,24],[1140,24],[40,500],[1140,500]].forEach(([x,y])=>{el("line",{x1:x-9,y1:y,x2:x+9,y2:y,stroke:C.draftdim,"stroke-width":1},L0);el("line",{x1:x,y1:y-9,x2:x,y2:y+9,stroke:C.draftdim,"stroke-width":1},L0);});
+el("circle",{cx:techX,cy:techY,r:66,fill:"none",stroke:C.draft,"stroke-width":1.4},L0);
+el("circle",{cx:techX,cy:techY-20,r:12,fill:"none",stroke:C.chalk,"stroke-width":1.5},L0);
+el("path",{d:`M${techX-15} ${techY-27} q15 -13 30 0`,fill:"none",stroke:C.chalk,"stroke-width":1.5},L0);
+el("path",{d:`M${techX} ${techY-8} v30 M${techX} ${techY-2} l-16 13 M${techX} ${techY-2} l16 13 M${techX} ${techY+22} l-12 22 M${techX} ${techY+22} l12 22`,fill:"none",stroke:C.chalk,"stroke-width":1.5,"stroke-linecap":"round"},L0);
+el("text",{x:techX,y:techY+92,"text-anchor":"middle",class:"mono",fill:C.draft,"font-size":10.5,"letter-spacing":"2"},L0).textContent="FIELD TECH";
+el("text",{x:techX,y:techY+107,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":9},L0).textContent="persona · 1 of 12";
+el("rect",{x:woX-58,y:woY-78,width:116,height:156,rx:4,fill:"none",stroke:C.draft,"stroke-width":1.4},L0);
+el("path",{d:`M${woX+38} ${woY-78} l0 20 l20 0`,fill:"none",stroke:C.draft,"stroke-width":1.4},L0);
+for(let i=0;i<5;i++) el("line",{x1:woX-42,y1:woY-50+i*22,x2:woX+(i%2?26:42),y2:woY-50+i*22,stroke:C.draftdim,"stroke-width":1},L0);
+el("text",{x:woX,y:woY+94,"text-anchor":"middle",class:"mono",fill:C.draft,"font-size":10.5,"letter-spacing":"2"},L0).textContent="WORK ORDER";
+el("text",{x:woX,y:woY+108,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":9},L0).textContent="generated upstream";
+el("rect",{x:asX-46,y:asY-54,width:92,height:108,rx:3,fill:"none",stroke:C.draft,"stroke-width":1.4},L0);
+el("line",{x1:asX-46,y1:asY-26,x2:asX+46,y2:asY-26,stroke:C.draftdim,"stroke-width":1},L0);
+el("circle",{cx:asX,cy:asY+8,r:14,fill:"none",stroke:C.draftdim,"stroke-width":1},L0);
+el("path",{d:`M${asX-6} ${asY+8} l4 -7 l0 14 l4 -7`,fill:"none",stroke:C.draftdim,"stroke-width":1.2},L0);
+el("text",{x:asX,y:asY+78,"text-anchor":"middle",class:"mono",fill:C.draft,"font-size":10.5,"letter-spacing":"2"},L0).textContent="GRID ASSET";
+el("text",{x:asX,y:asY+93,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":9},L0).textContent="the job site";
+el("line",{x1:techX+68,y1:techY,x2:woX-60,y2:woY,stroke:C.draftdim,"stroke-width":1,"stroke-dasharray":"3 4"},L0);
+el("line",{x1:woX+60,y1:woY,x2:asX-48,y2:asY,stroke:C.draftdim,"stroke-width":1,"stroke-dasharray":"3 4"},L0);
+el("rect",{x:woX-118,y:432,width:236,height:38,rx:4,fill:"none",stroke:C.draftdim,"stroke-width":1,"stroke-dasharray":"4 4"},L0);
+el("text",{x:woX,y:448,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":9.5,"letter-spacing":"1"},L0).textContent="PROPOSED SLA · THEIR METRIC";
+el("text",{x:woX,y:463,"text-anchor":"middle",class:"sans",fill:C.chalk,"font-size":12,"font-weight":600},L0).textContent="Time-on-site under target";
+
+function stamp(g,kicker,line,color,fillrgba){
+  const s=el("g",{class:"stamp-band"},g);
+  /* size the box to the longer line. mono kicker has letter-spacing 2, so ~7.8px/char */
+  const kW=kicker.length*7.8+36;
+  const lW=line.length*9.4+36;
+  const w=Math.max(300,kW,lW);
+  el("rect",{x:woX-w/2,y:66,width:w,height:58,rx:6,fill:fillrgba,stroke:color,"stroke-width":1.5},s);
+  el("text",{x:woX-w/2+16,y:88,class:"mono",fill:color,"font-size":9.5,"letter-spacing":"2"},s).textContent=kicker;
+  el("text",{x:woX-w/2+16,y:110,class:"sans",fill:C.white,"font-size":16,"font-weight":700},s).textContent=line;
+}
+
+/* ===== LAYER 1 — CONVENTIONAL PATH (the traditional IT/MSP solve, grey) ===== */
+const grey="#6b7a8d";
+const LC=group("rise",1);
+/* their two interventions sit at the FAR OUTER edges, clear of the discovery proof + system rows */
+[["ROUTE OPT.",110,398],["FASTER APP",1070,398]].forEach(([name,x,y])=>{
+  el("rect",{x:x-50,y:y-14,width:100,height:28,rx:3,fill:C.ink,stroke:grey,"stroke-width":1.2,"stroke-dasharray":"3 3"},LC);
+  el("text",{x:x,y:y+4,"text-anchor":"middle",class:"mono",fill:grey,"font-size":9},LC).textContent=name;
+  el("path",{class:"draw-path",d:`M${x} ${y-14} C ${x} ${y-70}, ${woX} ${woY-130}, ${woX} ${woY-80}`,fill:"none",stroke:grey,"stroke-width":1.1,"stroke-dasharray":"2 3",opacity:.45,style:"--len:1"},LC);
+});
+/* their result: a SHORTER trip that STILL returns to the asset — a tight HIGH grey loop, distinct from the blue */
+el("path",{class:"draw-path",d:`M${asX-30} ${asY+50} C ${asX-150} 392, ${techX+150} 392, ${techX+30} ${techY+58}`,fill:"none",stroke:grey,"stroke-width":1.6,"stroke-dasharray":"5 4","marker-end":"url(#ahGrey)",style:"--len:1"},LC);
+const lcl=el("g",{},LC);
+el("rect",{x:96,y:470,width:226,height:24,rx:12,fill:C.ink,stroke:grey,"stroke-width":1.1,"stroke-dasharray":"3 3"},lcl);
+el("text",{x:209,y:486,"text-anchor":"middle",class:"sans",fill:grey,"font-size":10.5,"font-weight":600},lcl).textContent="Shorter visit. Same return trip.";
+/* their stamp */
+stamp(LC,"CONVENTIONAL PATH · OPTIMIZE THE VISIT","They hit the metric. They miss the outcome.",grey,"rgba(107,122,141,.10)");
+
+/* LAYER 2 researcher */
+const L1=group("rise",2);
+el("path",{class:"draw-path",d:`M${asX-10} ${asY+58} C ${asX-160} 470, ${techX+150} 470, ${techX+20} ${techY+70}`,fill:"none",stroke:C.blue,"stroke-width":2.2,"marker-end":"url(#ahBlue)",style:"--len:1"},L1);
+const ll=el("g",{},L1);
+el("rect",{x:woX-128,y:470,width:256,height:24,rx:12,fill:C.ink,stroke:C.blue,"stroke-width":1.2},ll);
+el("text",{x:woX,y:486,"text-anchor":"middle",class:"sans",fill:C.blue,"font-size":11.5,"font-weight":700},ll).textContent="SECOND TRIP · observed in the field";
+const ob=el("g",{},L1);
+el("circle",{cx:techX+44,cy:techY+18,r:4,fill:C.blue},ob);
+el("line",{x1:techX+44,y1:techY+18,x2:techX+96,y2:techY+58,stroke:C.blue,"stroke-width":1.2},ob);
+el("rect",{x:techX+96,y:techY+58,width:166,height:34,rx:4,fill:C.ink,stroke:C.blue,"stroke-width":1.2},ob);
+el("text",{x:techX+106,y:techY+74,class:"mono",fill:C.blue,"font-size":8,"letter-spacing":"1"},ob).textContent="OBSERVED";
+el("text",{x:techX+106,y:techY+86,class:"sans",fill:C.white,"font-size":11,"font-weight":600},ob).textContent="arrives without the part";
+el("line",{class:"draw-path",x1:woX-100,y1:460,x2:woX+100,y2:460,stroke:C.red,"stroke-width":2,style:"--len:1"},L1);
+stamp(L1,"INSIGHT · QUALITATIVE","They are not slow. They come back.",C.blue,"rgba(30,90,242,.12)");
+
+/* LAYER 2 data engineer */
+const L2=group("rise",3);
+[["WMS",woX-168],["GIS",woX-56],["INV",woX+56],["MOBILE",woX+168]].forEach(([name,x])=>{
+  const y=398;
+  el("rect",{x:x-34,y:y-14,width:68,height:28,rx:3,fill:C.ink,stroke:C.teal,"stroke-width":1.3},L2);
+  el("text",{x:x,y:y+4,"text-anchor":"middle",class:"mono",fill:C.teal,"font-size":9.5},L2).textContent=name;
+  el("path",{class:"draw-path",d:`M${x} ${y-14} C ${x} ${y-40}, ${woX} ${woY+128}, ${woX} ${woY+80}`,fill:"none",stroke:C.teal,"stroke-width":1.2,opacity:.5,style:"--len:1"},L2);
+});
+el("text",{x:woX,y:425,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":8.5},L2).textContent="16 to 26 connected systems · profiled";
+const pf=el("g",{},L2);
+el("rect",{x:296,y:150,width:212,height:74,rx:6,fill:"rgba(63,182,168,.10)",stroke:C.teal,"stroke-width":1.4},pf);
+el("text",{x:308,y:170,class:"mono",fill:C.teal,"font-size":9,"letter-spacing":"2"},pf).textContent="PROVEN · QUANTITATIVE";
+el("text",{x:308,y:200,class:"sans",fill:C.white,"font-size":26,"font-weight":800},pf).textContent="38%";
+el("text",{x:364,y:192,class:"sans",fill:C.chalk,"font-size":10.5,"font-weight":300},pf).textContent="of overruns are";
+el("text",{x:364,y:206,class:"sans",fill:C.chalk,"font-size":10.5,"font-weight":300},pf).textContent="repeat visits";
+el("text",{x:308,y:218,class:"mono",fill:C.teal,"font-size":9},pf).textContent="r = 0.7 vs. missing asset history";
+stamp(L2,"THE REAL SLA · MEASURABLE · OBSERVABLE","First-time-fix rate.",C.teal,"rgba(63,182,168,.13)");
+
+/* LAYER 3 ai engineer */
+const L3=group("rise",4);
+const ivY=woY-78;
+el("circle",{class:"draw-path",cx:woX,cy:ivY,r:16,fill:"none",stroke:C.yellow,"stroke-width":2,style:"--len:1"},L3);
+el("line",{x1:woX-6,y1:ivY,x2:woX+6,y2:ivY,stroke:C.yellow,"stroke-width":2},L3);
+el("line",{x1:woX,y1:ivY-6,x2:woX,y2:ivY+6,stroke:C.yellow,"stroke-width":2},L3);
+el("text",{x:woX,y:ivY-26,"text-anchor":"middle",class:"mono",fill:C.yellow,"font-size":8.5,"letter-spacing":"1"},L3).textContent="AI INTERVENTION POINT";
+[["ELIMINATE","the second trip"],["REDUCE","dispatch guesswork"],["INCREASE","first-time-fix rate"],["MAKE POSSIBLE","a contractable XLA"]].forEach((e,i)=>{
+  const x=900,y=150+i*40;
+  el("rect",{x:x,y:y,width:212,height:30,rx:4,fill:C.ink,stroke:C.yellow,"stroke-width":1.1},L3);
+  el("text",{x:x+10,y:y+19,class:"mono",fill:C.yellow,"font-size":9.5,"font-weight":600,"letter-spacing":"1"},L3).textContent=e[0];
+  el("text",{x:x+108,y:y+19,class:"sans",fill:C.white,"font-size":10.5,"font-weight":300},L3).textContent=e[1];
+});
+el("text",{x:1006,y:142,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":8.5,"letter-spacing":"2"},L3).textContent="VALUE LEVERS · ERIM";
+el("path",{d:`M${woX+16} ${ivY} C 760 150, 840 165, 900 165`,fill:"none",stroke:C.yellow,"stroke-width":1,"stroke-dasharray":"3 4",opacity:.55},L3);
+el("text",{x:1006,y:430,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":8.5,"letter-spacing":"1"},L3).textContent="guardrail · earned, not assumed";
+stamp(L3,"FEASIBILITY · CONSULTING","Scoped to the proven signal.",C.yellow,"rgba(255,204,45,.12)");
+
+/* LAYER 4 ladder */
+const L4=group("",5);
+el("rect",{x:50,y:104,width:1080,height:300,rx:10,fill:"rgba(10,24,40,.74)"},L4);
+const beamY=250,xs=[200,500,800,1040],cols=[C.blue,C.teal,C.yellow,C.red];
+const labs=[["INSIGHT","they come back"],["SIGNAL","first-time-fix rate"],["XLA","completeness at dispatch"],["BLA","cost-to-serve down"]];
+el("text",{x:590,y:150,"text-anchor":"middle",class:"sans",fill:C.white,"font-size":19,"font-weight":800},L4).textContent="Getting the insight right is the work.";
+el("text",{x:590,y:176,"text-anchor":"middle",class:"sans",fill:C.lav,"font-size":13,"font-weight":300},L4).textContent="That is what the weeks, the access, and the rights buy.";
+el("line",{class:"draw-path",x1:xs[0],y1:beamY,x2:xs[3],y2:beamY,stroke:C.draft,"stroke-width":2,style:"--len:1"},L4);
+xs.forEach((x,i)=>{
+  el("circle",{cx:x,cy:beamY,r:14,fill:C.ink,stroke:cols[i],"stroke-width":2.6},L4);
+  el("text",{x:x,y:beamY+5,"text-anchor":"middle",class:"mono",fill:cols[i],"font-size":12,"font-weight":600},L4).textContent=String(i+1);
+  el("text",{x:x,y:beamY-30,"text-anchor":"middle",class:"mono",fill:cols[i],"font-size":11.5,"letter-spacing":"2","font-weight":600},L4).textContent=labs[i][0];
+  el("text",{x:x,y:beamY+40,"text-anchor":"middle",class:"sans",fill:C.white,"font-size":12.5,"font-weight":300},L4).textContent=labs[i][1];
+  if(i<3) el("text",{x:(x+xs[i+1])/2,y:beamY+6,"text-anchor":"middle",fill:C.draft,"font-size":22},L4).textContent="\u2192";
+});
+
+/* LAYER 5 — THE SOLUTION DISCOVERY PRODUCED (three-way: conventional / signal / design-led) */
+const LS=group("",6);
+el("rect",{x:50,y:104,width:1080,height:300,rx:10,fill:"rgba(10,24,40,.82)"},LS);
+el("text",{x:590,y:140,"text-anchor":"middle",class:"sans",fill:C.white,"font-size":19,"font-weight":800},LS).textContent="Same signal. A different solution.";
+el("text",{x:590,y:164,"text-anchor":"middle",class:"sans",fill:C.lav,"font-size":13,"font-weight":300},LS).textContent="The conventional reflex optimizes the visit. Design-led moves the leverage point upstream.";
+/* three columns */
+const cols3=[
+  {x:90,  w:300, c:grey,   tag:"CONVENTIONAL", head:"Optimize the visit.",
+   where:"Intervention at the technician.",
+   body:["Route optimizer and a faster app.","The trip gets shorter.","The second trip still happens."]},
+  {x:440, w:300, c:C.teal, tag:"THE SIGNAL", head:"First-time-fix rate.",
+   where:"What discovery proved.",
+   body:["38% of overruns are repeat visits.","The work order arrives incomplete.","Fix the order, not the visit."]},
+  {x:790, w:300, c:C.yellow, tag:"DESIGN-LED", head:"Never send an incomplete order.",
+   where:"Intervention at work-order generation.",
+   body:["Assemble parts, permits, asset history into the order before dispatch.","A dispatch gate blocks incomplete orders.","The tech arrives complete. No return trip."]}
+];
+cols3.forEach(col=>{
+  el("rect",{x:col.x,y:188,width:col.w,height:182,rx:8,fill:C.ink,stroke:col.c,"stroke-width":1.4},LS);
+  el("text",{x:col.x+18,y:212,class:"mono",fill:col.c,"font-size":10,"font-weight":600,"letter-spacing":"2"},LS).textContent=col.tag;
+  el("text",{x:col.x+18,y:236,class:"sans",fill:C.white,"font-size":15,"font-weight":700},LS).textContent=col.head;
+  el("text",{x:col.x+18,y:256,class:"mono",fill:col.c,"font-size":8.5,"letter-spacing":"1"},LS).textContent=col.where;
+  col.body.forEach((line,j)=>{
+    /* simple wrap at ~40 chars */
+    const yb=280+j*30;
+    el("circle",{cx:col.x+22,cy:yb-3,r:2.5,fill:col.c},LS);
+    if(line.length<=42){
+      el("text",{x:col.x+32,y:yb,class:"sans",fill:"#d8d2cb","font-size":10.5,"font-weight":300},LS).textContent=line;
+    } else {
+      const words=line.split(" ");let a="",b="";
+      for(const w of words){ if((a+w).length<40) a+=(a?" ":"")+w; else b+=(b?" ":"")+w; }
+      el("text",{x:col.x+32,y:yb-6,class:"sans",fill:"#d8d2cb","font-size":10.5,"font-weight":300},LS).textContent=a;
+      el("text",{x:col.x+32,y:yb+7,class:"sans",fill:"#d8d2cb","font-size":10.5,"font-weight":300},LS).textContent=b;
+    }
+  });
+});
+/* arrows showing the leverage point moving upstream: conv -> signal -> design-led */
+el("text",{x:415,y:280,"text-anchor":"middle",fill:C.draftdim,"font-size":22},LS).textContent="\u2192";
+el("text",{x:765,y:280,"text-anchor":"middle",fill:C.draftdim,"font-size":22},LS).textContent="\u2192";
+el("text",{x:590,y:392,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":9,"letter-spacing":"1"},LS).textContent="the build only diverges because discovery found the signal first";
+
+/* LAYER 6 — THE CONTRACT (final reveal): what the SOW must give us */
+const L5=group("",7);
+el("rect",{x:50,y:104,width:1080,height:300,rx:10,fill:"rgba(10,24,40,.82)"},L5);
+el("text",{x:590,y:142,"text-anchor":"middle",class:"sans",fill:C.white,"font-size":19,"font-weight":800},L5).textContent="None of this happens without access.";
+el("text",{x:590,y:166,"text-anchor":"middle",class:"sans",fill:C.lav,"font-size":13,"font-weight":300},L5).textContent="Four rights belong in the SOW, named and dated, not discovered mid-engagement.";
+const must=[
+  ["PEOPLE","Named persona pool, committed interview hours, a sponsor who can compel scheduling."],
+  ["DATA","Read access to the named systems, provisioned to a deadline, plus SMEs to interpret it."],
+  ["OBSERVATION","On-site and field access, including safety or union clearance as a long-lead item."],
+  ["INSTRUMENTATION","The right to instrument the chosen signal in production. Uncapturable is uncontractable."]
+];
+must.forEach((m,i)=>{
+  const x=90+(i%2)*530, y=196+Math.floor(i/2)*98;
+  el("rect",{x:x,y:y,width:500,height:80,rx:8,fill:C.ink,stroke:C.yellow,"stroke-width":1.3},L5);
+  el("text",{x:x+20,y:y+30,class:"mono",fill:C.yellow,"font-size":12,"font-weight":600,"letter-spacing":"2"},L5).textContent=String(i+1).padStart(2,"0")+" · "+m[0];
+  /* wrap the description across two lines manually */
+  const words=m[1].split(" ");
+  let l1="",l2="",cut=Math.ceil(words.length/2);
+  l1=words.slice(0,cut).join(" "); l2=words.slice(cut).join(" ");
+  el("text",{x:x+20,y:y+52,class:"sans",fill:"#d8d2cb","font-size":11.5,"font-weight":300},L5).textContent=l1;
+  el("text",{x:x+20,y:y+68,class:"sans",fill:"#d8d2cb","font-size":11.5,"font-weight":300},L5).textContent=l2;
+});
+el("text",{x:590,y:392,"text-anchor":"middle",class:"mono",fill:C.draftdim,"font-size":9,"letter-spacing":"1"},L5).textContent="pace clause · access delays move the calendar, not the fee";
+
+/* controller — accumulate marks, swap stamps. 8 reveals (0..7) */
+const layers=[...document.querySelectorAll(".lyr")].sort((a,b)=>a.dataset.layer-b.dataset.layer);
+const caps=[...document.querySelectorAll("[data-cap]")];
+const rungs=[0,1,2,3].map(j=>document.getElementById("rung"+j));
+const pipsWrap=document.getElementById("pips");
+const revno=document.getElementById("revno");
+const MAX=7; let step=0;
+const pipEls=[];
+for(let i=0;i<=MAX;i++){const p=document.createElement("div");p.className="pip";pipsWrap.appendChild(p);pipEls.push(p);}
+document.querySelectorAll(".stamp-band").forEach(s=>{s.dataset.k=s.closest(".lyr").dataset.layer;});
+
+function renderFull(){
+  layers.forEach(l=>{
+    const k=+l.dataset.layer;
+    let on;
+    if(k===0) on=true;                 /* base scene always */
+    else if(k===5) on=(step===5);      /* ladder beam */
+    else if(k===6) on=(step===6);      /* solution comparison */
+    else if(k===7) on=(step===7);      /* contract reveal */
+    else on=(step>=k && step<5);       /* accumulate 1..4, hide under the full-scene reveals */
+    l.classList.toggle("on",on);
+    l.style.filter=(step>=5 && k>0 && k<5)?"opacity(0)":"";
+    if(k===1 && step>=2 && step<5) l.style.opacity="0.4";
+    else if(k===1) l.style.opacity="";
+  });
+  /* stamps: only current step's stamp visible (steps 1..4) */
+  document.querySelectorAll(".stamp-band").forEach(s=>{
+    s.style.display=(+s.dataset.k===step && step>=1 && step<=4)?"":"none";
+  });
+  caps.forEach((c,i)=>c.classList.toggle("on",i===step));
+  /* rungs light starting at step 2 (researcher=insight). rung j lights when step>=j+2 */
+  rungs.forEach((r,j)=>r.classList.toggle("on", step>=j+2 || step===MAX));
+  pipEls.forEach((p,i)=>{p.classList.toggle("on",i<=step);p.classList.toggle("cur",i===step);});
+  revno.textContent=step;
+}
+function next(){if(step<MAX){step++;renderFull();}}
+function prev(){if(step>0){step--;renderFull();}}
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){e.preventDefault();next();}if(e.key==="ArrowLeft"){e.preventDefault();prev();}});
+document.addEventListener("click",e=>{if(e.clientX<window.innerWidth*0.18)prev();else next();});
+renderFull();
+
+</script>
+</body>
+</html>
