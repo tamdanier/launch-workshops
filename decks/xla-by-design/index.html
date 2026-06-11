@@ -402,6 +402,27 @@
   .close-brand .cb-name span{color:var(--blue)}
   .close-brand .cb-tag{font-size:.72rem;font-weight:400;color:var(--n3);letter-spacing:.04em;text-transform:lowercase}
 </style>
+<style>
+  .roles-with-sidebar{display:grid;grid-template-columns:1fr 300px;gap:1.4rem;align-items:start;margin-top:1.1rem}
+  .roles-left-col{display:flex;flex-direction:column;gap:.65rem}
+  .roles-left-col .roles{margin-top:0}
+  .roles-sidebar{display:flex;flex-direction:column;gap:1rem}
+  .supp-label{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--n3);margin-top:1.4rem;margin-bottom:.6rem;padding-left:.1rem}
+  .role.supp-role{background:var(--n6);border:1px solid #e8e4e0}
+  .role.supp-role .rh{background:var(--n5);color:var(--n3)}
+  .role.supp-role h4{font-size:.95rem}
+  .role.supp-role p{font-size:.82rem;color:var(--n3)}
+  .role.supp-role .owns{font-size:.78rem}
+  #s12s{padding:4vh 7vw}
+  #s12s h2{margin-bottom:.6rem}
+  #s12s .roles-with-sidebar{margin-top:.6rem}
+  #s12s .role{padding:.85rem 1rem}
+  #s12s .role .owns{margin-top:.35rem}
+  #s12s .supp-label{margin-top:.65rem;margin-bottom:.35rem}
+  #s12s .roles.supp{margin-top:.3rem}
+  #s12s .role.supp-role{padding:.75rem .9rem}
+  #s12s .scale-note{padding:.8rem 1rem;border:1px solid #e8e4e0;border-radius:7px;background:var(--n6)}
+</style>
 </head>
 <body>
 <div class="prog" id="prog"></div>
@@ -725,7 +746,7 @@
     <div class="pcard diff"><div class="pc-co">Amgen</div><div class="pc-wh">Smart Refresh, device-lifecycle UX & research</div><div class="pc-shape">Different roof, same spine</div></div>
     <div class="pcard"><div class="pc-co">Chick-fil-A</div><div class="pc-wh">DWS-led MSP RFP, live now, due 6/17</div><div class="pc-shape">Persona → experience → RFP</div></div>
   </div>
-  <p class="quote reveal">&ldquo;Similar to past EX persona work for DWS&hellip; will require some customization from what we've assembled before, but tons of overlap, we should be able to apply it here.&rdquo;<span>From the Chick-fil-A deal brief. That sentence is the whole case: a method we re-apply and re-customize every time, with no name and no structure.</span></p>
+  <p class="quote reveal">&ldquo;Similar to past EX persona work for DWS&hellip; will require some customization from what we've assembled before, but tons of overlap, we should be able to apply it here.&rdquo;<span>From the Chick-fil-A deal brief.</span></p>
   <p class="turn reveal">This is the answer to &ldquo;is it one offering or several?&rdquo; <b>One spine, many roofs.</b> Formalizing it makes it repeatable and flexible, instead of rebuilt by hand on every deal.</p>
   <div class="lmark"><svg viewBox="0 0 216 216" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
 </section>
@@ -851,27 +872,48 @@
 </section>
 
 <section class="slide light" id="s12s">
-  <div class="pagenum">21 / 27</div>
+  <div class="pagenum">23 / 27</div>
   <div class="eyebrow reveal">Who does this work</div>
   <h2 class="reveal">Two senior profiles. <span class="hl-blue">The signal lives in the loop between them.</span></h2>
   <p class="reveal" style="color:var(--n3)">Discovery pairs two senior profiles. The signal is found in the loop between them.</p>
-  <div class="roles reveal">
-    <div class="role">
-      <div class="rh">Qualitative</div>
-      <h4>Senior Design Researcher</h4>
-      <p>Reads the behavioral tell in the real environment and frames which metric is a candidate to be the one that moves. Keeps the work design-led.</p>
-      <div class="owns"><b>Activities:</b> discovery strategy, discovery execution, on-site observation, synthesis, the insights report. The scarcer, more senior hire.</div>
+  <div class="roles-with-sidebar">
+    <div class="roles-left-col">
+      <div class="roles reveal">
+        <div class="role">
+          <div class="rh">Qualitative</div>
+          <h4>Senior Design Researcher</h4>
+          <p>Reads the behavioral tell in the real environment and frames which metric is a candidate to be the one that moves. Keeps the work design-led.</p>
+          <div class="owns"><b>Activities:</b> discovery strategy, discovery execution, on-site observation, synthesis, the insights report. The scarcer, more senior hire.</div>
+        </div>
+        <div class="role">
+          <div class="rh">Quantitative</div>
+          <h4>Senior Data Scientist</h4>
+          <p>Proves the signal is wired to the outcome and sizes it. Causal inference, not predictive model-building.</p>
+          <div class="owns"><b>Activities:</b> funnel and cohort analysis, lagged correlation and lead-lag testing, regression and time-series, quasi-experiments, sizing the lever. A dedicated ML engineer enters only when data scale or transcript and telemetry volume demands it.</div>
+        </div>
+      </div>
+      <div class="supp-label reveal">Supporting resources</div>
+      <div class="roles supp reveal">
+        <div class="role supp-role">
+          <div class="rh">Part-time &middot; Advisory</div>
+          <h4>AI Engineer.</h4>
+          <p>Consults on AI opportunities identified during Discovery and Design. Flags where AI augmentation is viable against the signal being designed to.</p>
+          <div class="owns"><b>Engages:</b> Discovery synthesis and Design sprints. Not a full-time team member; brought in when the signal or workflow has a credible AI application.</div>
+        </div>
+        <div class="role supp-role">
+          <div class="rh">Part-time &middot; Phase 03</div>
+          <h4>Dashboard &amp; Measurement Engineer.</h4>
+          <p>Builds the instrumentation and dashboards that make the measurement chain operational. Enters when Design is complete and the signal is confirmed.</p>
+          <div class="owns"><b>Engages:</b> Measurement setup phase (Phase 03). Wires the signal to the reporting chain and hands off to the continuous loop.</div>
+        </div>
+      </div>
     </div>
-    <div class="role">
-      <div class="rh">Quantitative</div>
-      <h4>Senior Data Scientist</h4>
-      <p>Proves the signal is wired to the outcome and sizes it. Causal inference, not predictive model-building.</p>
-      <div class="owns"><b>Activities:</b> funnel and cohort analysis, lagged correlation and lead-lag testing, regression and time-series, quasi-experiments, sizing the lever. A dedicated ML engineer enters only when data scale or transcript and telemetry volume demands it.</div>
+    <div class="roles-sidebar">
+      <p class="roles-loop reveal">The researcher surfaces the candidate tells. The data scientist tests which one is wired to the outcome. <b>The art is the loop between them,</b> with the Senior Researcher holding the synthesis that keeps it from terminating in a vanity score.</p>
+      <p class="scale-note reveal">The Design phase shifts shape: <b style="color:var(--n1)">one designer per experience, about two weeks each.</b> Concept-and-validation adds a sprint per cycle, up to three. Discovery is front-loaded and senior; design and measurement run leaner.</p>
     </div>
   </div>
-  <p class="roles-loop reveal">The researcher surfaces the candidate tells. The data scientist tests which one is wired to the outcome. <b>The art is the loop between them,</b> with the Senior Researcher holding the synthesis that keeps it from terminating in a vanity score.</p>
-  <p class="scale-note reveal">The Design phase shifts shape: <b style="color:var(--n1)">one designer per experience, about two weeks each.</b> Concept-and-validation adds a sprint per cycle, up to three. Discovery is front-loaded and senior; design and measurement run leaner.</p>
-  <div class="lmark"><svg viewBox="0 0 216 216" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
+  <div class="lmark"><svg viewBox="0 0 216 216" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M43.1 0 43.1 43.1 86.3 43.1 86.3 129.4 172.5 129.4 172.5 172.5 215.6 172.5 215.6 118.6C215.6 100.7 201.1 86.2 183.3 86.2L129.4 86.2 129.4 32.3C129.4 14.5 114.9 0 97 0Z"/><path d="M43.1 43.1 0 43.1 0 183.3C0 201.1 14.5 215.6 32.3 215.6L172.5 215.6 172.5 172.5 43.1 172.5Z"/></svg></div>
 </section>
 <section class="slide light" id="s12t">
   <div class="eyebrow reveal">Who does this work — pursuit side</div>
